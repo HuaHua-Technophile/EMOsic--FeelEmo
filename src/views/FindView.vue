@@ -1,6 +1,6 @@
 <template>
   <div id="find-view" class="w-100 h-100">
-    <div class="find-search blur w-100 position-fixed top-0 d-flex pt-4">
+    <div class="find-search blur w-100 position-fixed top-0 d-flex pt-4 z-3">
       <div class="d-flex justify-content-center align-items-center">
         <font-awesome-icon :icon="['fas', 'bars']" size="xl" />
       </div>
@@ -11,8 +11,10 @@
           { dark: Theme == 'dark' },
         ]">
         <div>
-          <i class="bi bi-search"></i
-          ><span class="fs-6">大家在搜:{{ searchHot.first }}</span>
+          <i class="bi bi-search me-2"></i
+          ><span class="placeHolder text-secondary"
+            >大家在搜:{{ searchHot.first }}</span
+          >
         </div>
         <div>
           <i class="bi bi-qr-code-scan"></i>
@@ -59,7 +61,7 @@
               this.searchHotList[
                 this.searchHotList.indexOf(this.searchHot) + 1
               ]);
-      }, 2000);
+      }, 4000);
     },
     beforeDestroy() {
       clearInterval(this.timeId1);
@@ -88,9 +90,12 @@
     > div:nth-child(3) {
       flex-grow: 1;
     }
+    .placeHolder {
+      font-size: 15px;
+    }
   }
   .find-main {
-    padding-top: 50px;
+    padding-top: 56.5px;
     height: 130vh;
     // background: linear-gradient(#291d25, #1b1b24 20%);
   }

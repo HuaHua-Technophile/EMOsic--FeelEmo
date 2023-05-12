@@ -1,12 +1,5 @@
-.blur::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  filter: blur(10px);
+.blur {
+  backdrop-filter: blur(6px);
 }
 .lineh-100 {
   line-height: 100% !important;
