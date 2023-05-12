@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+//----------自定义路由-----------
 import find from "../views/FindView.vue";
 import podcast from "../views/PodcastView.vue";
 import mine from "../views/MineView.vue";
@@ -10,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/find",
+    redirect: "/find", //重定向至发现页面
   },
   {
     path: "/find",
@@ -38,9 +39,7 @@ const routes = [
     component: cloudVillage,
   },
 ];
-
 const router = new VueRouter({
   routes,
 });
-
 export default router;
