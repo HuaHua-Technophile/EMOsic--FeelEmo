@@ -61,14 +61,23 @@
         </swiper-slide>
       </swiper-container>
       <!-- 发现页推荐歌单 -->
-      <play-list v-if="songList1" :data="songList1"></play-list>
-      <play-list v-if="songList2" :data="songList2"></play-list>
+      <play-list v-if="playList1" :data="playList1" :Theme="Theme"></play-list>
+      <!-- 发现页精选歌曲 -->
+      <song-list v-if="songList1" :data="songList1" :Theme="Theme"></song-list>
+      <!-- 发现页排行榜 -->
+      <top-list v-if="topList1" :data="topList1" :Theme="Theme"></top-list>
+      <!-- 发现页雷达歌单 -->
+      <play-list v-if="playList2" :data="playList2" :Theme="Theme"></play-list>
+      <!-- 发现页新歌新碟 -->
+      <song-list v-if="songList2" :data="songList2" :Theme="Theme"></song-list>
     </div>
   </div>
 </template>
 <script>
   import { getSearchHot, getFind, getBall } from "../../api/findData.js";
   import playList from "./component/playList.vue";
+  import songList from "./component/songList.vue";
+  import topList from "./component/topList.vue";
   export default {
     props: ["Theme"],
     data() {
@@ -78,19 +87,24 @@
         searchHotList: [],
         bannerSwiperList: [],
         ballList: [], //推荐入口图标
-        // songList是方形轮播图
-        songList1: null,
-        songList2: null,
-        //playList是横板轮播图
+        //playList是方形轮播图
         playList1: null,
         playList2: null,
+        //topList是横板轮播图,代表排行榜
+        topList1: null,
+        // songList是横板轮播图
+        songList1: null,
+        songList2: null,
       };
     },
     computed: {},
-    //组件内方法
+    //方法
     methods: {},
+    // 局部组件
     components: {
-      playList: playList,
+      playList,
+      songList,
+      topList,
     },
     // 生命周期函数获取数据
     created() {
@@ -117,12 +131,13 @@
         });
         this.$refs.bannerSwiper.initialize();
         //方形轮播图1数据写入
-        this.songList1 = res.data.blocks[1];
-        this.songList2 = res.data.blocks[4];
-        // 横板推荐列表数据写入
-        this.playList1 = res.data.blocks[2];
-        this.playList2 = res.data.blocks[5];
+        this.playList1 = res.data.blocks[1];
+        this.playList2 = res.data.blocks[4];
         // 排行榜数据写入
+        this.topList1 = res.data.blocks[3];
+        // 横板推荐列表数据写入
+        this.songList1 = res.data.blocks[2];
+        this.songList2 = res.data.blocks[5];
       });
       //获取发现页圆形图标入口列表
       getBall().then((res) => {

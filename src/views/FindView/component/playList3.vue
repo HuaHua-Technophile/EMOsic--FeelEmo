@@ -16,8 +16,11 @@
       </div>
     </transition-group>
     <!-- 右上角图标 -->
-    <i class="bi bi-infinity position-absolute end-0 fs-2 me-2 t-shadow-3"></i>
-    <span>{{ item.resources[index].uiElement.mainTitle.title }}</span>
+    <i
+      class="bi bi-infinity position-absolute end-0 fs-2 me-2 t-shadow-3 text-light"></i>
+    <span class="t-overflow-2">{{
+      item.resources[index].uiElement.mainTitle.title
+    }}</span>
   </div>
 </template>
 <script>

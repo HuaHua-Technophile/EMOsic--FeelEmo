@@ -8,6 +8,9 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/routerIndex";
 import store from "./store";
+//----vue全局组件-------------------
+import cardTitle from "./components/cardTitle.vue";
+Vue.component("card-title", cardTitle);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
