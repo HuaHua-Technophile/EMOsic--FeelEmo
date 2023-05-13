@@ -20,6 +20,7 @@
       };
     },
     methods: {
+      //切换全局主题
       changeTheme() {
         if (this.Theme === "dark") {
           this.Theme = "light";
@@ -32,7 +33,3 @@
     },
   };
 </script>
-
-<style lang="scss">
-  @import url(./assets/PresetStyle.scss); //导入公共css
-</style>

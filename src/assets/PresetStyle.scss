@@ -1,6 +1,38 @@
+html,
+body {
+  position: relative; //不定位会导致swiper轮播图竖向播放的异常
+}
 .blur {
   backdrop-filter: blur(6px);
 }
-.lineh-100 {
+.lh-100 {
   line-height: 100% !important;
+}
+@for $i from 2 through 6 {
+  .text-over-#{$i} {
+    display: -webkit-box; /* 设置元素为伸缩盒模型(13-2-1) */
+    -webkit-box-orient: vertical; /* 修改伸缩盒模型的主轴方向为竖直 */
+    -webkit-line-clamp: $i; /* 控制伸缩盒在第几行显示省略号 */
+    overflow: hidden; /* 修剪溢出内容 */
+  }
+}
+.fs-7 {
+  font-size: 0.9rem !important;
+}
+.fs-8 {
+  font-size: 0.8rem !important;
+}
+.fs-9 {
+  font-size: 0.7rem !important;
+}
+.fs-10 {
+  font-size: 0.6rem !important;
+}
+@for $i from 1 through 10 {
+  .t-shadow-#{$i} {
+    text-shadow: 1px 1px #{$i}px black;
+  }
+}
+.pb-100 {
+  padding-bottom: 100%;
 }
