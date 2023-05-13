@@ -2,7 +2,8 @@
   <div class="w-100 vh-100 overflow-hidden">
     <router-view :Theme="Theme"></router-view>
     <nav
-      class="ps-3 pe-3 w-100 position-fixed bottom-0 nav justify-content-between">
+      v-if="navBar"
+      class="p-0 ps-3 pe-3 m-0 w-100 position-fixed bottom-0 nav justify-content-between z-3 alert alert-danger">
       <a class="nav-link active" aria-current="page" href="#">发现</a>
       <a class="nav-link" href="#">播客</a>
       <a class="nav-link" href="#">我的</a>
@@ -17,6 +18,7 @@
     data() {
       return {
         Theme: "dark",
+        navBar: true,
       };
     },
     methods: {

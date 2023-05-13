@@ -1,9 +1,10 @@
 // Dark color mode variables
 // [data-bs-theme =“ dark”]`主题的自定义变量。通过创建一个新的特定于主题的文件（例如_variables-dark.scss）并添加所需的变量，将其用作您自己自定义颜色模式的起点。
-$body-bg: #f8f9fd;
-$body-color: #3e465b;
-$body-bg-dark: #1b1b24;
-$body-color-dark: #e8e8e8;
+$body-bg: rgb(248, 249, 253);
+$body-color: rgb(62, 70, 91);
+$body-bg-dark: rgb(26, 26, 35);
+$body-color-dark: rgb(232, 232, 232);
+$body-tertiary-bg-dark: rgb(38, 38, 46);
 $red: rgb(251, 60, 60);
 //包括所有的Bootstrap
 //这里包含任何默认变量重写(尽管函数不可用)

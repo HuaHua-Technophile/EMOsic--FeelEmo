@@ -1,8 +1,9 @@
 <template>
-  <div class="d-flex justify-content-between align-items-center ps-3 pe-3">
-    <div class="fs-5 fw-bold">
+  <div
+    class="cardTitle d-flex justify-content-between align-items-center ps-3 pe-3">
+    <div v-if="data.subTitle" class="fs-5 fw-bold">
       <i
-        v-if="!data.subTitle.canShowTitleLogo"
+        v-if="data.subTitle.canShowTitleLogo"
         class="loop bi bi-arrow-clockwise fs-2 position-relative"></i
       ><span class="me-1">{{ data.subTitle.title }}</span
       ><button
@@ -10,13 +11,17 @@
         class="btn btn-sm rounded-pill d-inline-flex align-items-center"
         :class="Theme">
         <i class="bi bi-play-fill fs-6"></i>{{ data.button.text }}</button
-      ><font-awesome-icon
-        v-if="data.button.text === '更多'"
-        icon="fa-solid fa-angle-right"
-        size="sm" />
+      ><font-awesome-icon v-else icon="fa-solid fa-angle-right" size="sm" />
     </div>
-    <div class="fs-3">
-      <i class="bi bi-three-dots-vertical text-body-tertiary"></i>
+    <div v-if="data.mainTitle" class="fs-5 fw-bold">
+      <span class="me-1">{{ data.mainTitle.title }}</span
+      ><font-awesome-icon icon="fa-solid fa-angle-right" size="sm" />
+    </div>
+    <div class="fs-5">
+      <span v-if="data.mainTitle" class="fs-8 text-body-secondary">{{
+        data.mainTitle.titleDesc
+      }}</span>
+      <i v-else class="bi bi-three-dots-vertical text-body-tertiary"></i>
     </div>
   </div>
 </template>
@@ -26,6 +31,10 @@
   };
 </script>
 <style lang="scss" scoped>
+  .cardTitle {
+    margin-top: 11px;
+    margin-bottom: 11px;
+  }
   .loop {
     top: 3px;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="cardHr pt-2 pb-3" :class="Theme">
+  <div class="cardHr pb-3" :class="Theme">
     <!-- title信息栏 -->
     <card-title :data="data.uiElement" :Theme="Theme"></card-title>
     <!-- 轮播图 -->

@@ -1,11 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 //----------自定义路由-----------
-import find from "../views/FindView/FindView.vue";
-import podcast from "../views/PodcastView.vue";
-import mine from "../views/MineView.vue";
-import follow from "../views/FollowView.vue";
-import cloudVillage from "../views/CloudVillageView.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -16,27 +11,32 @@ const routes = [
   {
     path: "/find",
     name: "find",
-    component: find,
+    component: () => import("../views/FindView/FindView.vue"),
   },
   {
     path: "/podcast",
     name: "podcast",
-    component: podcast,
+    component: () => import("../views/PodcastView.vue"),
   },
   {
     path: "/mine",
     name: "mine",
-    component: mine,
+    component: () => import("../views/MineView.vue"),
   },
   {
     path: "/follow",
     name: "follow",
-    component: follow,
+    component: () => import("../views/FollowView.vue"),
   },
   {
     path: "/cloudVillage",
     name: "cloudVillage",
-    component: cloudVillage,
+    component: () => import("../views/CloudVillageView.vue"),
+  },
+  {
+    path: "/playlistDetail",
+    name: "playlistDetail",
+    component: () => import("../views/PlaylistDetail.vue"),
   },
 ];
 const router = new VueRouter({
