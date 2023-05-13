@@ -1,16 +1,7 @@
 <template>
-  <div class="hr pt-2 pb-3" :class="Theme">
-    <!-- title信息 -->
-    <div
-      class="d-flex justify-content-between align-items-center ps-3 pe-3 mb-2">
-      <div class="fs-5 fw-bold">
-        <span>{{ data.uiElement.subTitle.title }}</span
-        ><i class="bi bi-chevron-right fs-6"></i>
-      </div>
-      <div class="fs-3">
-        <i class="bi bi-three-dots-vertical text-body-tertiary"></i>
-      </div>
-    </div>
+  <div class="cardHr pt-2 pb-3" :class="Theme">
+    <!-- title信息栏 -->
+    <card-title :data="data.uiElement" :Theme="Theme"></card-title>
     <!-- 轮播图 -->
     <swiper-container
       v-if="data.creatives"
@@ -50,12 +41,6 @@
   };
 </script>
 <style lang="scss" scoped>
-  .hr.light {
-    border-bottom: 1px solid #e5e6eb;
-  }
-  .hr.dark {
-    border-bottom: 1px solid #24242c;
-  }
   swiper-slide {
     width: 33.3vw;
   }
