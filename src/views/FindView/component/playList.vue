@@ -8,7 +8,10 @@
       slides-per-view="auto"
       space-between="10"
       class="fs-7 ps-3 pe-3">
-      <swiper-slide v-for="(item, index) in data.creatives" :key="index">
+      <swiper-slide
+        v-for="(item, index) in data.creatives"
+        :key="index"
+        @click="toPlayListDetail(item.creativeId)">
         <!-- 单个不切换的slide -->
         <div v-if="item.resources.length === 1" class="position-relative">
           <!-- 顶部播放量/阴影遮罩 -->
@@ -35,6 +38,11 @@
   import slide3 from "./playList3.vue";
   export default {
     props: ["data", "Theme"],
+    methods: {
+      toPlayListDetail(id) {
+        this.$router.push({ name: "playListDetail", query: { id } });
+      },
+    },
     components: {
       slide: slide3,
     },

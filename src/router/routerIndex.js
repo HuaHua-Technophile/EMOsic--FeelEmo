@@ -34,9 +34,9 @@ const routes = [
     component: () => import("../views/CloudVillageView.vue"),
   },
   {
-    path: "/playlistDetail",
-    name: "playlistDetail",
-    component: () => import("../views/PlaylistDetail.vue"),
+    path: "/playListDetail",
+    name: "playListDetail",
+    component: () => import("../views/PlayList/PlayListDetail.vue"),
   },
 ];
 const router = new VueRouter({

@@ -20,3 +20,10 @@ export function getBall() {
     method: "get",
   });
 }
+//获取歌单列表详情页
+export function getPlayListDetail(id) {
+  return request({
+    url: `/playlist/detail?id=${id}`,
+    method: "get",
+  });
+}

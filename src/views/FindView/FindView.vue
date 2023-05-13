@@ -74,7 +74,7 @@
   </div>
 </template>
 <script>
-  import { getSearchHot, getFind, getBall } from "../../api/findData.js";
+  import { getSearchHot, getFind, getBall } from "../../api/getData.js";
   import playList from "./component/playList.vue";
   import songList from "./component/songList.vue";
   import topList from "./component/topList.vue";
@@ -97,9 +97,6 @@
         songList2: null,
       };
     },
-    computed: {},
-    //方法
-    methods: {},
     // 局部组件
     components: {
       playList,
