@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 //----------自定义路由-----------
-import find from "../views/FindView.vue";
+import find from "../views/FindView/FindView.vue";
 import podcast from "../views/PodcastView.vue";
 import mine from "../views/MineView.vue";
 import follow from "../views/FollowView.vue";

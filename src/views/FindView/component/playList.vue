@@ -1,0 +1,60 @@
+<template>
+  <div>
+    <div class="d-flex justify-content-between align-items-center ps-3 pe-3">
+      <div class="fs-5 fw-bold">
+        <span>{{ data.uiElement.subTitle.title }}</span
+        ><i class="bi bi-chevron-right fs-6"></i>
+      </div>
+      <div class="fs-3"><i class="bi bi-three-dots-vertical"></i></div>
+    </div>
+    <swiper-container
+      v-if="data.creatives"
+      slides-per-view="auto"
+      space-between="10"
+      class="fs-7 ps-3 pe-3">
+      <swiper-slide v-for="(item, index) in data.creatives" :key="index">
+        <!-- 单个不切换的slide -->
+        <div v-if="item.resources.length === 1" class="position-relative">
+          <!-- 顶部播放量/阴影遮罩 -->
+          <div
+            class="bgShadow position-absolute w-100 Clearfix t-shadow-2 rounded-top-3">
+            <div class="float-end me-2 mt-1 mb-3 fw-bold fs-8">
+              <i class="bi bi-play-fill"></i
+              >{{ item.resources[0].resourceExtInfo.playCount | ConUnit }}
+            </div>
+          </div>
+          <i
+            class="playIcon bi bi-play-fill position-absolute end-0 fs-1 me-1 t-shadow-2"></i>
+          <!-- 背景图 -->
+          <img :src="item.uiElement.image.imageUrl" class="w-100 rounded-3" />
+          <span class="t-overflow-2">{{ item.uiElement.mainTitle.title }}</span>
+        </div>
+        <!-- 三个切换的slide -->
+        <slide v-if="item.resources.length === 3" :item="item"></slide>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+</template>
+<script>
+  import slide3 from "./playList3.vue";
+  export default {
+    props: ["data"],
+    components: {
+      slide: slide3,
+    },
+    created() {
+      console.log(this.data);
+    },
+  };
+</script>
+<style lang="scss" scoped>
+  swiper-slide {
+    width: 33.3vw;
+  }
+  .bgShadow {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+  }
+  .playIcon {
+    top: 99px;
+  }
+</style>

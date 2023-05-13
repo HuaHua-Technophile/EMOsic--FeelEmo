@@ -9,7 +9,7 @@ body {
   line-height: 100% !important;
 }
 @for $i from 2 through 6 {
-  .text-over-#{$i} {
+  .t-overflow-#{$i} {
     display: -webkit-box; /* 设置元素为伸缩盒模型(13-2-1) */
     -webkit-box-orient: vertical; /* 修改伸缩盒模型的主轴方向为竖直 */
     -webkit-line-clamp: $i; /* 控制伸缩盒在第几行显示省略号 */

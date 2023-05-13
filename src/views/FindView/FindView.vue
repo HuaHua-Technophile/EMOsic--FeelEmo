@@ -25,8 +25,7 @@
     <div class="find-main" :class="Theme">
       <!-- 发现页轮播图 -->
       <swiper-container
-        v-if="bannerSwiperList != []"
-        id="bannerSwiper"
+        class="bannerSwiper"
         ref="bannerSwiper"
         speed="700"
         loop="true"
@@ -43,8 +42,7 @@
       </swiper-container>
       <!-- 发现页滚动入口图标 -->
       <swiper-container
-        v-if="ballList != []"
-        id="ballSwiper"
+        calss="ballSwiper"
         ref="ballSwiper"
         slides-per-view="5"
         free-mode="true"
@@ -63,63 +61,14 @@
         </swiper-slide>
       </swiper-container>
       <!-- 发现页推荐歌单 -->
-      <div class="d-flex justify-content-between align-items-center ps-3 pe-3">
-        <div class="fs-5">推荐歌单<i class="bi bi-chevron-right fs-6"></i></div>
-        <div class="fs-3"><i class="bi bi-three-dots-vertical"></i></div>
-      </div>
-      <swiper-container
-        v-if="rePlayList != []"
-        id="rePlay"
-        slides-per-view="auto"
-        space-between="10"
-        class="fs-7 ps-3 pe-3">
-        <swiper-slide>
-          <div class="w-100 pb-100 position-relative">
-            <div class="position-absolute top-0 end-0 bottom-0 start-0">
-              <!-- 竖向轮播图需要html和body的position-ralative -->
-              <swiper-container
-                v-if="rePlayListFirst != {}"
-                id="verSwiper"
-                ref="verSwiper"
-                init="false"
-                class="w-100 h-100">
-                <swiper-slide
-                  v-for="(item, index) in rePlayListFirst.resources"
-                  :key="index"
-                  class="w-100">
-                  <img
-                    :src="item.uiElement.image.imageUrl"
-                    class="w-100 rounded-3" />
-                </swiper-slide>
-              </swiper-container>
-            </div>
-          </div>
-          <div class="text-over-2">{{ rePlayListFirstText }}</div>
-        </swiper-slide>
-        <swiper-slide v-for="(item, index) in rePlayList" :key="index">
-          <div class="w-100">
-            <div class="position-relative t-shadow-4 text-white">
-              <div class="position-absolute top-0 end-0 mt-1 me-2">
-                <i class="bi bi-play-fill"></i
-                >{{ item.resources[0].resourceExtInfo.playCount | ConUnit }}
-              </div>
-              <img
-                :src="item.uiElement.image.imageUrl"
-                class="w-100 rounded-3" />
-              <i
-                class="bi bi-play-fill fs-1 position-absolute bottom-0 end-0 me-1"></i>
-            </div>
-            <div class="text-over-2">
-              {{ item.uiElement.mainTitle.title }}
-            </div>
-          </div>
-        </swiper-slide>
-      </swiper-container>
+      <play-list v-if="songList1" :data="songList1"></play-list>
+      <play-list v-if="songList2" :data="songList2"></play-list>
     </div>
   </div>
 </template>
 <script>
-  import { getSearchHot, getFind, getBall } from "../api/findData.js";
+  import { getSearchHot, getFind, getBall } from "../../api/findData.js";
+  import playList from "./component/playList.vue";
   export default {
     props: ["Theme"],
     data() {
@@ -128,14 +77,21 @@
         searchHot: {},
         searchHotList: [],
         bannerSwiperList: [],
-        ballList: [],
-        rePlayListFirst: {},
-        rePlayListFirstText: "",
-        rePlayList: [],
+        ballList: [], //推荐入口图标
+        // songList是方形轮播图
+        songList1: null,
+        songList2: null,
+        //playList是横板轮播图
+        playList1: null,
+        playList2: null,
       };
     },
-    //组件方法
+    computed: {},
+    //组件内方法
     methods: {},
+    components: {
+      playList: playList,
+    },
     // 生命周期函数获取数据
     created() {
       //获取搜索框热搜推广词
@@ -143,7 +99,7 @@
         this.searchHotList = res.result.hots;
         this.searchHot = res.result.hots[0];
       });
-      //获取发现页数据,包含:轮播图 , 推荐歌单
+      //获取发现页数据,包含:轮播图,推荐歌单
       getFind().then((res) => {
         //轮播图数据写入,轮播图组件初始化前注入自定义样式,然后初始化轮播图
         this.bannerSwiperList = res.data.blocks[0].extInfo.banners;
@@ -151,21 +107,22 @@
         Object.assign(this.$refs.bannerSwiper, {
           injectStyles: [
             `.swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic{
-              --swiper-pagination-color:white;
-              --swiper-pagination-bullet-inactive-color:pink;
-              --swiper-pagination-bullet-inactive-opacity:0.5;
-              left:17px;
-              bottom:20px;
-              transform:none;}`,
+                --swiper-pagination-color:white;
+                --swiper-pagination-bullet-inactive-color:pink;
+                --swiper-pagination-bullet-inactive-opacity:0.5;
+                left:17px;
+                bottom:20px;
+                transform:none;}`,
           ],
         });
         this.$refs.bannerSwiper.initialize();
-
-        //推荐歌单数据写入
-        this.rePlayListFirst = res.data.blocks[1].creatives.shift();
-        this.rePlayListFirstText =
-          this.rePlayListFirst.resources[0].uiElement.mainTitle.title;
-        this.rePlayList = res.data.blocks[1].creatives;
+        //方形轮播图1数据写入
+        this.songList1 = res.data.blocks[1];
+        this.songList2 = res.data.blocks[4];
+        // 横板推荐列表数据写入
+        this.playList1 = res.data.blocks[2];
+        this.playList2 = res.data.blocks[5];
+        // 排行榜数据写入
       });
       //获取发现页圆形图标入口列表
       getBall().then((res) => {
@@ -174,20 +131,20 @@
         Object.assign(this.$refs.ballSwiper, {
           injectStyles: [
             `.swiper-pagination-progressbar.swiper-pagination-horizontal{
-              --swiper-pagination-color:#ff4646;
-            width:30px;
-            left:50%;
-            top:95%;
-            border-radius:999px;
-            overflow:hidden;
-            transform:translateX(-50%);
-          }`,
+                --swiper-pagination-color:#ff4646;
+              width:30px;
+              left:50%;
+              top:95%;
+              border-radius:999px;
+              overflow:hidden;
+              transform:translateX(-50%);
+            }`,
           ],
         });
         this.$refs.ballSwiper.initialize();
       });
     },
-    //挂载后设置定时器
+    //挂载后设置定时器,嵌套轮播图的初始化注入特效
     mounted() {
       //定时修改发现页面输入框的推荐文本
       this.timeIdList.push(
@@ -201,30 +158,6 @@
                 ]);
         }, 8000)
       );
-      //推荐歌单第一个竖向轮播图的注入属性及样式
-      Object.assign(this.$refs.verSwiper, {
-        direction: "vertical",
-        loop: true,
-        /* autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
-        }, */
-        effect: "creative",
-        creativeEffect: {
-          prev: {
-            translate: [0, "-120%", -500],
-          },
-          next: {
-            translate: [0, "120%", -500],
-          },
-        },
-        injectStyles: [
-          `swiper-slide>img{
-            height:calc( 100% + 1px ) !important;
-          }`,
-        ],
-      });
-      this.$refs.verSwiper.initialize(); //初始化轮播图,但无法触发自动播放
     },
     //组件销毁前清除定时器
     beforeDestroy() {
@@ -276,11 +209,6 @@
     > img {
       filter: drop-shadow(500px 0px #ff4646);
       //再使用filter阴影填充,移回原本的位置
-    }
-  }
-  #rePlay {
-    > swiper-slide {
-      width: 33.3vw;
     }
   }
 </style>
