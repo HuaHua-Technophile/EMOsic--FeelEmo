@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url("iconfont.ttf?t=1683994043225") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-guanzhu:before {
+  content: "\e6cf";
+}
+
+.icon-netease-cloud-music-line:before {
+  content: "\e76a";
+}
+
+.icon-taolunqu:before {
+  content: "\e8b9";
+}
+
+.icon-netease:before {
+  content: "\e68a";
+}
+
+.icon-KHCFDC_guanzhu:before {
+  content: "\e667";
+}

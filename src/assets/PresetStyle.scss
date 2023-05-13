@@ -8,12 +8,14 @@ body {
 .lh-100 {
   line-height: 100% !important;
 }
+[class^="t-overflow"] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 @for $i from 2 through 6 {
   .t-overflow-#{$i} {
-    display: -webkit-box; /* 设置元素为伸缩盒模型(13-2-1) */
-    -webkit-box-orient: vertical; /* 修改伸缩盒模型的主轴方向为竖直 */
-    -webkit-line-clamp: $i; /* 控制伸缩盒在第几行显示省略号 */
-    overflow: hidden; /* 修剪溢出内容 */
+    -webkit-line-clamp: $i;
   }
 }
 .fs-7 {
@@ -41,4 +43,9 @@ body {
 }
 .cardHr.dark {
   border-bottom: 1px solid #24242c;
+}
+@for $i from 3 through 15 {
+  .transition-#{$i} {
+    transition: all unquote("#{$i/10}s");
+  }
 }

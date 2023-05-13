@@ -3,6 +3,8 @@ import "./assets/customBootStrap.scss"; //最先导入bootstrap样式,以便于�
 import "bootstrap/dist/js/bootstrap.bundle.js";
 //----bootstrap icon字体图标库------
 import "bootstrap-icons/font/bootstrap-icons.css"; //最先导入bootstrap icon字体图标
+//----Swiper9.3.1------------------
+import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
 //----vue,路由---------------------
 import Vue from "vue";
 import App from "./App.vue";
@@ -18,9 +20,11 @@ Vue.component("font-awesome-icon", FontAwesomeIcon); //注册全局font框架组
 import { faBars, faAngleRight } from "@fortawesome/free-solid-svg-icons"; //默认样式:填充
 import {} from "@fortawesome/free-regular-svg-icons"; //免费样式:非填充
 library.add(faBars, faAngleRight); //核心按需使用图标(分字重)
-//----Swiper9.3.1------------------
-import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
 register(); // 注册Swiper自定义元素
+//----自定义图标库-------------------
+import "./assets/font_navbar/iconfont.css";
+//----Vant2组件导入
+
 //----自定义预设样式-----------------
 import "./assets/PresetStyle.scss";
 

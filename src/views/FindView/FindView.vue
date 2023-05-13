@@ -1,7 +1,9 @@
 <template>
   <div id="find-view" class="w-100 h-100">
     <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
-      <div class="d-flex justify-content-center align-items-center">
+      <div
+        class="d-flex justify-content-center align-items-center"
+        @click="changeTheme()">
         <font-awesome-icon :icon="['fas', 'bars']" size="xl" />
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
@@ -97,21 +99,46 @@
         songList2: null,
       };
     },
-    // 局部组件
+    //方法
+    methods: {
+      changeTheme() {
+        this.$emit("changeTheme");
+      },
+    },
+    //局部组件
     components: {
       playList,
       songList,
       topList,
     },
-    // 生命周期函数获取数据
-    created() {
+    //生命周期函数获取数据
+    async created() {
       //获取搜索框热搜推广词
-      getSearchHot().then((res) => {
+      await getSearchHot().then((res) => {
         this.searchHotList = res.result.hots;
         this.searchHot = res.result.hots[0];
       });
+      //获取发现页圆形图标入口列表
+      await getBall().then((res) => {
+        this.ballList = res.data;
+        // ballSwiper element注入自定义样式
+        Object.assign(this.$refs.ballSwiper, {
+          injectStyles: [
+            `.swiper-pagination-progressbar.swiper-pagination-horizontal{
+                --swiper-pagination-color:#ff4646;
+              width:30px;
+              left:50%;
+              top:95%;
+              border-radius:999px;
+              overflow:hidden;
+              transform:translateX(-50%);
+            }`,
+          ],
+        });
+        this.$refs.ballSwiper.initialize();
+      });
       //获取发现页数据,包含:轮播图,推荐歌单
-      getFind().then((res) => {
+      await getFind().then((res) => {
         //轮播图数据写入,轮播图组件初始化前注入自定义样式,然后初始化轮播图
         this.bannerSwiperList = res.data.blocks[0].extInfo.banners;
         // bannerSwiper element注入自定义样式
@@ -135,25 +162,6 @@
         // 横板推荐列表数据写入
         this.songList1 = res.data.blocks[2];
         this.songList2 = res.data.blocks[5];
-      });
-      //获取发现页圆形图标入口列表
-      getBall().then((res) => {
-        this.ballList = res.data;
-        // ballSwiper element注入自定义样式
-        Object.assign(this.$refs.ballSwiper, {
-          injectStyles: [
-            `.swiper-pagination-progressbar.swiper-pagination-horizontal{
-                --swiper-pagination-color:#ff4646;
-              width:30px;
-              left:50%;
-              top:95%;
-              border-radius:999px;
-              overflow:hidden;
-              transform:translateX(-50%);
-            }`,
-          ],
-        });
-        this.$refs.ballSwiper.initialize();
       });
     },
     //挂载后设置定时器,嵌套轮播图的初始化注入特效
