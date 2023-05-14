@@ -27,34 +27,55 @@
     :Theme="Theme"
     :OccupyBgImg="coverImgUrl"
     :height="OccupyHeight"
-    class="reFresh overflow-x-hidden overflow-y-scroll">
+    :themeColor="themeColor"
+    class="reFresh overflow-x-hidden overflow-y-scroll bg-body">
     <div>
-      <div class="position-fixed top-0 w-100 p-3 bg-danger opacity-50"></div>
-      <div class="w-100 bg-info" style="height: 150vh"></div>
+      <list-title
+        v-if="themeColor != []"
+        :themeColor="LightenDarkenColor(themeColor, -20)"></list-title>
+      <div
+        class="w-100"
+        style="height: 150vh"
+        :style="`--bs-body-bg-rgb:${themeColor}`"></div>
     </div>
   </re-fresh>
 </template>
 <script>
   import { getPlayListDetail } from "../../api/getData.js";
+  import ColorThief from "colorthief"; //自动计算颜色组件
   export default {
     props: ["Theme"],
     data() {
       return {
         coverImgUrl: "",
         OccupyHeight: window.screen.height / 4,
+        themeColor: [],
       };
     },
-    methods: {},
+    methods: {
+      // 颜色混入
+      LightenDarkenColor(RGB, v) {
+        return RGB.map((i) => (i + v > 255 ? 255 : i + v < 0 ? 0 : i + v));
+      },
+    },
+    // 生命周期
     async created() {
       //获取歌单详情页数据
       await getPlayListDetail(this.$route.query.id).then((res) => {
         this.coverImgUrl = res.playlist.coverImgUrl;
+        let colorThief = new ColorThief();
+        let img = new Image();
+        img.crossOrigin = "Anonymous"; //允许对未经过验证的图像进行跨源下载
+        img.src = this.coverImgUrl;
+        img.onload = () => {
+          this.themeColor = colorThief.getColor(img);
+        };
       });
     },
   };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .reFresh {
-    height: calc(100vh - 52px);
+    height: calc(100vh - var(--b-nav-h));
   }
 </style>

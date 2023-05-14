@@ -1,27 +1,30 @@
 <template>
-  <div ref="father" @touchend="scrollOccupy()" @touchmove="bgScale($event)">
+  <div
+    ref="father"
+    @touchend="scrollOccupy()"
+    @touchmove="bgScale($event)"
+    :style="`--bs-body-bg-rgb:${themeColor}`">
     <!-- 背景遮罩层 -->
     <img
       v-if="OccupyBgImg"
       ref="OccupyBgImg"
       :src="OccupyBgImg"
-      class="OccupyBgImg position-absolute w-100 object-fit-cover z-n1"
+      class="OccupyBgImg position-absolute w-100 object-fit-cover z-2"
       :style="[
         { height: `${height}px` },
         { transform: `scale(${OccupyBgImgScale})` },
       ]" />
     <div class="position-relative z-3">
       <!-- 下拉占位元素,对占位元素做监听 -->
-      <div ref="Occupy" class="Occupy" :style="{ height: `${height}px` }"></div>
+      <div ref="Occupy" :style="{ height: `${height}px` }"></div>
       <slot></slot>
     </div>
   </div>
 </template>
 <script>
   import throttle from "lodash/throttle.js"; //lodash的节流,按需引入
-  import ColorThief from "colorthief"; //自动计算颜色组件
   export default {
-    props: ["OccupyBgImg", "height"],
+    props: ["OccupyBgImg", "height", "themeColor"],
     data() {
       return {
         timeIdList: [],
@@ -36,7 +39,7 @@
             1 + 0.5 * (1 - this.$refs.father.scrollTop / this.height);
         }
       }, 100),
-      // 隐藏占位移至顶部,恢复图片尺寸
+      // 隐藏占位移至顶部,并且恢复图片尺寸
       scrollOccupy() {
         if (this.$refs.father.scrollTop < this.height) {
           this.$refs.father.scrollTo({
@@ -49,26 +52,6 @@
             this.OccupyBgImgScale = 1;
           }, 100)
         );
-      },
-    },
-    //监听器
-    watch: {
-      // 监听传入的头部背景图片地址,计算主题色
-      OccupyBgImg(newval) {
-        if (newval != "") {
-          let colorThief = new ColorThief();
-          let img = new Image();
-          img.crossOrigin = "Anonymous"; //允许对未经过验证的图像进行跨源下载
-          img.src = newval;
-          this.timeIdList.push(
-            setTimeout(() => {
-              this.$refs.father.setAttribute(
-                "style",
-                `--bs-body-bg:rgb(${colorThief.getColor(img)});`
-              );
-            }, 300) //加定时器才不报错
-          );
-        }
       },
     },
     // 挂载后
@@ -87,11 +70,8 @@
     },
   };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .OccupyBgImg {
-    transition: all 0.15s;
-  }
-  .Occupy {
-    background: linear-gradient(90deg, pink, transparent);
+    transition: all 0.2s;
   }
 </style>
