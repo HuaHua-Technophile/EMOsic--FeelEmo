@@ -26,7 +26,9 @@
             class="playIcon bi bi-play-fill position-absolute end-0 fs-1 me-1 t-shadow-2 text-light"></i>
           <!-- 背景图 -->
           <img :src="item.uiElement.image.imageUrl" class="w-100 rounded-3" />
-          <span class="t-overflow-2">{{ item.uiElement.mainTitle.title }}</span>
+          <span class="van-multi-ellipsis--l2">{{
+            item.uiElement.mainTitle.title
+          }}</span>
         </div>
         <!-- 三个切换的slide -->
         <slide v-if="item.resources.length === 3" :item="item"></slide>

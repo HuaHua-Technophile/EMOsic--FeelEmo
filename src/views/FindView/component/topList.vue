@@ -21,7 +21,7 @@
             <img :src="j.uiElement.image.imageUrl" class="topImg rounded" />
             <span class="Rank ms-2 me-2 fw-bolder">{{ indexs + 1 }}</span>
             <div>
-              <span class="t-overflow-2">{{
+              <span class="van-multi-ellipsis--l2">{{
                 j.uiElement.mainTitle.title
               }}</span>
               <!-- 歌手信息 -->

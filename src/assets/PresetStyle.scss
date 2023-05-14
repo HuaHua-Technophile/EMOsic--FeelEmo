@@ -8,16 +8,16 @@ body {
 .lh-100 {
   line-height: 100% !important;
 }
-[class^="t-overflow"] {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-@for $i from 2 through 6 {
-  .t-overflow-#{$i} {
-    -webkit-line-clamp: $i;
-  }
-}
+// [class^="t-overflow"] {
+//   display: -webkit-box;
+//   -webkit-box-orient: vertical;
+//   overflow: hidden;
+// }
+// @for $i from 2 through 6 {
+//   .t-overflow-#{$i} {
+//     -webkit-line-clamp: $i;
+//   }
+// }
 .fs-7 {
   font-size: 0.9rem !important;
 }

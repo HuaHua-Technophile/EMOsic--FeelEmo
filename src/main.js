@@ -24,7 +24,7 @@ register(); // 注册Swiper自定义元素
 //----自定义图标库-------------------
 import "./assets/font_navbar/iconfont.css";
 //----Vant2组件导入
-
+import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
 //----自定义预设样式-----------------
 import "./assets/PresetStyle.scss";
 

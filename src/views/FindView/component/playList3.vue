@@ -18,7 +18,7 @@
     <!-- 右上角图标 -->
     <i
       class="bi bi-infinity position-absolute end-0 fs-2 me-2 t-shadow-3 text-light"></i>
-    <span class="t-overflow-2">{{
+    <span class="van-multi-ellipsis--l2">{{
       item.resources[index].uiElement.mainTitle.title
     }}</span>
   </div>
