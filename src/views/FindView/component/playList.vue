@@ -1,5 +1,5 @@
 <template>
-  <div class="cardHr pb-3" :class="Theme">
+  <div class="cardHr pb-3 pt-3" :class="Theme">
     <!-- title信息栏 -->
     <card-title :data="data.uiElement" :Theme="Theme"></card-title>
     <!-- 轮播图 -->
@@ -11,21 +11,25 @@
       <swiper-slide
         v-for="(item, index) in data.creatives"
         :key="index"
-        @click="toPlayListDetail(item.creativeId)">
+        @click="toPlayListDetail(item.creativeId)"
+        class="pt-3">
         <!-- 单个不切换的slide -->
         <div v-if="item.resources.length === 1" class="position-relative">
-          <!-- 顶部播放量/阴影遮罩 -->
-          <div
-            class="bgShadow position-absolute w-100 Clearfix t-shadow-2 rounded-top-3">
-            <div class="float-end me-2 mt-1 mb-3 fw-bold fs-8 text-light">
+          <!-- 背景图卡片 -->
+          <square-card :size="'100%'">
+            <template #playCount>
               <i class="bi bi-play-fill"></i
-              >{{ item.resources[0].resourceExtInfo.playCount | ConUnit }}
-            </div>
-          </div>
-          <i
-            class="playIcon bi bi-play-fill position-absolute end-0 fs-1 me-1 t-shadow-2 text-light"></i>
-          <!-- 背景图 -->
-          <img :src="item.uiElement.image.imageUrl" class="w-100 rounded-3" />
+              ><span>{{
+                item.resources[0].resourceExtInfo.playCount | ConUnit
+              }}</span>
+            </template>
+            <template #img>
+              <img :src="item.uiElement.image.imageUrl" />
+            </template>
+            <template #playIcon>
+              <i class="bi bi-play-fill fs-1"></i>
+            </template>
+          </square-card>
           <span class="van-multi-ellipsis--l2">{{
             item.uiElement.mainTitle.title
           }}</span>
@@ -56,8 +60,5 @@
   }
   .bgShadow {
     background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
-  }
-  .playIcon {
-    top: 99px;
   }
 </style>

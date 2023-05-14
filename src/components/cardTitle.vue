@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="cardTitle d-flex justify-content-between align-items-center ps-3 pe-3">
+  <div class="d-flex justify-content-between align-items-center ps-3 pe-3">
     <div v-if="data.subTitle" class="fs-5 fw-bold">
       <i
         v-if="data.subTitle.canShowTitleLogo"
@@ -31,10 +30,6 @@
   };
 </script>
 <style lang="scss" scoped>
-  .cardTitle {
-    margin-top: 11px;
-    margin-bottom: 11px;
-  }
   .loop {
     top: 3px;
   }

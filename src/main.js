@@ -15,7 +15,8 @@ import cardTitle from "./components/cardTitle.vue";
 Vue.component("card-title", cardTitle);
 import reFresh from "./components/reFresh.vue";
 Vue.component("re-fresh", reFresh);
-
+import squareCard from "./components/squareCard.vue";
+Vue.component("square-card", squareCard);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
