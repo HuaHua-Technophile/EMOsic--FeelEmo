@@ -49,3 +49,6 @@ body {
     transition: all unquote("#{$i/10}s");
   }
 }
+:root {
+  --b-nav-h: 52px;
+}

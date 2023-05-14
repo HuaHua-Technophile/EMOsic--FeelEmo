@@ -221,6 +221,9 @@
     &.dark {
       background: linear-gradient(#291d25, #00000000 20%);
     }
+    > *:last-child {
+      padding-bottom: var(--b-nav-h) !important;
+    }
   }
   .changeColor {
     color: #ff4646;

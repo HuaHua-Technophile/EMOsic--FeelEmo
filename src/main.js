@@ -13,6 +13,9 @@ import store from "./store";
 //----vue全局组件-------------------
 import cardTitle from "./components/cardTitle.vue";
 Vue.component("card-title", cardTitle);
+import reFresh from "./components/reFresh.vue";
+Vue.component("re-fresh", reFresh);
+
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
@@ -25,6 +28,11 @@ register(); // 注册Swiper自定义元素
 import "./assets/font_navbar/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
+import { PullRefresh } from "vant";
+Vue.use(PullRefresh); //下拉刷新
+/* //----Lodash引入-------------------
+import lodash from "lodash";
+Vue.prototype._ = lodash; */
 //----自定义预设样式-----------------
 import "./assets/PresetStyle.scss";
 
