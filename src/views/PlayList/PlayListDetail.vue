@@ -37,7 +37,12 @@
       <div
         class="w-100"
         style="height: 150vh"
-        :style="`--bs-body-bg-rgb:${themeColor}`"></div>
+        :style="`--bs-body-bg-rgb:${themeColor}`">
+        <play-list-header
+          ref="playListHeader"
+          :themeColor="LightenDarkenColor(themeColor, -15)"
+          :data="playlist"></play-list-header>
+      </div>
     </div>
   </re-fresh>
 </template>
@@ -49,7 +54,8 @@
     data() {
       return {
         coverImgUrl: "",
-        OccupyHeight: window.screen.height / 4,
+        playlist: {},
+        OccupyHeight: 266,
         themeColor: [],
       };
     },
@@ -64,6 +70,7 @@
       //获取歌单详情页数据
       await getPlayListDetail(this.$route.query.id).then((res) => {
         this.coverImgUrl = res.playlist.coverImgUrl;
+        this.playlist = res.playlist;
         let colorThief = new ColorThief();
         let img = new Image();
         img.crossOrigin = "Anonymous"; //允许对未经过验证的图像进行跨源下载
@@ -72,6 +79,8 @@
           this.themeColor = colorThief.getColor(img);
         };
       });
+      this.OccupyHeight =
+        document.querySelector(".playListHeader").offsetHeight;
     },
   };
 </script>
