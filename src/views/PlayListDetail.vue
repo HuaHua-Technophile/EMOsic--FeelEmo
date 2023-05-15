@@ -1,68 +1,124 @@
 <template>
-  <!-- <div>
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh()">
-      下拉提示，通过 scale 实现一个缩放效果
-      <template #pulling="">
-        <img
-          src="https://img01.yzcdn.cn/vant/doge.png"
-          :style="{ transform: `scale(${props.distance / 80})` }" />
-        <div></div>
-      </template>
-      释放提示
-      <template #loosing>
-        <img src="https://img01.yzcdn.cn/vant/doge.png" />
-        <div></div>
-      </template>
-      加载提示
-      <template #loading>
-        <img src="https://img01.yzcdn.cn/vant/doge.png" />
-        <div></div>
-      </template>
-      <div
-        class="w-100"
-        style="background: linear-gradient(pink, blue); height: 200vh"></div>
-    </van-pull-refresh>
-  </div> -->
   <re-fresh
-    :Theme="Theme"
     :OccupyBgImg="coverImgUrl"
     :height="OccupyHeight"
     :themeColor="themeColor"
-    class="reFresh overflow-x-hidden overflow-y-scroll bg-body">
-    <div>
+    class="bg-body">
+    <div class="noScrollBar w-100">
+      <!-- 顶部搜索框，fixed定位。适用于官方雷达歌单、推荐歌单、专辑页 -->
       <list-search
         v-if="themeColor != []"
         :themeColor="LightenDarkenColor(themeColor, 30)"
         :title="'歌单'"></list-search>
-      <div
-        class="w-100"
-        style="height: 150vh"
-        :style="`--bs-body-bg-rgb:${themeColor}`">
-        <play-list-header
-          ref="playListHeader"
-          :themeColor="LightenDarkenColor(themeColor, -15)"
-          :data="playlist"></play-list-header>
+      <!-- 头部信息栏，展示歌单信息、专辑信息 -->
+      <play-list-header :data="playlist"></play-list-header>
+      <!-- 列表头部。适用于歌单列表，声音列表 -->
+      <play-all-title
+        :listLength="playlist.trackCount"
+        class="text-light bg-body"></play-all-title>
+      <!-- 列表主体-歌曲（可选择列表主体-声音），懒加载 -->
+      <div class="ps-2 pe-3 bg-body">
+        <div
+          v-for="(item, index) in songList"
+          :key="index"
+          class="d-flex align-items-center text-light pb-3">
+          <!-- 歌曲Item左侧信息：序列、歌名、标签、歌手、专辑 -->
+          <div class="flex-grow-1 d-flex align-items-center overflow-hidden">
+            <!-- 序号 -->
+            <span class="songItemIndex opacity-50 text-center flex-shrink-0">{{
+              index + 1
+            }}</span>
+            <!-- 具体信息 -->
+            <div class="flex-grow-1">
+              <!-- 歌曲名 -->
+              <div>
+                {{ item.name }}
+                <span v-if="item.tns" class="opacity-50">{{ item.tns }}</span>
+              </div>
+              <!-- 作者及音频码率标签 -->
+              <div class="d-flex align-items-center">
+                <span
+                  v-if="item.fee == 1 || item.fee == 4"
+                  class="InfoTag text-warning border border-warning d-flex align-items-center"
+                  >VIP</span
+                >
+                <span
+                  v-if="item.hr"
+                  class="InfoTag text-danger border border-danger d-flex align-items-center"
+                  >Hi·Res</span
+                >
+                <span
+                  v-else-if="item.sq"
+                  class="InfoTag text-danger border border-danger d-flex align-items-center"
+                  >SQ</span
+                >
+                <!-- 歌手信息 -->
+                <div class="fs-8 opacity-50 text-nowrap">
+                  <span v-for="(j, indexs) in item.ar" :key="indexs"
+                    ><span>{{ j.name }}</span
+                    ><span v-if="indexs != item.ar.length - 1">/</span></span
+                  >
+                </div>
+                <!-- 专辑信息 -->
+                <div v-if="item.al" class="fs-8 opacity-50 text-nowrap">
+                  <span class="ms-1 me-1">-</span>{{ item.al.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 歌曲Item右侧信息：是否有mv，更多标签 -->
+          <div class="flex-shrink-0 opacity-50">
+            <div class="d-flex align-items-center">
+              <i v-if="item.mv != 0" class="bi bi-play-btn fs-5 me-4"></i>
+              <i class="bi bi-three-dots-vertical fs-4"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 懒加载判定模块 -->
+      <div v-if="!loadOver" ref="lazyLoad" class="text-center opacity-50">
+        加载中
       </div>
     </div>
   </re-fresh>
 </template>
 <script>
-  import { getPlayListDetail } from "../api/getData.js";
+  import { getPlayListDetail, getPlayListTrackAll } from "../api/getData.js";
   import ColorThief from "colorthief"; //自动计算颜色组件
+  import playAllTitle from "../components/son/playAllTitle.vue";
   export default {
     props: ["Theme"],
     data() {
       return {
         coverImgUrl: "",
         playlist: {},
+        songList: [],
         OccupyHeight: 266,
         themeColor: [],
+        loadOver: false,
+        io: new IntersectionObserver(async () => {
+          if (
+            !this.playlist.trackCount ||
+            this.songList.length < this.playlist.trackCount
+          ) {
+            await getPlayListTrackAll(
+              this.$route.query.id,
+              15,
+              this.songList.length
+            ).then((res) => {
+              this.songList.push(...res.songs);
+            });
+          } else this.loadOver = true;
+        }),
       };
     },
     methods: {
       // 颜色混入
       LightenDarkenColor(RGB, v) {
         return RGB.map((i) => (i + v > 255 ? 255 : i + v < 0 ? 0 : i + v));
+      },
+      scroll() {
+        console.log("滚动了");
       },
     },
     // 生命周期
@@ -79,13 +135,28 @@
           this.themeColor = colorThief.getColor(img);
         };
       });
-      this.OccupyHeight =
-        document.querySelector(".playListHeader").offsetHeight;
+    },
+    mounted() {
+      this.io.observe(this.$refs.lazyLoad);
+    },
+    beforeDestroy() {
+      // 销毁前清除观察器
+      this.io.unobserve(this.$refs.lazyLoad);
+    },
+    components: {
+      playAllTitle,
     },
   };
 </script>
 <style lang="scss">
-  .reFresh {
-    height: calc(100vh - var(--b-nav-h));
+  .InfoTag {
+    height: 12px;
+    font-size: 8px;
+    padding: 0px 2px;
+    margin: 3px;
+    border-radius: 2px;
+  }
+  .songItemIndex {
+    width: 36px;
   }
 </style>

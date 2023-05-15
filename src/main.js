@@ -44,8 +44,8 @@ register(); // 注册Swiper自定义元素
 import "./assets/font_navbar/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
-import { PullRefresh } from "vant";
-Vue.use(PullRefresh); //下拉刷新
+import { Lazyload } from "vant"; //懒加载
+Vue.use(Lazyload, { lazyComponent: true }); // 注册时可以配置额外的选项
 /* //----Lodash引入-------------------
 import lodash from "lodash";
 Vue.prototype._ = lodash; */

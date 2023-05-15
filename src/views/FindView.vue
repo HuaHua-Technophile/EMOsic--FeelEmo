@@ -1,5 +1,5 @@
 <template>
-  <div id="find-view" class="w-100 h-100">
+  <div id="find-view" class="w-100 h-100 noScrollBar">
     <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
       <div
         class="d-flex justify-content-center align-items-center"
@@ -199,9 +199,6 @@
   };
 </script>
 <style lang="scss" scoped>
-  #find-view::-webkit-scrollbar {
-    display: none;
-  }
   #find-view {
     overflow-y: scroll;
     overflow-x: hidden;

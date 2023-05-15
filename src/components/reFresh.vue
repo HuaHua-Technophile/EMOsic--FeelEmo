@@ -2,19 +2,21 @@
   <div
     ref="father"
     @touchend="scrollOccupy()"
-    @touchmove="bgScale($event)"
+    @scroll="bgScale($event)"
+    class="reFresh noScrollBar w-100 overflow-x-hidden overflow-y-scroll"
+    style="max-width: 100vw"
     :style="`--bs-body-bg-rgb:${themeColor}`">
     <!-- 背景遮罩层 -->
-    <img
+    <div
       v-if="OccupyBgImg"
-      ref="OccupyBgImg"
-      :src="`${OccupyBgImg}?param=x415y336`"
-      class="OccupyBgImg position-absolute w-100 object-fit-cover z-2"
-      :style="[
-        { height: `${height}px` },
-        { transform: `scale(${OccupyBgImgScale})` },
-      ]" />
-    <div class="position-relative z-3">
+      class="w-100 overflow-hidden position-absolute z-1"
+      :style="[{ height: `${height - 1}px` }]">
+      <img
+        ref="OccupyBgImg"
+        :src="`${OccupyBgImg}?param=x415y336`"
+        class="w-100" />
+    </div>
+    <div class="position-relative z-3 noScrollBar w-100">
       <!-- 下拉占位元素,对占位元素做监听 -->
       <div ref="Occupy" :style="{ height: `${height}px` }"></div>
       <slot></slot>
@@ -28,40 +30,40 @@
     data() {
       return {
         timeIdList: [],
-        OccupyBgImgScale: 1,
       };
     },
     methods: {
       // 背景图跟随拖动缩放
       bgScale: throttle(function () {
         if (this.$refs.father.scrollTop < this.height) {
-          this.OccupyBgImgScale =
-            1 + 0.5 * (1 - this.$refs.father.scrollTop / this.height);
+          this.$refs.OccupyBgImg.style.transform = `scale(${
+            1 + 0.5 * (1 - this.$refs.father.scrollTop / this.height)
+          })`;
         }
-      }, 100),
+      }, 30),
       // 隐藏占位移至顶部,并且恢复图片尺寸
       scrollOccupy() {
         if (this.$refs.father.scrollTop < this.height) {
           this.$refs.father.scrollTo({
-            top: this.height,
+            top: this.height + 1,
             behavior: "smooth",
           });
         }
         this.timeIdList.push(
           setTimeout(() => {
-            this.OccupyBgImgScale = 1;
+            this.$refs.OccupyBgImg.style.transform = `scale(1)`;
           }, 100)
         );
       },
     },
-    // 挂载后
     mounted() {
-      this.OccupyHeight = this.$refs.Occupy.offsetHeight;
-      //页面初始化后滚动到上方,隐藏占位元素
       this.timeIdList.push(
         setTimeout(() => {
-          this.$refs.father.scroll(0, this.OccupyHeight);
-        }, 100)
+          this.$refs.father.scrollTo({
+            top: this.height + 1,
+            behavior: "smooth",
+          });
+        }, 400)
       );
     },
     // 销毁前,清除定时器
@@ -71,7 +73,13 @@
   };
 </script>
 <style lang="scss">
-  .OccupyBgImg {
-    transition: all 0.2s;
+  .reFresh {
+    height: calc(100vh - var(--b-nav-h));
+    > img {
+      transition: all 0.2s;
+    }
+    > div > div:last-child {
+      min-height: calc(100vh - var(--b-nav-h));
+    }
   }
 </style>

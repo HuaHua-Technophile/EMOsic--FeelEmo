@@ -27,3 +27,9 @@ export function getPlayListDetail(id) {
     method: "get",
   });
 }
+export function getPlayListTrackAll(id, limit = 15, offset = 0) {
+  return request({
+    url: `/playlist/track/all?id=${id}&limit=${limit}&offset=${offset}`,
+    method: "get",
+  });
+}

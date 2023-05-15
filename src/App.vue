@@ -1,11 +1,12 @@
 <template>
-  <div class="w-100 vh-100 overflow-hidden">
+  <div class="w-100 vh-100 noScrollBar">
     <transition name="view">
       <router-view :Theme="Theme" @changeTheme="changeTheme"></router-view>
     </transition>
     <nav
       v-if="navBar"
-      class="pt-1 w-100 bg-body position-fixed z-3 bottom-0 nav justify-content-around">
+      class="pt-1 w-100 bg-body position-fixed nav justify-content-around"
+      style="bottom: -1px; z-index: 99">
       <router-link class="nav-link" to="/find">
         <span class="iconfont icon-netease-cloud-music-line"></span>
         <span>发现</span>

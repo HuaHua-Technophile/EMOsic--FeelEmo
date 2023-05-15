@@ -1,5 +1,5 @@
 <template>
-  <div class="playListHeader ps-3 pe-3 pb-3 blur text-light">
+  <div class="playListHeader w-100 ps-3 pe-3 pb-3 blur text-light">
     <!-- 歌单封面图片\歌单名称\作者\作者头像\歌单标签 -->
     <div class="d-flex w-100 mb-3">
       <!--歌单封面图片 -->
@@ -88,7 +88,7 @@
 </template>
 <script>
   export default {
-    props: ["themeColor", "data"],
+    props: ["data"],
   };
 </script>
 <style lang="scss">

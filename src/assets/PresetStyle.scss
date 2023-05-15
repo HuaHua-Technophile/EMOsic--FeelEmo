@@ -52,3 +52,9 @@ body {
 :root {
   --b-nav-h: 52px;
 }
+.noScrollBar {
+  overflow: hidden;
+}
+.noScrollBar::-webkit-scrollbar {
+  display: none !important;
+}
