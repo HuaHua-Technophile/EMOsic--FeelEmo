@@ -1,7 +1,9 @@
 <template>
   <div class="cardHr pb-3 pt-3" :class="Theme">
     <!-- title信息栏 -->
-    <card-title :data="data.uiElement" :Theme="Theme"></card-title>
+    <swiper-card-title
+      :data="data.uiElement"
+      :Theme="Theme"></swiper-card-title>
     <!-- 轮播图 -->
     <swiper-container
       v-if="data.creatives"
@@ -41,7 +43,7 @@
   </div>
 </template>
 <script>
-  import slide3 from "./squareSwiperFirstSlide.vue";
+  import slide3 from "./son/squareSwiperFirstSlide.vue";
   export default {
     props: ["data", "Theme"],
     methods: {

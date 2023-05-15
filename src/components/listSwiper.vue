@@ -1,7 +1,9 @@
 <template>
-  <div class="cardHr pb-3" :class="Theme">
+  <div class="cardHr" :class="Theme">
     <!-- title信息栏 -->
-    <card-title :data="data.uiElement" :Theme="Theme"></card-title>
+    <swiper-card-title
+      :data="data.uiElement"
+      :Theme="Theme"></swiper-card-title>
     <!-- 横板轮播图 -->
     <swiper-container slides-per-view="auto" class="ps-3">
       <swiper-slide v-for="(i, index) in data.creatives" :key="index">

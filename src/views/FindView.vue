@@ -75,9 +75,14 @@
       <list-swiper
         v-if="songList1"
         :data="songList1"
-        :Theme="Theme"></list-swiper>
+        :Theme="Theme"
+        class="pt-3 pb-3"></list-swiper>
       <!-- 发现页排行榜 -->
-      <top-swiper v-if="topList1" :data="topList1" :Theme="Theme"></top-swiper>
+      <top-swiper
+        v-if="topList1"
+        :data="topList1"
+        :Theme="Theme"
+        class="pt-3"></top-swiper>
       <!-- 发现页雷达歌单 -->
       <square-swiper
         v-if="playList2"
@@ -87,7 +92,8 @@
       <list-swiper
         v-if="songList2"
         :data="songList2"
-        :Theme="Theme"></list-swiper>
+        :Theme="Theme"
+        class="pt-3"></list-swiper>
     </div>
   </div>
 </template>

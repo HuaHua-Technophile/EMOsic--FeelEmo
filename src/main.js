@@ -10,21 +10,22 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/routerIndex";
 import store from "./store";
-//----vue全局组件-------------------
-import squareCard from "./components/squareCard.vue";
+//----vue全局2级组件-------------------
+import squareCard from "./components/son/squareCard.vue";
 Vue.component("square-card", squareCard);
-import cardTitle from "./components/cardTitle.vue";
-Vue.component("card-title", cardTitle);
+import swiperCardTitle from "./components/son/swiperCardTitle.vue";
+Vue.component("swiper-card-title", swiperCardTitle);
+import listSearch from "./components/son/listSearch.vue";
+Vue.component("list-search", listSearch);
+import playListHeader from "./components/son/playListHeader.vue";
+Vue.component("play-list-header", playListHeader);
+//----vue全局1级组件-------------------
 import squareSwiper from "./components/squareSwiper.vue";
 Vue.component("square-swiper", squareSwiper);
 import listSwiper from "./components/listSwiper.vue";
 Vue.component("list-swiper", listSwiper);
 import topSwiper from "./components/topSwiper.vue";
 Vue.component("top-swiper", topSwiper);
-import listSearch from "./components/listSearch.vue";
-Vue.component("list-search", listSearch);
-import playListHeader from "./components/playListHeader.vue";
-Vue.component("play-list-header", playListHeader);
 import reFresh from "./components/reFresh.vue";
 Vue.component("re-fresh", reFresh);
 //----FontAwesome字体图标库---------

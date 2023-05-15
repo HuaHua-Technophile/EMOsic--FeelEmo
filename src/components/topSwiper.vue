@@ -1,7 +1,9 @@
 <template>
   <div class="cardHr" :class="Theme">
     <!-- title信息栏 -->
-    <card-title :data="data.uiElement" :Theme="Theme"></card-title>
+    <swiper-card-title
+      :data="data.uiElement"
+      :Theme="Theme"></swiper-card-title>
     <!-- swiper轮播图 -->
     <swiper-container slides-per-view="auto" class="ps-3 pb-3 pt-1">
       <swiper-slide
@@ -12,7 +14,9 @@
           { 'bg-light shadow-sm': Theme == 'light' },
           { 'bg-body-tertiary': Theme == 'dark' },
         ]">
-        <card-title :data="i.uiElement" :Theme="Theme"></card-title>
+        <swiper-card-title
+          :data="i.uiElement"
+          :Theme="Theme"></swiper-card-title>
         <div
           v-for="(j, indexs) in i.resources"
           :key="indexs"
