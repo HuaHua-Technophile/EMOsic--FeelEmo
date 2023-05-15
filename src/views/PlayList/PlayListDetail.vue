@@ -30,9 +30,10 @@
     :themeColor="themeColor"
     class="reFresh overflow-x-hidden overflow-y-scroll bg-body">
     <div>
-      <list-title
+      <list-search
         v-if="themeColor != []"
-        :themeColor="LightenDarkenColor(themeColor, -20)"></list-title>
+        :themeColor="LightenDarkenColor(themeColor, 30)"
+        :title="'歌单'"></list-search>
       <div
         class="w-100"
         style="height: 150vh"

@@ -8,7 +8,7 @@
     <img
       v-if="OccupyBgImg"
       ref="OccupyBgImg"
-      :src="OccupyBgImg"
+      :src="`${OccupyBgImg}?param=x415y336`"
       class="OccupyBgImg position-absolute w-100 object-fit-cover z-2"
       :style="[
         { height: `${height}px` },

@@ -10,7 +10,9 @@
           :key="indexs"
           class="d-flex align-items-center"
           :class="{ 'mb-3': indexs != 2 }">
-          <img :src="j.uiElement.image.imageUrl" class="img rounded-3 me-3" />
+          <img
+            :src="`${j.uiElement.image.imageUrl}?param=x74y74`"
+            class="img rounded-3 me-3" />
           <div>
             <div class="mainTitle fw-bold">
               <span>{{ j.uiElement.mainTitle.title }}</span>

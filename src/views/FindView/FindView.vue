@@ -39,7 +39,11 @@
           v-for="(item, index) in bannerSwiperList"
           :key="index"
           class="p-3 pb-1">
-          <div><img :src="item.pic" class="w-100 h-100 rounded-4" /></div>
+          <div>
+            <img
+              :src="`${item.pic}?param=x382y152`"
+              class="w-100 h-100 rounded-4" />
+          </div>
         </swiper-slide>
       </swiper-container>
       <!-- 发现页滚动入口图标 -->
@@ -54,7 +58,7 @@
         <swiper-slide v-for="(item, index) in ballList" :key="index">
           <div class="text-center">
             <div class="w-100 changeColor">
-              <img :src="item.iconUrl" class="w-75" />
+              <img :src="`${item.iconUrl}?param=x137y137`" class="w-75" />
             </div>
             <div class="translate-middle-y" style="font-size: 13px">
               {{ item.name }}
