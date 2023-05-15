@@ -4,7 +4,7 @@
     :height="OccupyHeight"
     :themeColor="themeColor"
     class="bg-body">
-    <div class="noScrollBar w-100">
+    <div class="w-100">
       <!-- 顶部搜索框，fixed定位。适用于官方雷达歌单、推荐歌单、专辑页 -->
       <list-search
         v-if="themeColor != []"

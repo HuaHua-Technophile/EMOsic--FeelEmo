@@ -17,7 +17,9 @@
             class="img rounded-3 me-3" />
           <div>
             <div class="mainTitle fw-bold">
-              <span>{{ j.uiElement.mainTitle.title }}</span>
+              <span class="van-multi-ellipsis--l2">{{
+                j.uiElement.mainTitle.title
+              }}</span>
             </div>
             <div class="">
               <span

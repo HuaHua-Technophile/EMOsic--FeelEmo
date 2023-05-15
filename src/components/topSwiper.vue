@@ -16,7 +16,8 @@
         ]">
         <swiper-card-title
           :data="i.uiElement"
-          :Theme="Theme"></swiper-card-title>
+          :Theme="Theme"
+          class="mt-2 mb-2"></swiper-card-title>
         <div
           v-for="(j, indexs) in i.resources"
           :key="indexs"

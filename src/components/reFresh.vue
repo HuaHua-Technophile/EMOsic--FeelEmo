@@ -16,7 +16,7 @@
         :src="`${OccupyBgImg}?param=x415y336`"
         class="w-100" />
     </div>
-    <div class="position-relative z-3 noScrollBar w-100">
+    <div class="position-relative z-3 w-100">
       <!-- 下拉占位元素,对占位元素做监听 -->
       <div ref="Occupy" :style="{ height: `${height}px` }"></div>
       <slot></slot>

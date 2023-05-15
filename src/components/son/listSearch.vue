@@ -4,7 +4,9 @@
     class="listTitle position-fixed z-3 top-0 w-100 overflow-hidden d-flex align-items-center ps-3 pe-2 bg-body text-light"
     :style="[{ '--bs-body-bg-rgb': themeColor }, { '--bs-bg-opacity': 0 }]">
     <div class="h-100 d-flex align-items-center overflow-hidden flex-grow-1">
-      <i class="bi bi-arrow-left fs-2 me-3 flex-shrink-0"></i>
+      <i
+        class="bi bi-arrow-left fs-2 me-3 flex-shrink-0"
+        @click="window.history.back(-1)"></i>
       <span class="fs-4 overflow-hidden text-nowrap flex-grow-1 me-3">{{
         title
       }}</span>
