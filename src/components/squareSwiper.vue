@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-  import slide3 from "./playList3.vue";
+  import slide3 from "./squareSwiperFirstSlide.vue";
   export default {
     props: ["data", "Theme"],
     methods: {

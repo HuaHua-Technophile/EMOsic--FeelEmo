@@ -47,7 +47,7 @@
   </re-fresh>
 </template>
 <script>
-  import { getPlayListDetail } from "../../api/getData.js";
+  import { getPlayListDetail } from "../api/getData.js";
   import ColorThief from "colorthief"; //自动计算颜色组件
   export default {
     props: ["Theme"],

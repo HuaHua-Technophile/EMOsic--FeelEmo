@@ -46,9 +46,9 @@
     top: 0;
     left: 50%;
     width: 85%;
-    height: 7%;
+    height: 10%;
     border-radius: 999px;
-    background: rgba(var(--bs-body-color-rgb), 0.3);
-    transform: translate(-50%, -50%);
+    background: rgba(var(--bs-body-color-rgb), 0.07);
+    transform: translate(-50%, -30%);
   }
 </style>

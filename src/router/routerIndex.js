@@ -11,7 +11,7 @@ const routes = [
   {
     path: "/find",
     name: "find",
-    component: () => import("../views/FindView/FindView.vue"),
+    component: () => import("../views/FindView.vue"),
   },
   {
     path: "/podcast",
@@ -36,7 +36,7 @@ const routes = [
   {
     path: "/playListDetail",
     name: "playListDetail",
-    component: () => import("../views/PlayList/PlayListDetail.vue"),
+    component: () => import("../views/PlayListDetail.vue"),
   },
 ];
 const router = new VueRouter({

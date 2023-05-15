@@ -67,23 +67,32 @@
         </swiper-slide>
       </swiper-container>
       <!-- 发现页推荐歌单 -->
-      <play-list v-if="playList1" :data="playList1" :Theme="Theme"></play-list>
+      <square-swiper
+        v-if="playList1"
+        :data="playList1"
+        :Theme="Theme"></square-swiper>
       <!-- 发现页精选歌曲 -->
-      <song-list v-if="songList1" :data="songList1" :Theme="Theme"></song-list>
+      <list-swiper
+        v-if="songList1"
+        :data="songList1"
+        :Theme="Theme"></list-swiper>
       <!-- 发现页排行榜 -->
-      <top-list v-if="topList1" :data="topList1" :Theme="Theme"></top-list>
+      <top-swiper v-if="topList1" :data="topList1" :Theme="Theme"></top-swiper>
       <!-- 发现页雷达歌单 -->
-      <play-list v-if="playList2" :data="playList2" :Theme="Theme"></play-list>
+      <square-swiper
+        v-if="playList2"
+        :data="playList2"
+        :Theme="Theme"></square-swiper>
       <!-- 发现页新歌新碟 -->
-      <song-list v-if="songList2" :data="songList2" :Theme="Theme"></song-list>
+      <list-swiper
+        v-if="songList2"
+        :data="songList2"
+        :Theme="Theme"></list-swiper>
     </div>
   </div>
 </template>
 <script>
-  import { getSearchHot, getFind, getBall } from "../../api/getData.js";
-  import playList from "./component/playList.vue";
-  import songList from "./component/songList.vue";
-  import topList from "./component/topList.vue";
+  import { getSearchHot, getFind, getBall } from "../api/getData.js";
   export default {
     props: ["Theme"],
     data() {
@@ -108,12 +117,6 @@
       changeTheme() {
         this.$emit("changeTheme");
       },
-    },
-    //局部组件
-    components: {
-      playList,
-      songList,
-      topList,
     },
     //生命周期函数获取数据
     async created() {

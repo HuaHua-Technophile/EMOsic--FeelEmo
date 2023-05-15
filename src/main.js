@@ -11,16 +11,22 @@ import App from "./App.vue";
 import router from "./router/routerIndex";
 import store from "./store";
 //----vue全局组件-------------------
-import cardTitle from "./components/cardTitle.vue";
-Vue.component("card-title", cardTitle);
-import reFresh from "./components/reFresh.vue";
-Vue.component("re-fresh", reFresh);
 import squareCard from "./components/squareCard.vue";
 Vue.component("square-card", squareCard);
+import cardTitle from "./components/cardTitle.vue";
+Vue.component("card-title", cardTitle);
+import squareSwiper from "./components/squareSwiper.vue";
+Vue.component("square-swiper", squareSwiper);
+import listSwiper from "./components/listSwiper.vue";
+Vue.component("list-swiper", listSwiper);
+import topSwiper from "./components/topSwiper.vue";
+Vue.component("top-swiper", topSwiper);
 import listSearch from "./components/listSearch.vue";
 Vue.component("list-search", listSearch);
 import playListHeader from "./components/playListHeader.vue";
 Vue.component("play-list-header", playListHeader);
+import reFresh from "./components/reFresh.vue";
+Vue.component("re-fresh", reFresh);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
