@@ -32,7 +32,7 @@ body {
 }
 @for $i from 1 through 10 {
   .t-shadow-#{$i} {
-    text-shadow: 1px 1px #{$i}px black;
+    text-shadow: 1px 1px #{$i}px rgba(0, 0, 0, 0.5);
   }
 }
 .pb-100 {

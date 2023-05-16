@@ -2,7 +2,7 @@
   <div
     ref="father"
     @touchend="scrollOccupy()"
-    @scroll="bgScale($event)"
+    @scroll="bgScale()"
     class="reFresh noScrollBar w-100 overflow-x-hidden overflow-y-scroll"
     style="max-width: 100vw"
     :style="`--bs-body-bg-rgb:${themeColor}`">

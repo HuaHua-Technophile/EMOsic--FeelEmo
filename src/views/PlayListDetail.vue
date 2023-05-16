@@ -17,7 +17,7 @@
         :listLength="playlist.trackCount"
         class="text-light bg-body"></play-all-title>
       <!-- 列表主体-歌曲（可选择列表主体-声音），懒加载 -->
-      <div class="ps-2 pe-3 bg-body">
+      <div class="ps-2 pe-3 bg-body t-shadow-4">
         <div
           v-for="(item, index) in songList"
           :key="index"

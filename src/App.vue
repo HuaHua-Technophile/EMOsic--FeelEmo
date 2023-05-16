@@ -1,29 +1,33 @@
 <template>
   <div class="w-100 vh-100 noScrollBar">
     <transition name="view">
-      <router-view :Theme="Theme" @changeTheme="changeTheme"></router-view>
+      <router-view
+        :Theme="Theme"
+        @changeTheme="changeTheme"
+        @navBarHidden="navBarHidden"></router-view>
     </transition>
-    <nav
-      v-if="navBar"
-      class="pt-1 w-100 bg-body position-fixed nav justify-content-around"
+    <div
+      class="pt-1 position-fixed w-100 bg-body"
       style="bottom: -1px; z-index: 99">
-      <router-link class="nav-link" to="/find">
-        <span class="iconfont icon-netease-cloud-music-line"></span>
-        <span>发现</span>
-      </router-link>
-      <router-link class="nav-link" to="/podcast">
-        <i class="bi bi-broadcast"></i><span>播客</span>
-      </router-link>
-      <router-link class="nav-link" to="/mine">
-        <i class="bi bi-music-note-beamed"></i><span>我的</span>
-      </router-link>
-      <router-link class="nav-link" to="/follow">
-        <span class="iconfont icon-guanzhu"></span><span>关注</span>
-      </router-link>
-      <router-link class="nav-link" to="/cloudVillage">
-        <span class="iconfont icon-taolunqu"></span><span>云村</span>
-      </router-link>
-    </nav>
+      <nav v-if="navBar" class="nav justify-content-around">
+        <router-link class="nav-link" to="/find">
+          <span class="iconfont icon-netease-cloud-music-line"></span>
+          <span>发现</span>
+        </router-link>
+        <router-link class="nav-link" to="/podcast">
+          <i class="bi bi-broadcast"></i><span>播客</span>
+        </router-link>
+        <router-link class="nav-link" to="/mine">
+          <i class="bi bi-music-note-beamed"></i><span>我的</span>
+        </router-link>
+        <router-link class="nav-link" to="/follow">
+          <span class="iconfont icon-guanzhu"></span><span>关注</span>
+        </router-link>
+        <router-link class="nav-link" to="/cloudVillage">
+          <span class="iconfont icon-taolunqu"></span><span>云村</span>
+        </router-link>
+      </nav>
+    </div>
   </div>
 </template>
 <script>
@@ -44,6 +48,12 @@
           this.Theme = "dark";
           document.documentElement.dataset.bsTheme = "dark";
         }
+      },
+      navBarHidden() {
+        this.navBar = false;
+      },
+      navBarShow() {
+        this.navBar = false;
       },
     },
   };
