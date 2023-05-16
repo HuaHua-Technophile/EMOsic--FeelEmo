@@ -11,10 +11,11 @@
         :themeColor="LightenDarkenColor(themeColor, 30)"
         :title="'歌单'"></list-search>
       <!-- 头部信息栏，展示歌单信息、专辑信息 -->
-      <play-list-header :data="playlist"></play-list-header>
+      <play-list-header :data="playList"></play-list-header>
       <!-- 列表头部。适用于歌单列表，声音列表 -->
       <play-all-title
-        :listLength="playlist.trackCount"
+        @playAll="playAll"
+        :listLength="playList.trackCount"
         class="text-light bg-body"></play-all-title>
       <!-- 列表主体-歌曲（可选择列表主体-声音），懒加载 -->
       <div class="ps-2 pe-3 bg-body t-shadow-4">
@@ -91,15 +92,15 @@
     data() {
       return {
         coverImgUrl: "",
-        playlist: {},
+        playList: {},
         songList: [],
         OccupyHeight: 266,
         themeColor: [],
         loadOver: false,
         io: new IntersectionObserver(async () => {
           if (
-            !this.playlist.trackCount ||
-            this.songList.length < this.playlist.trackCount
+            !this.playList.trackCount ||
+            this.songList.length < this.playList.trackCount
           ) {
             await getPlayListTrackAll(
               this.$route.query.id,
@@ -120,13 +121,22 @@
       scroll() {
         console.log("滚动了");
       },
+      playAll() {
+        this.$emit(
+          "songListChange",
+          this.playList.trackIds.map((i) => i.id)
+        );
+        this.$emit("setIndex", 0);
+        this.$emit("playSong");
+        this.$emit("miniPlayerChange");
+      },
     },
     // 生命周期
     async created() {
       //获取歌单详情页数据
       await getPlayListDetail(this.$route.query.id).then((res) => {
         this.coverImgUrl = res.playlist.coverImgUrl;
-        this.playlist = res.playlist;
+        this.playList = res.playlist;
         let colorThief = new ColorThief();
         let img = new Image();
         img.crossOrigin = "Anonymous"; //允许对未经过验证的图像进行跨源下载
@@ -138,10 +148,6 @@
     },
     mounted() {
       this.io.observe(this.$refs.lazyLoad);
-    },
-    beforeDestroy() {
-      // 销毁前清除观察器
-      this.io.unobserve(this.$refs.lazyLoad);
     },
     components: {
       playAllTitle,

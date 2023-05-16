@@ -21,7 +21,9 @@
   export default {
     props: ["listLength"],
     methods: {
-      playAll() {},
+      playAll() {
+        this.$emit("playAll");
+      },
     },
   };
 </script>

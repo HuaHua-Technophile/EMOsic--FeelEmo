@@ -44,8 +44,9 @@ register(); // 注册Swiper自定义元素
 import "./assets/font_navbar/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
-import { Lazyload } from "vant"; //懒加载
+import { Lazyload, Circle } from "vant"; //懒加载
 Vue.use(Lazyload, { lazyComponent: true }); // 注册时可以配置额外的选项
+Vue.use(Circle); //环形进度条
 /* //----Lodash引入-------------------
 import lodash from "lodash";
 Vue.prototype._ = lodash; */
