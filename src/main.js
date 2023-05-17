@@ -42,11 +42,13 @@ library.add(faBars, faAngleRight, faShare); //核心按需使用图标(分字重
 register(); // 注册Swiper自定义元素
 //----自定义图标库-------------------
 import "./assets/font_navbar/iconfont.css";
+import "./assets/font_songLoop/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
-import { Lazyload, Circle } from "vant"; //懒加载
+import { Lazyload, Circle, List } from "vant"; //懒加载
 Vue.use(Lazyload, { lazyComponent: true }); // 注册时可以配置额外的选项
 Vue.use(Circle); //环形进度条
+Vue.use(List); //列表
 /* //----Lodash引入-------------------
 import lodash from "lodash";
 Vue.prototype._ = lodash; */

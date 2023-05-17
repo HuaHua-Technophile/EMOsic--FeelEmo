@@ -13,7 +13,7 @@
       <swiper-slide
         v-for="(item, index) in data.creatives"
         :key="index"
-        @click="toPlayListDetail(item.creativeId)"
+        @click="toPlayListDetail(item.creativeId, $event)"
         class="pt-3">
         <!-- 单个不切换的slide -->
         <div v-if="item.resources.length === 1" class="position-relative">
@@ -29,7 +29,10 @@
               <img :src="`${item.uiElement.image.imageUrl}?param=x138y138`" />
             </template>
             <template #playIcon>
-              <i class="bi bi-play-fill fs-1"></i>
+              <i
+                ref="playBtn"
+                class="bi bi-play-fill fs-1"
+                @click="playThisList(index)"></i>
             </template>
           </square-card>
           <span class="van-multi-ellipsis--l2">{{
@@ -47,10 +50,16 @@
   export default {
     props: ["data", "Theme"],
     methods: {
-      toPlayListDetail(id) {
-        this.$router.push({ name: "playListDetail", query: { id } });
+      toPlayListDetail(id, e) {
+        if (e.target.nodeName == "IMG") {
+          this.$router.push({ name: "playListDetail", query: { id } });
+        }
+      },
+      playThisList(index) {
+        this.$emit("playSomeList", this.data.creatives[index].creativeId);
       },
     },
+    // 组件
     components: {
       slide: slide3,
     },

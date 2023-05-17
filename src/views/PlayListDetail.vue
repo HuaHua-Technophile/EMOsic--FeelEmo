@@ -24,7 +24,9 @@
           :key="index"
           class="d-flex align-items-center text-light pb-3">
           <!-- 歌曲Item左侧信息：序列、歌名、标签、歌手、专辑 -->
-          <div class="flex-grow-1 d-flex align-items-center overflow-hidden">
+          <div
+            @click="playThisSong(index)"
+            class="flex-grow-1 d-flex align-items-center overflow-hidden">
             <!-- 序号 -->
             <span class="songItemIndex opacity-50 text-center flex-shrink-0">{{
               index + 1
@@ -118,16 +120,22 @@
       LightenDarkenColor(RGB, v) {
         return RGB.map((i) => (i + v > 255 ? 255 : i + v < 0 ? 0 : i + v));
       },
-      scroll() {
-        console.log("滚动了");
-      },
+      // 播放全部歌单(第一首)
       playAll() {
         this.$emit(
           "songListChange",
           this.playList.trackIds.map((i) => i.id)
         );
         this.$emit("setIndex", 0);
-        this.$emit("playSong");
+        this.$emit("miniPlayerChange");
+      },
+      // 播放选定歌曲
+      playThisSong(index) {
+        this.$emit(
+          "songListChange",
+          this.playList.trackIds.map((i) => i.id)
+        );
+        this.$emit("setIndex", index);
         this.$emit("miniPlayerChange");
       },
     },
@@ -155,13 +163,6 @@
   };
 </script>
 <style lang="scss">
-  .InfoTag {
-    height: 12px;
-    font-size: 8px;
-    padding: 0px 2px;
-    margin: 3px;
-    border-radius: 2px;
-  }
   .songItemIndex {
     width: 36px;
   }
