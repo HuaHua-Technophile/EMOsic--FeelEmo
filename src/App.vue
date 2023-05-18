@@ -11,6 +11,7 @@
       <audio
         ref="playCore"
         src=""
+        :loop="songLoop == 1"
         controls
         @timeupdate="setSchedule($event)"></audio>
       <!-- 底部迷你播放器(左右横滑切歌) -->
@@ -68,7 +69,10 @@
             </div>
             <!-- 迷你播放列表 -->
             <i
-              @click="miniListShow = true"
+              @click="
+                miniListShow = true;
+                miniListLoad();
+              "
               class="bi bi-music-note-list fs-4 ms-3"></i>
           </div>
         </div>
@@ -111,23 +115,25 @@
           </div>
           <!-- 循环控制\全部下载\歌单收藏\清除播放列表 -->
           <div
-            class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+            class="d-flex justify-content-between align-items-center pb-2 border-bottom"
+            @click="changeSongLoop()">
             <div v-show="songLoop == 0">
-              <i class="iconfont icon-24gl-shuffle me-2"></i
+              <i class="iconfont icon-24gl-repeat2 me-2"></i
               ><span>列表循环</span>
             </div>
             <div v-show="songLoop == 1">
-              <i class="iconfont icon-24gl-repeat2 me-2"></i
+              <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
               ><span>单曲循环</span>
             </div>
             <div v-show="songLoop == 2">
-              <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
+              <i class="iconfont icon-24gl-shuffle me-2"></i
               ><span>随机播放</span>
             </div>
+            <!-- 右侧 下载全部,收藏全部,清除歌单 -->
             <div class="d-flex fs-5">
               <i class="bi bi-download me-3"></i>
               <i class="bi bi-collection-play me-3"></i>
-              <i class="bi bi-trash"></i>
+              <i class="bi bi-trash" @click="clearSongList()"></i>
             </div>
           </div>
           <!-- 歌单列表主体 ,懒加载-->
@@ -149,7 +155,12 @@
                   class="InfoTag text-danger border border-danger d-flex align-items-center">
                   VIP
                 </span>
-                <span class="text-nowrap">{{ item.name }}</span>
+                <!-- 歌曲名称 -->
+                <span
+                  class="text-nowrap"
+                  :class="[{ 'text-danger': item.id == playSongId }]"
+                  >{{ item.name }}</span
+                >
                 <!-- 歌手信息 -->
                 <div class="ms-1 fs-8 opacity-50 text-nowrap">
                   ·
@@ -160,7 +171,9 @@
                 </div>
               </div>
               <!-- 列表右侧close按钮 -->
-              <div class="ms-2 flex-shrink-0">
+              <div
+                class="ms-2 flex-shrink-0"
+                @click="deleteThisSong(item.id, index)">
                 <i class="bi bi-x-lg"></i>
               </div>
             </div>
@@ -168,7 +181,14 @@
         </div>
       </div>
     </transition>
-    <!-- Big播放器 -->
+    <!-- Big播放器,在任意页面通用 -->
+    <transition name="sideUp">
+      <big-player
+        v-show="bigPlayerShow"
+        :currentRate="currentRate"
+        :currentTime="currentTime"
+        :duration="duration"></big-player>
+    </transition>
   </div>
 </template>
 <script>
@@ -188,17 +208,24 @@
         miniLoop: false,
         miniListLoading: false,
         miniListFinished: false,
-        songLoop: 0,
+        bigPlayerShow: false,
       };
     },
     // 计算属性
     computed: {
-      ...mapState(["navBarShow", "songList", "playIndex"]),
+      ...mapState(["navBarShow", "songList", "playIndex", "songLoop"]),
       ...mapGetters(["playSongId"]),
     },
     //方法
     methods: {
-      ...mapMutations(["setPlayIndex", "nextSong", "preSong"]),
+      ...mapMutations([
+        "setSongList",
+        "songListReduce",
+        "setPlayIndex",
+        "nextSong",
+        "preSong",
+        "setSongLoop",
+      ]),
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
       miniListHidden(e) {
         if (e.target == this.$refs.miniListBg) this.miniListShow = false;
@@ -261,21 +288,35 @@
           });
         }
       },
-      //传入整个播放列表,包含所有的歌曲id,渲染迷你的歌曲列表.播放列表删除某首歌后,直接删除相应列表dom,避免再次发送列表全部id进行请求
+      //传入整个播放列表,包含所有的歌曲id.用于渲染迷你的歌曲列表.播放列表删除某首歌后,
       async miniListLoad() {
         if (this.songList.length == this.miniList.length) {
           this.miniListFinished = true;
         } else {
-          this.miniListFinished = false;
           let param = this.songList.slice(
-            this.miniList.length,
-            this.miniList.length + 20
+            this.miniList.length, //当前长度
+            this.miniList.length + 20 //再懒加载20首
           );
           await getSongDetail(param).then((res) => {
             this.miniList.push(...res.songs);
           });
           this.miniListLoading = false;
         }
+      },
+      //点击迷你播放列表中的删除按钮，删除本地歌单中的对应歌曲
+      deleteThisSong(id, index) {
+        this.songListReduce(id);
+        this.miniList.splice(index, 1);
+      },
+      // 点击迷你播放列表的清除歌单按钮
+      clearSongList() {
+        this.miniListShow = false;
+        this.setSongList([]);
+        this.miniList = [];
+      },
+      //切换歌曲的循环方法
+      changeSongLoop() {
+        this.setSongLoop();
       },
     },
     // 挂载后生命周期
@@ -286,6 +327,10 @@
       };
       this.$refs.playCore.onpause = () => {
         this.isPlaying = false;
+      };
+      //dom音频添加监听事件,播放完毕后,播放下一首
+      this.$refs.playCore.onended = () => {
+        this.nextSong();
       };
       // 迷你播放器前滑，加载列表上一首
       this.$refs.miniPlayer.addEventListener("slideprevtransitionend", () => {
@@ -315,6 +360,9 @@
           });
         }
       },
+      songList() {
+        this.miniListFinished = false;
+      },
     },
   };
 </script>
@@ -337,7 +385,7 @@
   }
   .miniList {
     z-index: 99999999;
-    background: rgba(0, 0, 0, 0.5);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 15%);
     > div {
       bottom: 1rem;
       width: calc(100% - 2rem);

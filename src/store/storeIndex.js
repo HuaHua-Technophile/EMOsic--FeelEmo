@@ -10,11 +10,11 @@ export default new Vuex.Store({
     // 播放核心----------------------
     songList: [],
     playIndex: -1,
+    songLoop: 0,
   },
   // 计算属性
   getters: {
     playSongId(S) {
-      console.log(S.songList[S.playIndex]);
       return S.songList[S.playIndex] ? S.songList[S.playIndex] : -1;
     },
   },
@@ -58,15 +58,29 @@ export default new Vuex.Store({
     },
     //下一首歌
     nextSong(S) {
-      S.playIndex == S.songList.length - 1
-        ? (S.playIndex = 0)
-        : (S.playIndex += 1);
+      // 随机播放
+      if (S.songLoop == 2) {
+        let randomIndex = Math.floor(Math.random() * S.songList.length);
+        S.playIndex = randomIndex;
+      } else {
+        S.playIndex == S.songList.length - 1
+          ? (S.playIndex = 0)
+          : (S.playIndex += 1);
+      }
     },
     //上一首歌
     preSong(S) {
       S.playIndex == 0
         ? (S.playIndex = S.songList.length - 1)
         : (S.playIndex -= 1);
+    },
+    // 设置循环方式
+    setSongLoop(S, loop) {
+      if (loop) {
+        S.songLoop = loop;
+      } else {
+        S.songLoop = S.songLoop == 2 ? 0 : S.songLoop + 1;
+      }
     },
   },
   actions: {},

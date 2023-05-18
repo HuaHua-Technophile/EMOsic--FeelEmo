@@ -135,11 +135,6 @@
         this.setPlayIndex(0);
       },
     },
-    watch: {
-      playSongId(newVal) {
-        console.log(newVal);
-      },
-    },
     // 创建后生命周期
     async created() {
       //获取歌单详情页数据
