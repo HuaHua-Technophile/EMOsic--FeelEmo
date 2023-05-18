@@ -67,10 +67,7 @@
         </swiper-slide>
       </swiper-container>
       <!-- 发现页推荐歌单 -->
-      <square-swiper
-        v-if="playList1"
-        :data="playList1"
-        @playSomeList="playSomeList"></square-swiper>
+      <square-swiper v-if="playList1" :data="playList1"></square-swiper>
       <!-- 发现页精选歌曲 -->
       <list-swiper
         v-if="songList1"
@@ -79,10 +76,7 @@
       <!-- 发现页排行榜 -->
       <top-swiper v-if="topList1" :data="topList1" class="pt-3"></top-swiper>
       <!-- 发现页雷达歌单 -->
-      <square-swiper
-        v-if="playList2"
-        :data="playList2"
-        @playSomeList="playSomeList"></square-swiper>
+      <square-swiper v-if="playList2" :data="playList2"></square-swiper>
       <!-- 发现页新歌新碟 -->
       <list-swiper
         v-if="songList2"
@@ -92,12 +86,7 @@
   </div>
 </template>
 <script>
-  import {
-    getSearchHot,
-    getFind,
-    getBall,
-    getPlayListDetail,
-  } from "../api/getData.js";
+  import { getSearchHot, getFind, getBall } from "../api/getData.js";
   import { mapState, mapMutations } from "vuex";
   export default {
     data() {
@@ -123,16 +112,6 @@
     //方法
     methods: {
       ...mapMutations(["changeTheme"]),
-      async playSomeList(id) {
-        await getPlayListDetail(id).then((res) => {
-          this.$emit(
-            "songListChange",
-            res.playlist.trackIds.map((item) => item.id)
-          );
-        });
-        this.$emit("setIndex", 0);
-        this.$emit("miniPlayerChange");
-      },
     },
     //生命周期函数获取数据
     async created() {

@@ -44,21 +44,28 @@
   </div>
 </template>
 <script>
-  import { mapState } from "vuex";
+  import { mapMutations, mapState } from "vuex";
   import slide3 from "./son/squareSwiperFirstSlide.vue";
+  import { getPlayListDetail } from "../api/getData.js";
   export default {
     props: ["data"],
     computed: {
       ...mapState(["Theme"]),
     },
     methods: {
+      ...mapMutations(["setPlayIndex", "setSongList"]),
       toPlayListDetail(id, e) {
         if (e.target.nodeName == "IMG") {
           this.$router.push({ name: "playListDetail", query: { id } });
         }
       },
-      playThisList(index) {
-        this.$emit("playSomeList", this.data.creatives[index].creativeId);
+      async playThisList(index) {
+        await getPlayListDetail(this.data.creatives[index].creativeId).then(
+          (res) => {
+            this.setSongList(res.playlist.trackIds.map((i) => i.id));
+          }
+        );
+        this.setPlayIndex(0);
       },
     },
     // 组件

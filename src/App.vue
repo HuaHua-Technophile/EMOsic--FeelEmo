@@ -1,11 +1,7 @@
 <template>
   <div class="w-100 vh-100 noScrollBar">
     <transition name="view">
-      <router-view
-        @navBarShow="navBarShow"
-        @songListChange="songListChange"
-        @setIndex="setIndex"
-        @miniPlayerChange="miniPlayerChange"></router-view>
+      <router-view></router-view>
     </transition>
     <!-- 底栏(迷你播放器\5大金刚键) -->
     <div
@@ -176,14 +172,12 @@
   </div>
 </template>
 <script>
-  import { mapState } from "vuex";
+  import { mapState, mapGetters, mapMutations } from "vuex";
   import { getSongUrl, getSongDetail } from "./api/getData.js";
   import throttle from "lodash/throttle";
   export default {
     data() {
       return {
-        songList: [],
-        playIndex: 0,
         currentRate: 0,
         currentTime: 0,
         duration: 0,
@@ -199,62 +193,19 @@
     },
     // 计算属性
     computed: {
-      ...mapState(["navBarShow"]),
-      playSongId() {
-        return this.songList[this.playIndex];
-      },
+      ...mapState(["navBarShow", "songList", "playIndex"]),
+      ...mapGetters(["playSongId"]),
     },
     //方法
     methods: {
-      //隐藏迷你播放列表
+      ...mapMutations(["setPlayIndex", "nextSong", "preSong"]),
+      //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
       miniListHidden(e) {
         if (e.target == this.$refs.miniListBg) this.miniListShow = false;
       },
-      // 下一首歌
-      nextSong() {
-        this.playIndex == this.songList.length - 1
-          ? (this.playIndex = 0)
-          : (this.playIndex += 1);
-        this.playSong();
-        this.miniPlayerChange();
-      },
-      // 上一首歌
-      preSong() {
-        this.playIndex == 0
-          ? (this.playIndex = this.songList.length - 1)
-          : (this.playIndex -= 1);
-        this.playSong();
-        this.miniPlayerChange();
-      },
-      // 修改当前index,任意第几首歌
-      setIndex(index) {
-        this.playIndex = index;
-        this.playSong();
-      },
-      // 播放当前指定index的歌曲
-      async playSong() {
-        await getSongUrl(this.songList[this.playIndex]).then((res) => {
-          this.$refs.playCore.src = res.data[0].url;
-        });
-        this.$refs.playCore.ondurationchange = () => {
-          this.duration = this.$refs.playCore.duration;
-          this.$refs.playCore.play();
-        };
-      },
-      // 传入一个歌曲列表,修改歌曲列表
-      songListChange(data) {
-        this.songList = data;
-      },
-      // 播放列表末尾添加歌曲
-      songListAdd(songId) {
-        this.songList.push(songId);
-      },
-      // 播放列表删除指定歌曲
-      songListReduce(songId) {
-        this.songList.splice(this.songList.indexOf(songId), 1);
-      },
       //点击播放按钮暂停/继续歌曲
       Play_Pause() {
+        // 查询本地属性,而不是查询DOM,减少DOM树查询开销
         if (this.isPlaying) {
           this.$refs.playCore.pause();
           this.isPlaying = false;
@@ -263,7 +214,7 @@
           this.isPlaying = true;
         }
       },
-      // time update事件,修改播放进度
+      // time update事件,修改本地属性播放进度
       setSchedule: throttle(function (e) {
         this.currentTime = e.target.currentTime;
         this.currentRate = (this.currentTime / this.duration) * 100;
@@ -304,9 +255,9 @@
           }
           await getSongDetail(param).then((res) => {
             this.miniPLayer = res.songs;
-          });
-          this.$nextTick(() => {
-            this.$refs.miniPlayer.swiper.slideToLoop(1, 0, false);
+            this.$nextTick(() => {
+              this.$refs.miniPlayer.swiper.slideToLoop(1, 0, false);
+            });
           });
         }
       },
@@ -329,7 +280,7 @@
     },
     // 挂载后生命周期
     mounted() {
-      //dom音频添加监听事件,用于方向修改vue中存储的播放状态
+      //dom音频添加监听事件,用于反向修改vue中存储的播放状态
       this.$refs.playCore.onplay = () => {
         this.isPlaying = true;
       };
@@ -347,13 +298,21 @@
     },
     // 监听器
     watch: {
-      //监听歌曲列表,如果删到不剩歌,取消播放;
-      songList(newVal) {
-        this.miniListLoad();
-        if (newVal.length == 0) {
-          this.miniPLayer = [];
-          this.$refs.playCore.pause();
+      async playSongId(newV) {
+        // 如果歌曲id设定为-1,则取消播放,本地播放状态设为暂停
+        if (newV == -1) {
           this.$refs.playCore.src = "";
+          this.isPlaying = false;
+        } else {
+          await getSongUrl(newV).then((res) => {
+            // durationchange是时长改变时触发.
+            this.$refs.playCore.oncanplay = () => {
+              this.$refs.playCore.play();
+              this.duration = this.$refs.playCore.duration;
+            };
+            this.$refs.playCore.src = res.data[0].url;
+            this.miniPlayerChange();
+          });
         }
       },
     },
