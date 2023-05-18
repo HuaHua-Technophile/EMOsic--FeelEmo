@@ -60,8 +60,9 @@ export default new Vuex.Store({
     nextSong(S) {
       // 随机播放
       if (S.songLoop == 2) {
-        let randomIndex = Math.floor(Math.random() * S.songList.length);
-        S.playIndex = randomIndex;
+        let min = 0,
+          max = S.songList.length - 1;
+        S.playIndex = Math.round(Math.random() * (max - min)) + min;
       } else {
         S.playIndex == S.songList.length - 1
           ? (S.playIndex = 0)
