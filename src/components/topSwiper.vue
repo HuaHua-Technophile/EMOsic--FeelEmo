@@ -1,9 +1,7 @@
 <template>
   <div class="cardHr" :class="Theme">
     <!-- title信息栏 -->
-    <swiper-card-title
-      :data="data.uiElement"
-      :Theme="Theme"></swiper-card-title>
+    <swiper-card-title :data="data.uiElement"></swiper-card-title>
     <!-- swiper轮播图 -->
     <swiper-container slides-per-view="auto" class="ps-3 pb-3 pt-1">
       <swiper-slide
@@ -16,7 +14,6 @@
         ]">
         <swiper-card-title
           :data="i.uiElement"
-          :Theme="Theme"
           class="mt-2 mb-2"></swiper-card-title>
         <div
           v-for="(j, indexs) in i.resources"
@@ -56,8 +53,12 @@
   </div>
 </template>
 <script>
+  import { mapState } from "vuex";
   export default {
-    props: ["Theme", "data"],
+    props: ["data"],
+    computed: {
+      ...mapState(["Theme"]),
+    },
   };
 </script>
 <style lang="scss" scoped>

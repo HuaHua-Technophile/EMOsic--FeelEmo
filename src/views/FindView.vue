@@ -70,31 +70,23 @@
       <square-swiper
         v-if="playList1"
         :data="playList1"
-        :Theme="Theme"
         @playSomeList="playSomeList"></square-swiper>
       <!-- 发现页精选歌曲 -->
       <list-swiper
         v-if="songList1"
         :data="songList1"
-        :Theme="Theme"
         class="pt-3 pb-3"></list-swiper>
       <!-- 发现页排行榜 -->
-      <top-swiper
-        v-if="topList1"
-        :data="topList1"
-        :Theme="Theme"
-        class="pt-3"></top-swiper>
+      <top-swiper v-if="topList1" :data="topList1" class="pt-3"></top-swiper>
       <!-- 发现页雷达歌单 -->
       <square-swiper
         v-if="playList2"
         :data="playList2"
-        :Theme="Theme"
         @playSomeList="playSomeList"></square-swiper>
       <!-- 发现页新歌新碟 -->
       <list-swiper
         v-if="songList2"
         :data="songList2"
-        :Theme="Theme"
         class="pt-3"></list-swiper>
     </div>
   </div>
@@ -106,8 +98,8 @@
     getBall,
     getPlayListDetail,
   } from "../api/getData.js";
+  import { mapState, mapMutations } from "vuex";
   export default {
-    props: ["Theme"],
     data() {
       return {
         timeIdList: [],
@@ -125,11 +117,12 @@
         songList2: null,
       };
     },
+    computed: {
+      ...mapState(["Theme"]),
+    },
     //方法
     methods: {
-      changeTheme() {
-        this.$emit("changeTheme");
-      },
+      ...mapMutations(["changeTheme"]),
       async playSomeList(id) {
         await getPlayListDetail(id).then((res) => {
           this.$emit(

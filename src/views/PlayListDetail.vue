@@ -87,10 +87,10 @@
 </template>
 <script>
   import { getPlayListDetail, getPlayListTrackAll } from "../api/getData.js";
+  import { mapState } from "vuex";
   import ColorThief from "colorthief"; //自动计算颜色组件
   import playAllTitle from "../components/son/playAllTitle.vue";
   export default {
-    props: ["Theme"],
     data() {
       return {
         coverImgUrl: "",
@@ -115,6 +115,7 @@
         }),
       };
     },
+    computed: { ...mapState(["Theme"]) },
     methods: {
       // 颜色混入
       LightenDarkenColor(RGB, v) {

@@ -5,11 +5,11 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css"; //最先导入bootstrap icon字体图标
 //----Swiper9.3.1------------------
 import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
-//----vue,路由---------------------
+//----vue,路由，vuex---------------------
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/routerIndex";
-import store from "./store";
+import store from "./store/storeIndex";
 //----vue全局2级组件-------------------
 import squareCard from "./components/son/squareCard.vue";
 Vue.component("square-card", squareCard);

@@ -25,8 +25,12 @@
   </div>
 </template>
 <script>
+  import { mapState } from "vuex";
   export default {
-    props: ["Theme", "data"],
+    props: ["data"],
+    computed: {
+      ...mapState(["Theme"]),
+    },
   };
 </script>
 <style lang="scss" scoped>

@@ -2,9 +2,6 @@
   <div class="w-100 vh-100 noScrollBar">
     <transition name="view">
       <router-view
-        :Theme="Theme"
-        @changeTheme="changeTheme"
-        @navBarHidden="navBarHidden"
         @navBarShow="navBarShow"
         @songListChange="songListChange"
         @setIndex="setIndex"
@@ -82,7 +79,7 @@
       </transition>
       <!-- 底部导航栏(5大金刚键) -->
       <transition name="sideUp">
-        <nav v-if="navBar" class="nav justify-content-around">
+        <nav v-if="navBarShow" class="nav justify-content-around">
           <router-link class="nav-link" to="/find">
             <span class="iconfont icon-netease-cloud-music-line"></span>
             <span>发现</span>
@@ -179,13 +176,12 @@
   </div>
 </template>
 <script>
+  import { mapState } from "vuex";
   import { getSongUrl, getSongDetail } from "./api/getData.js";
   import throttle from "lodash/throttle";
   export default {
     data() {
       return {
-        Theme: "dark",
-        navBar: true,
         songList: [],
         playIndex: 0,
         currentRate: 0,
@@ -203,34 +199,13 @@
     },
     // 计算属性
     computed: {
+      ...mapState(["navBarShow"]),
       playSongId() {
         return this.songList[this.playIndex];
       },
     },
     //方法
     methods: {
-      //切换全局主题
-      changeTheme() {
-        if (this.Theme === "dark") {
-          this.Theme = "light";
-          this.ThemeColor = "#3e465b";
-          this.ThemeBgColor = "#f8f9fd";
-          document.documentElement.dataset.bsTheme = "light";
-        } else {
-          this.Theme = "dark";
-          this.ThemeColor = "#e8e8e8";
-          this.ThemeBgColor = "#1a1a23";
-          document.documentElement.dataset.bsTheme = "dark";
-        }
-      },
-      // 隐藏底部导航栏
-      navBarHidden() {
-        this.navBar = false;
-      },
-      // 显示底部导航栏
-      navBarShow() {
-        this.navBar = false;
-      },
       //隐藏迷你播放列表
       miniListHidden(e) {
         if (e.target == this.$refs.miniListBg) this.miniListShow = false;
@@ -302,7 +277,9 @@
           await getSongDetail(param).then((res) => {
             this.miniPLayer = res.songs;
           });
-          this.$refs.miniPlayer.swiper.slideTo(this.playIndex, 0, false);
+          this.$nextTick(() => {
+            this.$refs.miniPlayer.swiper.slideToLoop(this.playIndex, 0, false);
+          });
         } else {
           this.miniLoop = false;
           let param = null;
@@ -328,7 +305,9 @@
           await getSongDetail(param).then((res) => {
             this.miniPLayer = res.songs;
           });
-          this.$refs.miniPlayer.swiper.slideToLoop(1, 0, false);
+          this.$nextTick(() => {
+            this.$refs.miniPlayer.swiper.slideToLoop(1, 0, false);
+          });
         }
       },
       //传入整个播放列表,包含所有的歌曲id,渲染迷你的歌曲列表.播放列表删除某首歌后,直接删除相应列表dom,避免再次发送列表全部id进行请求
