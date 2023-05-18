@@ -14,6 +14,7 @@ export default new Vuex.Store({
   // 计算属性
   getters: {
     playSongId(S) {
+      console.log(S.songList[S.playIndex]);
       return S.songList[S.playIndex] ? S.songList[S.playIndex] : -1;
     },
   },
@@ -38,10 +39,9 @@ export default new Vuex.Store({
       S.navBarShow = false;
     },
     //修改整个本地播放列表
-    setSongList(S, List) {
-      S.songList = List;
+    setSongList(S, idList) {
+      S.songList = idList;
       S.songList.length == 0 && (S.playIndex = -1);
-      console.log(S.songList);
     },
     // 播放列表删除指定歌曲
     songListReduce(S, songId) {
@@ -55,7 +55,6 @@ export default new Vuex.Store({
     //设置具体的播放第几首歌
     setPlayIndex(S, Index) {
       S.playIndex = Index;
-      console.log(S.playIndex);
     },
     //下一首歌
     nextSong(S) {

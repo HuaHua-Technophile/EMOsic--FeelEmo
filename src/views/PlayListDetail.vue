@@ -12,7 +12,7 @@
         :title="'歌单'"></list-search>
       <!-- 头部信息栏，展示歌单信息、专辑信息 -->
       <play-list-header :data="playList"></play-list-header>
-      <!-- 列表头部。适用于歌单列表，声音列表 -->
+      <!-- 列表头部。适用于歌单列表,专辑列表，推荐雷达列表，声音列表 -->
       <play-all-title
         @playAll="playAll"
         :listLength="playList.trackCount"
@@ -34,7 +34,7 @@
             <!-- 具体信息 -->
             <div class="flex-grow-1">
               <!-- 歌曲名 -->
-              <div>
+              <div :class="[{ 'text-danger': item.id == playSongId }]">
                 {{ item.name }}
                 <span v-if="item.tns" class="opacity-50">{{ item.tns }}</span>
               </div>
@@ -87,7 +87,7 @@
 </template>
 <script>
   import { getPlayListDetail, getPlayListTrackAll } from "../api/getData.js";
-  import { mapState } from "vuex";
+  import { mapGetters, mapMutations } from "vuex";
   import ColorThief from "colorthief"; //自动计算颜色组件
   import playAllTitle from "../components/son/playAllTitle.vue";
   export default {
@@ -115,32 +115,32 @@
         }),
       };
     },
-    computed: { ...mapState(["Theme"]) },
+    // 计算属性
+    computed: { ...mapGetters(["Theme", "playSongId"]) },
+    // 方法
     methods: {
+      ...mapMutations(["setSongList", "setPlayIndex"]),
       // 颜色混入
       LightenDarkenColor(RGB, v) {
         return RGB.map((i) => (i + v > 255 ? 255 : i + v < 0 ? 0 : i + v));
       },
-      // 播放全部歌单(第一首)
-      playAll() {
-        this.$emit(
-          "songListChange",
-          this.playList.trackIds.map((i) => i.id)
-        );
-        this.$emit("setIndex", 0);
-        this.$emit("miniPlayerChange");
-      },
       // 播放选定歌曲
       playThisSong(index) {
-        this.$emit(
-          "songListChange",
-          this.playList.trackIds.map((i) => i.id)
-        );
-        this.$emit("setIndex", index);
-        this.$emit("miniPlayerChange");
+        this.setSongList(this.playList.trackIds.map((i) => i.id));
+        this.setPlayIndex(index);
+      },
+      // 播放全部
+      playAll() {
+        this.setSongList(this.playList.trackIds.map((i) => i.id));
+        this.setPlayIndex(0);
       },
     },
-    // 生命周期
+    watch: {
+      playSongId(newVal) {
+        console.log(newVal);
+      },
+    },
+    // 创建后生命周期
     async created() {
       //获取歌单详情页数据
       await getPlayListDetail(this.$route.query.id).then((res) => {
@@ -155,9 +155,12 @@
         };
       });
     },
+    // 挂载后生命周期
     mounted() {
+      // 新API : observe,监听div是否出现在页面中
       this.io.observe(this.$refs.lazyLoad);
     },
+    // 组件
     components: {
       playAllTitle,
     },
