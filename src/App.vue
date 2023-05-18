@@ -17,29 +17,41 @@
       <!-- 底部迷你播放器(左右横滑切歌) -->
       <transition name="sideUp">
         <div
-          v-show="songList.length != 0"
-          class="align-items-center ps-3 pe-3"
-          :class="[{ 'd-flex': songList.length != 0 }]">
+          v-show="miniPlayerStatus"
+          class="align-items-center ps-3 pe-3 mb-1"
+          :class="[{ 'd-flex': miniPlayerStatus }]">
           <!-- 播放器左侧专辑封面、歌曲名 -->
           <div class="flex-grow-1 overflow-hidden">
             <!-- 切歌轮播图 -->
             <swiper-container
               ref="miniPlayer"
               :loop="miniLoop"
-              space-between="15">
+              space-between="15"
+              @click="
+                bigPlayerShow = true;
+                navBarHidden();
+                miniPlayerHidden();
+              ">
               <swiper-slide
                 v-for="(item, index) in miniPLayer"
                 :key="index"
                 class="w-100 d-flex align-items-center overflow-hidden text-nowrap">
-                <img
-                  v-if="item.al"
-                  :src="`${item.al.picUrl}?param=x40y40`"
-                  class="rounded-pill me-2" />
-                <span> {{ item.name }} </span>
-                <span class="ms-1 me-1 opacity-50">-</span>
-                <span v-if="item.ar" class="opacity-50">{{
-                  item.ar[0].name
-                }}</span>
+                <!-- 封面 -->
+                <div class="me-2" style="width: 38px">
+                  <img
+                    v-if="item.al"
+                    :src="`${item.al.picUrl}?param=x38y38`"
+                    class="rounded-pill" />
+                </div>
+                <!-- 歌曲名 --><span>{{ item.name }}</span>
+                <!-- 歌手 -->
+                <div class="opacity-50">
+                  <span class="ms-1 me-1">-</span>
+                  <span v-for="(j, indexs) in item.ar" :key="indexs"
+                    ><span>{{ j.name }}</span
+                    ><span v-if="indexs != item.ar.length - 1">/</span></span
+                  >
+                </div>
               </swiper-slide>
             </swiper-container>
           </div>
@@ -70,7 +82,7 @@
             <!-- 迷你播放列表 -->
             <i
               @click="
-                miniListShow = true;
+                miniListStatus = true;
                 miniListLoad();
               "
               class="bi bi-music-note-list fs-4 ms-3"></i>
@@ -79,7 +91,7 @@
       </transition>
       <!-- 底部导航栏(5大金刚键) -->
       <transition name="sideUp">
-        <nav v-if="navBarShow" class="nav justify-content-around">
+        <nav v-if="navBarStatus" class="nav justify-content-around">
           <router-link class="nav-link" to="/find">
             <span class="iconfont icon-netease-cloud-music-line"></span>
             <span>发现</span>
@@ -103,31 +115,33 @@
     <transition name="sideUp">
       <div
         ref="miniListBg"
-        v-show="miniListShow"
+        v-show="miniListStatus"
         @click="miniListHidden($event)"
         class="miniList w-100 vh-100 position-fixed top-0">
         <div
           class="position-absolute start-50 translate-middle-x pt-3 ps-3 pe-3 bg-body rounded-5 overflow-hidden">
-          <!-- 当前播放 -->
+          <!-- 当前播放大字(列表歌曲数) -->
           <div class="mb-2">
             <span class="fs-5">当前播放</span>
             <span class="fs-7 opacity-50">({{ songList.length }})</span>
           </div>
-          <!-- 循环控制\全部下载\歌单收藏\清除播放列表 -->
+          <!-- 头部左侧:循环控制,头部右侧:下载\收藏\清除播放列表 -->
           <div
-            class="d-flex justify-content-between align-items-center pb-2 border-bottom"
-            @click="changeSongLoop()">
-            <div v-show="songLoop == 0">
-              <i class="iconfont icon-24gl-repeat2 me-2"></i
-              ><span>列表循环</span>
-            </div>
-            <div v-show="songLoop == 1">
-              <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
-              ><span>单曲循环</span>
-            </div>
-            <div v-show="songLoop == 2">
-              <i class="iconfont icon-24gl-shuffle me-2"></i
-              ><span>随机播放</span>
+            class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+            <!-- 循环控制\全部下载\歌单收藏\清除播放列表 -->
+            <div @click="setSongLoop()">
+              <div v-show="songLoop == 0">
+                <i class="iconfont icon-24gl-repeat2 me-2"></i
+                ><span>列表循环</span>
+              </div>
+              <div v-show="songLoop == 1">
+                <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
+                ><span>单曲循环</span>
+              </div>
+              <div v-show="songLoop == 2">
+                <i class="iconfont icon-24gl-shuffle me-2"></i
+                ><span>随机播放</span>
+              </div>
             </div>
             <!-- 右侧 下载全部,收藏全部,清除歌单 -->
             <div class="d-flex fs-5">
@@ -187,7 +201,15 @@
         v-show="bigPlayerShow"
         :currentRate="currentRate"
         :currentTime="currentTime"
-        :duration="duration"></big-player>
+        :duration="duration"
+        :bigBG="thisSongImg"
+        :songName="thisSongName"
+        :songAr="thisSongAr"
+        :isPlaying="isPlaying"
+        @bigPlayerHidden="bigPlayerHidden"
+        @miniListShow="miniListShow"
+        @Play_Pause="Play_Pause"
+        @setcurrentRate="setcurrentRate"></big-player>
     </transition>
   </div>
 </template>
@@ -204,16 +226,25 @@
         isPlaying: false,
         miniPLayer: [],
         miniList: [],
-        miniListShow: false,
+        miniListStatus: false,
         miniLoop: false,
         miniListLoading: false,
         miniListFinished: false,
         bigPlayerShow: false,
+        thisSongImg: "",
+        thisSongName: "",
+        thisSongAr: [],
       };
     },
     // 计算属性
     computed: {
-      ...mapState(["navBarShow", "songList", "playIndex", "songLoop"]),
+      ...mapState([
+        "navBarStatus",
+        "miniPlayerStatus",
+        "songList",
+        "playIndex",
+        "songLoop",
+      ]),
       ...mapGetters(["playSongId"]),
     },
     //方法
@@ -225,10 +256,12 @@
         "nextSong",
         "preSong",
         "setSongLoop",
+        "navBarHidden",
+        "miniPlayerHidden",
       ]),
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
       miniListHidden(e) {
-        if (e.target == this.$refs.miniListBg) this.miniListShow = false;
+        if (e.target == this.$refs.miniListBg) this.miniListStatus = false;
       },
       //点击播放按钮暂停/继续歌曲
       Play_Pause() {
@@ -246,7 +279,7 @@
         this.currentTime = e.target.currentTime;
         this.currentRate = (this.currentTime / this.duration) * 100;
       }, 1000),
-      // 传入当前index,渲染底部迷你播放器
+      // 传入当前index,加载1~3首歌曲详情,用于渲染底部迷你播放器,同时传值给大播放器
       async miniPlayerChange() {
         // 如果歌曲列表只有1~3首,不需要动态加载
         if (this.songList.length <= 3) {
@@ -287,8 +320,16 @@
             });
           });
         }
+        // 在外部获取到歌曲的封面,因此不用在大播放器中引入api,再次发起查询请求.大播放器只需要专注于歌词功能
+        this.miniPLayer.map((item) => {
+          if (item.id == this.playSongId) {
+            this.thisSongImg = item.al.picUrl;
+            this.thisSongName = item.name;
+            this.thisSongAr = item.ar;
+          }
+        });
       },
-      //传入整个播放列表,包含所有的歌曲id.用于渲染迷你的歌曲列表.播放列表删除某首歌后,
+      //传入整个播放列表,包含所有的歌曲id.用于渲染迷你的歌曲列表.
       async miniListLoad() {
         if (this.songList.length == this.miniList.length) {
           this.miniListFinished = true;
@@ -310,13 +351,21 @@
       },
       // 点击迷你播放列表的清除歌单按钮
       clearSongList() {
-        this.miniListShow = false;
+        this.miniListStatus = false;
         this.setSongList([]);
         this.miniList = [];
       },
-      //切换歌曲的循环方法
-      changeSongLoop() {
-        this.setSongLoop();
+      //接收大播放器传出的方法,用于隐藏大播放器
+      bigPlayerHidden() {
+        this.bigPlayerShow = false;
+      },
+      // 接收大播放器传出的方法,用以显示迷你播放列表
+      miniListShow() {
+        this.miniListStatus = true;
+      },
+      // 接收大播放器传出的值,修改当前播放进度
+      setcurrentRate(time) {
+        console.log(time);
       },
     },
     // 挂载后生命周期
@@ -385,7 +434,7 @@
   }
   .miniList {
     z-index: 99999999;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 15%);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 30%);
     > div {
       bottom: 1rem;
       width: calc(100% - 2rem);

@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     Theme: "dark",
-    navBarShow: true,
+    navBarStatus: true,
+    miniPlayerStatus: false,
     // 播放核心----------------------
     songList: [],
     playIndex: -1,
@@ -32,21 +33,33 @@ export default new Vuex.Store({
     },
     // 隐藏底部导航栏（五大金刚键）
     navBarHidden(S) {
-      S.navBarShow = false;
+      S.navBarStatus = false;
     },
     // 显示底部导航栏（五大金刚键）
     navBarShow(S) {
-      S.navBarShow = false;
+      S.navBarStatus = true;
+    },
+    // 隐藏底部迷你播放器
+    miniPlayerHidden(S) {
+      S.miniPlayerStatus = false;
+    },
+    // 显示底部迷你播放器
+    miniPlayerShow(S) {
+      S.miniPlayerStatus = true;
     },
     //修改整个本地播放列表
     setSongList(S, idList) {
       S.songList = idList;
-      S.songList.length == 0 && (S.playIndex = -1);
+      S.songList.length == 0
+        ? ((S.playIndex = -1), (S.miniPlayerStatus = false))
+        : (S.miniPlayerStatus = true);
     },
     // 播放列表删除指定歌曲
     songListReduce(S, songId) {
       S.songList.splice(S.songList.indexOf(songId), 1);
-      S.songList.length == 0 && (S.playIndex = -1);
+      S.songList.length == 0
+        ? ((S.playIndex = -1), (S.miniPlayerStatus = false))
+        : (S.miniPlayerStatus = true);
     },
     // 播放列表末尾添加歌曲
     songListAdd(S, songId) {
@@ -71,9 +84,16 @@ export default new Vuex.Store({
     },
     //上一首歌
     preSong(S) {
-      S.playIndex == 0
-        ? (S.playIndex = S.songList.length - 1)
-        : (S.playIndex -= 1);
+      // 随机播放
+      if (S.songLoop == 2) {
+        let min = 0,
+          max = S.songList.length - 1;
+        S.playIndex = Math.round(Math.random() * (max - min)) + min;
+      } else {
+        S.playIndex == 0
+          ? (S.playIndex = S.songList.length - 1)
+          : (S.playIndex -= 1);
+      }
     },
     // 设置循环方式
     setSongLoop(S, loop) {

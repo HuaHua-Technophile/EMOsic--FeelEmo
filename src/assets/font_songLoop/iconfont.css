@@ -1,11 +1,10 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1684291615673') format('truetype');
+  src: url("iconfont.ttf?t=1684291615673") format("truetype");
 }
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -22,4 +21,3 @@
 .icon-24gl-repeatOnce2:before {
   content: "\ea77";
 }
-
