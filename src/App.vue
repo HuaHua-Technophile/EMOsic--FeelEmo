@@ -3,17 +3,16 @@
     <transition name="view">
       <router-view></router-view>
     </transition>
+    <!-- 播放核心 -->
+    <audio
+      ref="playCore"
+      src=""
+      :loop="songLoop == 1"
+      @timeupdate="setSchedule($event)"></audio>
     <!-- 底栏(迷你播放器\5大金刚键) -->
     <div
       class="pt-1 position-fixed w-100 bg-body"
-      style="bottom: -1px; z-index: 99">
-      <!-- 播放核心 -->
-      <audio
-        ref="playCore"
-        src=""
-        :loop="songLoop == 1"
-        controls
-        @timeupdate="setSchedule($event)"></audio>
+      style="bottom: -1px; z-index: 7">
       <!-- 底部迷你播放器(左右横滑切歌) -->
       <transition name="sideUp">
         <div
@@ -199,17 +198,19 @@
     <transition name="sideUp">
       <big-player
         v-show="bigPlayerShow"
-        :currentRate="currentRate"
         :currentTime="currentTime"
         :duration="duration"
         :bigBG="thisSongImg"
         :songName="thisSongName"
         :songAr="thisSongAr"
         :isPlaying="isPlaying"
+        :List="miniPLayer"
+        :Loop="miniLoop"
         @bigPlayerHidden="bigPlayerHidden"
         @miniListShow="miniListShow"
         @Play_Pause="Play_Pause"
-        @setcurrentRate="setcurrentRate"></big-player>
+        @setcurrentTime="setcurrentTime"
+        @miniListLoad="miniListLoad"></big-player>
     </transition>
   </div>
 </template>
@@ -364,8 +365,8 @@
         this.miniListStatus = true;
       },
       // 接收大播放器传出的值,修改当前播放进度
-      setcurrentRate(time) {
-        console.log(time);
+      setcurrentTime(time) {
+        this.$refs.playCore.currentTime = time;
       },
     },
     // 挂载后生命周期
@@ -433,7 +434,7 @@
     opacity: 0;
   }
   .miniList {
-    z-index: 99999999;
+    z-index: 10;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 30%);
     > div {
       bottom: 1rem;
