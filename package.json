@@ -19,6 +19,7 @@
     "colorthief": "^2.4.0",
     "core-js": "^3.8.3",
     "lodash": "^4.17.21",
+    "lyric-parser": "^1.0.1",
     "swiper": "^9.3.1",
     "vant": "latest-v2",
     "vue": "^2.6.14",

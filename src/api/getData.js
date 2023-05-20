@@ -60,3 +60,10 @@ export function getSongDetail(id) {
     method: "get",
   });
 }
+//获取歌词
+export function getLyric(id) {
+  return request({
+    url: `/lyric?id=${id}`,
+    method: "get",
+  });
+}

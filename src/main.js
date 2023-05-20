@@ -1,10 +1,15 @@
-//----bootstrap-------------------
+//----bootstrap---------------------------
 import "./assets/customBootStrap.scss"; //最先导入bootstrap样式,以便于可以被自定义样式覆盖
 import "bootstrap/dist/js/bootstrap.bundle.js";
-//----bootstrap icon字体图标库------
+//----bootstrap icon字体图标库--------------
 import "bootstrap-icons/font/bootstrap-icons.css"; //最先导入bootstrap icon字体图标
-//----Swiper9.3.1------------------
+//----Swiper9.3.1-------------------------
 import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
+//----lyric-parser歌词解析-----------------
+/* let lyric = new Lyric(lyricStr, handler);
+function hanlder({ lineNum, txt }) {
+  // this hanlder called when lineNum change
+} */
 //----vue,路由，vuex---------------------
 import Vue from "vue";
 import App from "./App.vue";

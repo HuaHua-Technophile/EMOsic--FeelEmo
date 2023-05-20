@@ -11,64 +11,79 @@
       <!-- 头部顶栏:收起按钮,歌曲信息,分享按钮 -->
       <div
         class="d-flex justify-content-between align-items-center ps-3 pe-3 pt-4 t-shadow-3">
-        <!-- 收起按钮 --><i
-          class="bi bi-chevron-down fs-1"
-          @click="
-            $emit('bigPlayerHidden');
-            navBarShow();
-            miniPlayerShow();
-          "></i>
+        <!-- 收起按钮 -->
+        <div class="flex-shrink-0">
+          <i
+            class="bi bi-chevron-down fs-1"
+            @click="
+              $emit('bigPlayerHidden');
+              navBarShow();
+              miniPlayerShow();
+            "></i>
+        </div>
         <!-- 歌曲信息 -->
-        <div class="text-center">
+        <div class="flex-grow-1 overflow-hidden text-center">
           <!-- 歌名 -->
           <div class="fs-5">{{ songName }}</div>
           <!-- 歌手 -->
-          <div class="fs-7 opacity-50">
+          <div class="fs-7 opacity-50 van-ellipsis">
             <span v-for="(j, indexs) in songAr" :key="indexs"
               ><span>{{ j.name }}</span
               ><span v-if="indexs != songAr.length - 1">/</span></span
             >
           </div>
         </div>
-        <!-- 分享按钮 --><i class="bi bi-share-fill fs-3"></i>
+        <!-- 分享按钮 -->
+        <div class="flex-shrink-0">
+          <i class="bi bi-share-fill fs-3"></i>
+        </div>
       </div>
       <!-- 专辑旋转封面/歌词 -->
-      <lyric-rendering v-if="lrcStatus" class="w-100 h-100"></lyric-rendering>
-      <div
-        v-else
-        class="position-relative flex-grow-1 w-100 h-100 d-flex align-items-center justify-content-center">
-        <!-- 唱片机底座 -->
-        <div
-          class="recordPlayer position-absolute w-75 start-50 top-50 translate-middle rounded-pill"></div>
-        <!-- 唱片机磁头 -->
-        <div
-          class="magneticHead position-absolute z-3"
-          :class="[{ active: isPlaying }]">
-          <img src="../assets/黑胶唱片机磁头.png" class="w-100" />
-        </div>
-        <swiper-container ref="recordPlayer" :loop="Loop" class="h-100">
-          <swiper-slide v-for="(items, index) in List" :key="index">
+      <div class="position-relative flex-grow-1 w-100 h-100">
+        <transition name="fadeIn">
+          <lyric-rendering
+            v-if="lrcStatus"
+            class="w-100 h-100 position-absolute top-0"></lyric-rendering>
+        </transition>
+        <transition name="fadeIn">
+          <div v-show="!lrcStatus" class="position-absolute top-0 w-100 h-100">
+            <!-- 唱片机底座 -->
             <div
-              class="positon-relative h-100 d-flex align-items-center justify-content-center">
-              <!-- 黑胶唱盘 -->
-              <img
-                class="position-absolute z-2 start-50 top-50 translate-middle w-75"
-                src="../assets/黑胶唱片.png" />
-              <!-- 专辑封面 -->
-              <img
-                class="albumCover rounded-pill object-fit-cover rotate"
-                :class="[{ rotatePaused: !isPlaying }]"
-                :src="`${items.al.picUrl}?param=x600y600`" />
+              class="recordPlayer position-absolute w-75 start-50 top-50 translate-middle rounded-pill"></div>
+            <!-- 唱片机磁头 -->
+            <div
+              class="magneticHead position-absolute z-3"
+              :class="[{ active: isPlaying }]">
+              <img src="../assets/黑胶唱片机磁头.png" class="w-100" />
             </div>
-          </swiper-slide>
-        </swiper-container>
+            <swiper-container ref="recordPlayer" :loop="Loop" class="h-100">
+              <swiper-slide v-for="(items, index) in List" :key="index">
+                <div
+                  class="positon-relative h-100 d-flex align-items-center justify-content-center">
+                  <!-- 黑胶唱盘 -->
+                  <img
+                    class="position-absolute z-2 start-50 top-50 translate-middle w-75"
+                    src="../assets/黑胶唱片.png" />
+                  <!-- 专辑封面 -->
+                  <img
+                    class="albumCover rounded-pill object-fit-cover rotate"
+                    :class="[{ rotatePaused: !isPlaying }]"
+                    :src="`${items.al.picUrl}?param=x600y600`" />
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </div>
+        </transition>
       </div>
       <!-- 底栏1:收藏\下载\歌词显示\评论\更多 -->
       <div
         class="ps-3 pe-3 mb-3 w-100 d-flex justify-content-around align-items-center fs-2 t-shadow-5">
         <i class="bi bi-heart"></i>
         <i class="bi bi-download"></i>
-        <span class="fs-7 border border-light rounded" style="padding: 2px 5px"
+        <span
+          class="fs-7 border border-light rounded"
+          style="padding: 2px 5px"
+          @click="lrcStatus = !lrcStatus"
           >词</span
         >
         <i class="bi bi-chat-text"></i>
@@ -136,7 +151,7 @@
     ],
     data() {
       return {
-        lrcStatus: false,
+        lrcStatus: true,
         timeIdList: [],
       };
     },

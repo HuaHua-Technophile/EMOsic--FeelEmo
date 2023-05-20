@@ -65,3 +65,11 @@ body {
   margin: 3px;
   border-radius: 2px;
 }
+.fadeIn-enter-active,
+.fadeIn-leave-active {
+  transition: all 0.8s;
+}
+.fadeIn-enter,
+.fadeIn-leave-to {
+  opacity: 0;
+}

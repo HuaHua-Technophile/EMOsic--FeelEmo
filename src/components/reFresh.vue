@@ -51,7 +51,8 @@
         }
         this.timeIdList.push(
           setTimeout(() => {
-            this.$refs.OccupyBgImg.style.transform = `scale(1)`;
+            if (this.$refs.OccupyBgImg)
+              this.$refs.OccupyBgImg.style.transform = `scale(1)`;
           }, 100)
         );
       },
