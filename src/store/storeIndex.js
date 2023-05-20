@@ -71,29 +71,15 @@ export default new Vuex.Store({
     },
     //下一首歌
     nextSong(S) {
-      // 随机播放
-      if (S.songLoop == 2) {
-        let min = 0,
-          max = S.songList.length - 1;
-        S.playIndex = Math.round(Math.random() * (max - min)) + min;
-      } else {
-        S.playIndex == S.songList.length - 1
-          ? (S.playIndex = 0)
-          : (S.playIndex += 1);
-      }
+      S.playIndex == S.songList.length - 1
+        ? (S.playIndex = 0)
+        : (S.playIndex += 1);
     },
     //上一首歌
     preSong(S) {
-      // 随机播放
-      if (S.songLoop == 2) {
-        let min = 0,
-          max = S.songList.length - 1;
-        S.playIndex = Math.round(Math.random() * (max - min)) + min;
-      } else {
-        S.playIndex == 0
-          ? (S.playIndex = S.songList.length - 1)
-          : (S.playIndex -= 1);
-      }
+      S.playIndex == 0
+        ? (S.playIndex = S.songList.length - 1)
+        : (S.playIndex -= 1);
     },
     // 设置循环方式
     setSongLoop(S, loop) {
@@ -101,6 +87,12 @@ export default new Vuex.Store({
         S.songLoop = loop;
       } else {
         S.songLoop = S.songLoop == 2 ? 0 : S.songLoop + 1;
+      }
+      // 如果是随机播放，则修改歌单列表顺序，实现伪随机
+      if (S.songLoop == 2) {
+        let id = S.songList[S.playIndex];
+        S.songList = S.songList.sort(() => Math.random() - 0.5);
+        S.playIndex = S.songList.indexOf(id);
       }
     },
   },

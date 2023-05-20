@@ -161,6 +161,7 @@
               class="d-flex justify-content-between mb-3">
               <!-- 列表左侧 -->
               <div
+                @click="setPlayIndex(index)"
                 class="d-flex align-items-end flex-grow-1 overflow-hidden"
                 :class="{ 'text-danger': index == playIndex }">
                 <span
@@ -258,6 +259,7 @@
         "preSong",
         "setSongLoop",
         "navBarHidden",
+        "navBarShow",
         "miniPlayerHidden",
       ]),
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
@@ -397,6 +399,8 @@
         // 如果歌曲id设定为-1,则取消播放,本地播放状态设为暂停
         if (newV == -1) {
           this.$refs.playCore.src = "";
+          this.bigPlayerShow = false;
+          this.navBarShow();
           this.isPlaying = false;
         } else {
           await getSongUrl(newV).then((res) => {
@@ -410,8 +414,16 @@
           });
         }
       },
+      // 当歌单变化，就修改为未加载完成
       songList() {
         this.miniListFinished = false;
+      },
+      // 当循环变为随机循环，则清空小列表，使其重新加载
+      songLoop(newV) {
+        if (newV == 2) {
+          this.miniList = [];
+          this.miniListLoad();
+        }
       },
     },
   };
