@@ -10,16 +10,28 @@
       :loop="songLoop == 1"
       @timeupdate="setSchedule($event)"></audio>
     <!-- 底栏(迷你播放器\5大金刚键) -->
-    <div
-      class="pt-1 position-fixed w-100 bg-body"
-      style="bottom: -1px; z-index: 7">
+    <div class="position-fixed w-100" style="bottom: -1px; z-index: 7">
       <!-- 底部迷你播放器(左右横滑切歌) -->
       <transition name="sideUp">
         <div
           v-show="miniPlayerStatus"
-          class="align-items-center ps-3 pe-3 mb-1"
-          :class="[{ 'd-flex': miniPlayerStatus }]">
-          <!-- 播放器左侧专辑封面、歌曲名 -->
+          class="align-items-center position-relative bg-body-secondary ms-3 me-3 pe-3 rounded-pill"
+          style="display: flex; padding-left: 50px; margin-top: -1px">
+          <!-- 播放器左侧专辑封面 -->
+          <div
+            class="position-absolute start-0 bottom-0"
+            style="width: 45px; height: 50px">
+            <!-- 封面,缓存3张.实现快速切换专辑封面 -->
+            <transition-group name="sideUp">
+              <img
+                v-for="(item, index) in miniPLayer"
+                :key="index"
+                :src="`${item.al.picUrl}?param=x45y45`"
+                class="w-100 h-100 position-absolute rounded"
+                :class="[{ 'z-3': index == 1 }]" />
+            </transition-group>
+          </div>
+          <!-- 播放器中间,左右横滑切歌 -->
           <div class="flex-grow-1 overflow-hidden">
             <!-- 切歌轮播图 -->
             <swiper-container
@@ -35,13 +47,6 @@
                 v-for="(item, index) in miniPLayer"
                 :key="index"
                 class="w-100 d-flex align-items-center overflow-hidden text-nowrap">
-                <!-- 封面 -->
-                <div class="me-2" style="width: 38px">
-                  <img
-                    v-if="item.al"
-                    :src="`${item.al.picUrl}?param=x38y38`"
-                    class="rounded-pill" />
-                </div>
                 <!-- 歌曲名 --><span>{{ item.name }}</span>
                 <!-- 歌手 -->
                 <div class="opacity-50">
@@ -90,22 +95,29 @@
       </transition>
       <!-- 底部导航栏(5大金刚键) -->
       <transition name="sideUp">
-        <nav v-if="navBarStatus" class="nav justify-content-around">
+        <nav
+          v-if="navBarStatus"
+          class="nav pt-1 justify-content-around bg-body">
           <router-link class="nav-link" to="/find">
-            <span class="iconfont icon-netease-cloud-music-line"></span>
-            <span>发现</span>
+            <span
+              class="iconfont icon-netease-cloud-music-line transition-8"></span>
+            <span class="transition-8">发现</span>
           </router-link>
           <router-link class="nav-link" to="/podcast">
-            <i class="bi bi-broadcast"></i><span>播客</span>
+            <i class="bi bi-broadcast transition-8"></i
+            ><span class="transition-8">播客</span>
           </router-link>
           <router-link class="nav-link" to="/mine">
-            <i class="bi bi-music-note-beamed"></i><span>我的</span>
+            <i class="bi bi-music-note-beamed transition-8"></i
+            ><span class="transition-8">我的</span>
           </router-link>
           <router-link class="nav-link" to="/follow">
-            <span class="iconfont icon-guanzhu"></span><span>关注</span>
+            <span class="iconfont icon-guanzhu transition-8"></span
+            ><span class="transition-8">关注</span>
           </router-link>
           <router-link class="nav-link" to="/cloudVillage">
-            <span class="iconfont icon-taolunqu"></span><span>云村</span>
+            <span class="iconfont icon-taolunqu transition-8"></span
+            ><span class="transition-8">云村</span>
           </router-link>
         </nav>
       </transition>
@@ -162,7 +174,7 @@
               <!-- 列表左侧 -->
               <div
                 @click="setPlayIndex(index)"
-                class="d-flex align-items-end flex-grow-1 overflow-hidden"
+                class="d-flex align-items-end flex-grow-1 overflow-hidden transition-8"
                 :class="{ 'text-danger': index == playIndex }">
                 <span
                   v-if="item.fee == 1 || item.fee == 4"
@@ -367,8 +379,8 @@
         this.miniListStatus = true;
       },
       // 接收大播放器传出的值,修改当前播放进度
-      setcurrentTime(time) {
-        this.$refs.playCore.currentTime = time;
+      setcurrentTime(rate) {
+        this.$refs.playCore.currentTime = (this.duration * rate) / 10000;
       },
     },
     // 挂载后生命周期
@@ -429,22 +441,6 @@
   };
 </script>
 <style lang="scss">
-  .view-enter-active,
-  .view-leave-active,
-  .sideUp-enter-active,
-  .sideUp-leave-active {
-    transition: all 0.5s;
-  }
-  .view-enter,
-  .view-leave-to {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  .sideUp-enter,
-  .sideUp-leave-to {
-    transform: translateY(100%);
-    opacity: 0;
-  }
   .miniList {
     z-index: 10;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 30%);
@@ -479,14 +475,12 @@
     > *:nth-child(1) {
       width: 30px;
       height: 30px;
-      transition: all 0.5s;
       font-size: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
     > *:nth-child(2) {
-      transition: all 0.5s;
       font-size: 12px;
     }
     &.router-link-active {

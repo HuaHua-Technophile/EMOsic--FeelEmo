@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-100 vh-100 position-fixed top-0"
+    class="w-100 vh-100 position-fixed top-0 text-light"
     style="z-index: 8"
     :style="[
       { background: `url(${bigBG}?param=x90y210) center/cover` },
@@ -41,28 +41,31 @@
           </div>
         </div>
         <!-- 专辑旋转封面/歌词 -->
-        <div class="position-relative flex-grow-1 w-100 h-100">
+        <div class="position-relative flex-grow-1 mt-4 mb-4">
+          <!-- 歌词组件,需要保活 -->
           <transition name="fadeIn">
             <keep-alive>
               <lyric-rendering
                 :currentTime="currentTime"
                 :isPlaying="isPlaying"
+                @lrcSetTime="lrcSetTime"
                 v-if="lrcStatus"
-                class="w-100 h-100 position-absolute top-0"></lyric-rendering>
+                class="position-absolute top-0 bottom-0 start-0 end-0"></lyric-rendering>
             </keep-alive>
           </transition>
+          <!-- 黑胶唱片机 -->
           <transition name="fadeIn">
             <div
               v-show="!lrcStatus"
-              class="position-absolute top-0 w-100 h-100">
+              class="position-absolute top-0 bottom-0 start-0 end-0">
               <!-- 唱片机底座 -->
               <div
                 class="recordPlayer position-absolute w-75 start-50 top-50 translate-middle rounded-pill"></div>
               <!-- 唱片机磁头 -->
               <div
-                class="magneticHead position-absolute z-3"
+                class="magneticHead position-absolute z-3 transition-10"
                 :class="[{ active: isPlaying }]">
-                <img src="../assets/黑胶唱片机磁头.png" class="w-100" />
+                <img src="../assets/黑胶唱片机磁头.png" class="w-75" />
               </div>
               <swiper-container ref="recordPlayer" :loop="Loop" class="h-100">
                 <swiper-slide v-for="(items, index) in List" :key="index">
@@ -100,16 +103,16 @@
         <!-- 底栏2:进度条 -->
         <div class="ps-3 pe-3 d-flex align-items-center t-shadow-8">
           <span>{{ currentTime | TimeFormat }}</span>
-          <van-slider
-            v-model="currentTimeBig"
-            :min="0"
-            :max="duration"
-            active-color="#ffffff"
-            inactive-color="#888888"
-            bar-height="6"
-            button-size="6"
-            class="w-100 ms-3 me-3">
-          </van-slider>
+          <div
+            class="w-100 h-100 ms-2 me-2 rounded-5 overflow-hidden position-relative">
+            <input
+              type="range"
+              class="currentRate w-100 position-absolute top-50 translate-middle-y"
+              min="0"
+              max="10000"
+              step="1"
+              v-model="currentRate" />
+          </div>
           <span>{{ duration | TimeFormat }}</span>
         </div>
         <!-- 底栏3:循环控制\上一首\播放暂停\上一首\迷你播放列表 -->
@@ -172,9 +175,10 @@
     computed: {
       ...mapState(["songLoop", "playIndex"]),
       ...mapGetters(["playSongId"]),
-      currentTimeBig: {
+      currentRate: {
         get: function () {
-          return this.currentTime;
+          console.log(this.currentTime / this.duration);
+          return (this.currentTime / this.duration) * 10000;
         },
         set: function (v) {
           this.$emit("setcurrentTime", v);
@@ -190,6 +194,11 @@
         "nextSong",
         "preSong",
       ]),
+      //歌词点击跳转进度
+      lrcSetTime(time) {
+        this.$emit("setcurrentTime", time);
+      },
+      // 上一首歌
       prev() {
         this.$refs.recordPlayer.swiper.slidePrev(300, false);
         this.timeIdList.push(
@@ -198,6 +207,7 @@
           }, 300)
         );
       },
+      // 下一首歌
       next() {
         this.$refs.recordPlayer.swiper.slideNext(300, false);
         this.timeIdList.push(
@@ -280,7 +290,6 @@
   .magneticHead {
     top: 5%;
     left: calc(50% - 15px);
-    transition: all 1s;
     transform-origin: 0% 0%;
   }
   .magneticHead.active {
@@ -288,5 +297,34 @@
   }
   .albumCover {
     width: 70%;
+  }
+  // 原生input美化思路:https://segmentfault.com/a/1190000041543171###
+  .currentRate {
+    appearance: none;
+    &::-webkit-slider-runnable-track {
+      height: 4px;
+      background: #ffffff6c;
+      border-radius: 99px;
+    }
+    &::-webkit-slider-thumb {
+      appearance: none;
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background-color: white;
+      margin-top: -5px;
+      border: 1px solid transparent;
+      border-image: linear-gradient(
+          90deg,
+          #ec5f67,
+          #f99157,
+          #fac863,
+          #99c794,
+          #5fb3b3,
+          #6699cc,
+          #c594c5
+        )
+        0 fill / 5 15.5 5 0 / 0 0 0 70vw; /*绘制元素外矩形*/
+    }
   }
 </style>

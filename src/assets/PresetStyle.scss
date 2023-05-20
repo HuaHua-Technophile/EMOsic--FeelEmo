@@ -66,10 +66,24 @@ body {
   border-radius: 2px;
 }
 .fadeIn-enter-active,
-.fadeIn-leave-active {
+.fadeIn-leave-active,
+.view-enter-active,
+.view-leave-active,
+.sideUp-enter-active,
+.sideUp-leave-active {
   transition: all 0.8s;
 }
 .fadeIn-enter,
 .fadeIn-leave-to {
+  opacity: 0;
+}
+.view-enter,
+.view-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+.sideUp-enter,
+.sideUp-leave-to {
+  transform: translateY(100%);
   opacity: 0;
 }

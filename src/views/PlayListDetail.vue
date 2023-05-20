@@ -34,7 +34,9 @@
             <!-- 具体信息 -->
             <div class="flex-grow-1">
               <!-- 歌曲名 -->
-              <div :class="[{ 'text-danger': item.id == playSongId }]">
+              <div
+                class="transition-8"
+                :class="[{ 'text-danger': item.id == playSongId }]">
                 {{ item.name }}
                 <span v-if="item.tns" class="opacity-50">{{ item.tns }}</span>
               </div>

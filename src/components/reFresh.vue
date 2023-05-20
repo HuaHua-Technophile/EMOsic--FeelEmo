@@ -35,7 +35,10 @@
     methods: {
       // 背景图跟随拖动缩放
       bgScale: throttle(function () {
-        if (this.$refs.father.scrollTop < this.height) {
+        if (
+          this.$refs.father.scrollTop < this.height ||
+          this.$refs.OccupyBgImg.style
+        ) {
           this.$refs.OccupyBgImg.style.transform = `scale(${
             1 + 0.5 * (1 - this.$refs.father.scrollTop / this.height)
           })`;
