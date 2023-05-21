@@ -15,7 +15,7 @@
         </template>
       </square-card>
       <!-- 歌单名称\作者\作者头像\歌单标签 -->
-      <div class="flex-grow-1">
+      <div class="flex-grow-1 flex-shrink-1">
         <!-- 歌单名称 -->
         <div class="d-flex align-items-center mb-2">
           <span class="flex-grow-1 van-ellipsis">{{ data.name }}</span>
@@ -25,24 +25,26 @@
             <i class="bi bi-chevron-down fs-9"></i>
           </div>
         </div>
-        <!-- 作者\作者头像 -->
+        <!-- 作者\作者头像\关注 -->
         <div v-if="data.creator" class="d-flex align-items-center mb-2">
           <img
             :src="`${data.creator.avatarUrl}?param=x26y26`"
             class="rounded-pill me-1" />
-          <span class="me-1" style="--bs-text-opacity: 0.5">
+          <span
+            class="me-1 flex-grow-1 overflow-hidden"
+            style="--bs-text-opacity: 0.5">
             {{ data.creator.nickname }}
           </span>
           <!-- 已关注\关注按钮 -->
           <span
             v-if="data.creator.followed"
-            class="rounded-pill bg-light fs-9 ps-1 pe-1"
+            class="rounded-pill bg-light fs-9 ps-1 pe-1 flex-shrink-0"
             style="--bs-bg-opacity: 0.1">
             <i class="bi bi-chevron-right"></i>
           </span>
           <span
             v-else
-            class="rounded-pill bg-light fs-9"
+            class="rounded-pill bg-light fs-9 flex-shrink-0"
             style="--bs-bg-opacity: 0.1; padding: 2px 6px"
             >+关注</span
           >

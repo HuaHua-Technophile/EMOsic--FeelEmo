@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@better-scroll/core": "^2.5.1",
+    "@better-scroll/pull-up": "^2.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",

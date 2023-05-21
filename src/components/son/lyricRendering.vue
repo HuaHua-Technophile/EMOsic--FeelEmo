@@ -7,7 +7,7 @@
         :key="index"
         class="lyricItem transition-8"
         :class="[{ 'text-white fs-4 fw-bold': index == lineNum }]"
-        @click="$emit('lrcSetTime', item.time / 1000)">
+        @click="$emit('lrcSetTime', item.time)">
         {{ item.txt }}
       </p>
     </div>
@@ -42,6 +42,7 @@
       async renderLrc() {
         let res = await getLyric(this.playSongId);
         this.lyric = new Lyric(res.lrc.lyric, this.handler);
+        console.log("歌词", this.lyric);
         // 切歌后,歌词重载,重新计算Better scroll
         this.$nextTick(() => {
           this.bs.refresh();

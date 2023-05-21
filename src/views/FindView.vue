@@ -1,5 +1,7 @@
 <template>
-  <div id="find-view" class="w-100 h-100 noScrollBar">
+  <div
+    class="find-view w-100 noScrollBar"
+    :class="miniPlayerStatus ? 'h-miniPlayer' : 'h-navBar'">
     <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
       <div
         class="d-flex justify-content-center align-items-center"
@@ -106,8 +108,9 @@
         songList2: null,
       };
     },
+    // 计算属性
     computed: {
-      ...mapState(["Theme"]),
+      ...mapState(["Theme", "miniPlayerStatus"]),
     },
     //方法
     methods: {
@@ -187,8 +190,8 @@
     },
   };
 </script>
-<style lang="scss" scoped>
-  #find-view {
+<style lang="scss">
+  .find-view {
     overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;

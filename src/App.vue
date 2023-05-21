@@ -1,7 +1,7 @@
 <template>
   <div class="w-100 vh-100 noScrollBar">
     <transition name="view">
-      <router-view></router-view>
+      <router-view :miniListStatus="miniListStatus"></router-view>
     </transition>
     <!-- 播放核心 -->
     <audio
@@ -15,20 +15,24 @@
       <transition name="sideUp">
         <div
           v-show="miniPlayerStatus"
-          class="align-items-center position-relative bg-body-secondary ms-3 me-3 pe-3 rounded-pill"
-          style="display: flex; padding-left: 50px; margin-top: -1px">
-          <!-- 播放器左侧专辑封面 -->
+          class="align-items-center position-relative bg-body-secondary ms-3 me-3 pt-1 pb-1 pe-3 rounded-pill"
+          style="display: flex; padding-left: 70px; margin-top: -1px">
+          <!-- 播放器左侧专辑封面,缓存3张.实现快速切换专辑封面 -->
           <div
             class="position-absolute start-0 bottom-0"
-            style="width: 45px; height: 50px">
-            <!-- 封面,缓存3张.实现快速切换专辑封面 -->
+            style="width: 60px; height: 50px">
+            <img
+              src="./assets/黑胶唱片.png"
+              class="float-end"
+              style="width: 50px" />
             <transition-group name="sideUp">
               <img
                 v-for="(item, index) in miniPLayer"
                 :key="index"
-                :src="`${item.al.picUrl}?param=x45y45`"
-                class="w-100 h-100 position-absolute rounded"
-                :class="[{ 'z-3': index == 1 }]" />
+                :src="`${item.al.picUrl}?param=x100y100`"
+                class="h-100 position-absolute rounded"
+                :class="[{ 'z-3': index == 1 }]"
+                style="width: 50px" />
             </transition-group>
           </div>
           <!-- 播放器中间,左右横滑切歌 -->
@@ -61,24 +65,25 @@
           </div>
           <!-- 播放器右侧环形进度条、歌单列表展开-->
           <div class="ms-3 flex-sherk-0 d-flex align-items-center">
-            <!-- 环形进度条 -->
+            <!-- 环形进度条和播放暂停按钮 -->
             <div
               class="miniPlayerBtn position-relative rounded-pill"
               @click="Play_Pause()">
-              <!-- 正在播放显示暂停按钮 -->
-              <i
-                v-show="isPlaying"
-                class="bi bi-pause text-white fs-3 position-absolute top-50 start-50 translate-middle"></i>
-              <!-- 未在播放时显示三角形播放按钮 -->
-              <i
-                v-show="!isPlaying"
-                class="bi bi-play-fill text-white fs-3 position-absolute top-50 translate-middle"
-                style="left: 55%"></i>
+              <!-- 正在播放显示暂停按钮,未在播放时显示三角形播放按钮 -->
+              <div
+                class="position-absolute z-1 top-50 start-50 translate-middle fs-3 text-white">
+                <i v-show="isPlaying" class="bi bi-pause"></i>
+                <i
+                  v-show="!isPlaying"
+                  class="bi bi-play-fill"
+                  style="margin-left: 2px"></i>
+              </div>
+              <!-- 环形进度条 -->
               <van-circle
                 v-model="currentRate"
                 :rate="100"
                 :stroke-width="130"
-                :size="26"
+                :size="27"
                 :layer-color="'white'"
                 :color="'red'"
                 class="position-absolute start-50 translate-middle" />
@@ -174,7 +179,7 @@
               <!-- 列表左侧 -->
               <div
                 @click="setPlayIndex(index)"
-                class="d-flex align-items-end flex-grow-1 overflow-hidden transition-8"
+                class="d-flex align-items-end flex-grow-1 overflow-hidden transition-5"
                 :class="{ 'text-danger': index == playIndex }">
                 <span
                   v-if="item.fee == 1 || item.fee == 4"
@@ -183,7 +188,7 @@
                 </span>
                 <!-- 歌曲名称 -->
                 <span
-                  class="text-nowrap"
+                  class="text-nowrap transition-5"
                   :class="[{ 'text-danger': item.id == playSongId }]"
                   >{{ item.name }}</span
                 >
@@ -222,7 +227,8 @@
         @bigPlayerHidden="bigPlayerHidden"
         @miniListShow="miniListShow"
         @Play_Pause="Play_Pause"
-        @setcurrentTime="setcurrentTime"
+        @setCurrentTime="setCurrentTime"
+        @setCurrentRate="setCurrentRate"
         @miniListLoad="miniListLoad"></big-player>
     </transition>
   </div>
@@ -378,9 +384,13 @@
       miniListShow() {
         this.miniListStatus = true;
       },
-      // 接收大播放器传出的值,修改当前播放进度
-      setcurrentTime(rate) {
-        this.$refs.playCore.currentTime = (this.duration * rate) / 10000;
+      // 接收大播放器传出的时间值,修改当前播放进度
+      setCurrentTime(time) {
+        this.$refs.playCore.currentTime = time;
+      },
+      // 接收大播放器传出的百分比值,修改当前播放进度
+      setCurrentRate(rate) {
+        this.$refs.playCore.currentTime = (this.duration * rate) / 1000;
       },
     },
     // 挂载后生命周期
@@ -448,9 +458,6 @@
       bottom: 1rem;
       width: calc(100% - 2rem);
     }
-  }
-  .van-list {
-    max-height: 50vh !important;
   }
   .miniPlayerBtn {
     box-shadow: 0 1px 5px black;

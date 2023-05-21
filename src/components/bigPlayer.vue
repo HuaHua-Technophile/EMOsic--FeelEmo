@@ -26,7 +26,7 @@
           <!-- 歌曲信息 -->
           <div class="flex-grow-1 overflow-hidden text-center">
             <!-- 歌名 -->
-            <div class="fs-5">{{ songName }}</div>
+            <div class="ms-3 me-3 fs-5 van-ellipsis">{{ songName }}</div>
             <!-- 歌手 -->
             <div class="fs-7 opacity-50 van-ellipsis">
               <span v-for="(j, indexs) in songAr" :key="indexs"
@@ -109,7 +109,7 @@
               type="range"
               class="currentRate w-100 position-absolute top-50 translate-middle-y"
               min="0"
-              max="10000"
+              max="1000"
               step="1"
               v-model="currentRate" />
           </div>
@@ -177,11 +177,10 @@
       ...mapGetters(["playSongId"]),
       currentRate: {
         get: function () {
-          console.log(this.currentTime / this.duration);
-          return (this.currentTime / this.duration) * 10000;
+          return (this.currentTime / this.duration) * 1000;
         },
-        set: function (v) {
-          this.$emit("setcurrentTime", v);
+        set: function (rate) {
+          this.$emit("setCurrentRate", rate);
         },
       },
     },
@@ -196,7 +195,7 @@
       ]),
       //歌词点击跳转进度
       lrcSetTime(time) {
-        this.$emit("setcurrentTime", time);
+        this.$emit("setCurrentTime", time / 1000);
       },
       // 上一首歌
       prev() {
@@ -325,6 +324,10 @@
           #c594c5
         )
         0 fill / 5 15.5 5 0 / 0 0 0 70vw; /*绘制元素外矩形*/
+      transition: all 0.5s;
+    }
+    &::-webkit-slider-thumb:active {
+      transform: scale(1.3);
     }
   }
 </style>

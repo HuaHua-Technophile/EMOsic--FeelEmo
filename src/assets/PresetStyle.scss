@@ -87,3 +87,10 @@ body {
   transform: translateY(100%);
   opacity: 0;
 }
+.h-navBar {
+  height: calc(100% - 52px) !important;
+}
+.h-miniPlayer {
+  height: calc(100% - 52px) !important ;
+  padding-bottom: 50px !important;
+}
