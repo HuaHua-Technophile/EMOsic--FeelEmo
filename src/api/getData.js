@@ -27,6 +27,7 @@ export function getPlayListDetail(id) {
     method: "get",
   });
 }
+// 获取歌单所有歌曲
 export function getPlayListTrackAll(id, limit = 15, offset = 0) {
   return request({
     url: `/playlist/track/all?id=${id}&limit=${limit}&offset=${offset}`,
@@ -54,6 +55,7 @@ export function getSongUrl(id, level) {
     method: "get",
   });
 }
+// 获取歌曲详情
 export function getSongDetail(id) {
   return request({
     url: `/song/detail?ids=${id}`,
@@ -65,5 +67,28 @@ export function getLyric(id) {
   return request({
     url: `/lyric?id=${id}`,
     method: "get",
+  });
+}
+//获取二维码key
+export function getLoginQrKey() {
+  return request({
+    url: "/login/qr/key",
+    method: "post",
+  });
+}
+//根据二维码key生成二维码图片
+export function getLoginQrCreate(data) {
+  return request({
+    url: "/login/qr/create",
+    method: "post",
+    data,
+  });
+}
+// 二维码检测扫码状态接口
+export function getLoginQrCheck(data) {
+  return request({
+    url: "/login/qr/check",
+    method: "post",
+    data,
   });
 }
