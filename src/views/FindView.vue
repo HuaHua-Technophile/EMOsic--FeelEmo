@@ -2,6 +2,7 @@
   <div
     class="find-view w-100 noScrollBar"
     :class="miniPlayerStatus ? 'h-miniPlayer' : 'h-navBar'">
+    <!-- 顶部搜索框 -->
     <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
       <div
         class="d-flex justify-content-center align-items-center"
@@ -75,11 +76,22 @@
         v-if="songList1"
         :data="songList1"
         class="pt-3 pb-3"></list-swiper>
-      <!-- 发现页排行榜 -->
-      <top-swiper v-if="topList1" :data="topList1" class="pt-3"></top-swiper>
-      <!-- 发现页雷达歌单 -->
-      <square-swiper v-if="playList2" :data="playList2"></square-swiper>
-      <!-- 发现页新歌新碟 -->
+      <!-- 未登录情况下,第三个是发现页排行榜 -->
+      <top-swiper
+        v-if="Block3 && Block3.showType == 'HOMEPAGE_SLIDE_TOPLIST'"
+        :data="Block3"
+        class="pt-3"></top-swiper>
+      <!-- 已登录情况下,第三个是雷达歌单 -->
+      <square-swiper
+        v-if="Block3 && Block3.showType == 'HOMEPAGE_SLIDE_PLAYLIST'"
+        :data="Block3"
+        class="pt-3"></square-swiper>
+      <!-- 未登录情况下,第四个是发现页雷达歌单 -->
+      <square-swiper
+        v-if="Block4 && Block4.showType == 'HOMEPAGE_SLIDE_PLAYLIST'"
+        :data="Block4"></square-swiper>
+      <!-- 已登录情况下,第四个是发现页歌曲拍卖 -->
+      <!-- 未登录情况下,第五个是发现页新歌新碟 -->
       <list-swiper
         v-if="songList2"
         :data="songList2"
@@ -100,9 +112,8 @@
         ballList: [], //推荐入口图标
         //playList是方形轮播图
         playList1: null,
-        playList2: null,
-        //topList是横板轮播图,代表排行榜
-        topList1: null,
+        Block4: null,
+        Block3: null,
         // songList是横板轮播图
         songList1: null,
         songList2: null,
@@ -144,6 +155,7 @@
       });
       //获取发现页数据,包含:轮播图,推荐歌单
       await getFind().then((res) => {
+        console.log(res);
         //轮播图数据写入,轮播图组件初始化前注入自定义样式,然后初始化轮播图
         this.bannerSwiperList = res.data.blocks[0].extInfo.banners;
         // bannerSwiper element注入自定义样式
@@ -161,11 +173,11 @@
         this.$refs.bannerSwiper.initialize();
         //方形轮播图1数据写入
         this.playList1 = res.data.blocks[1];
-        this.playList2 = res.data.blocks[4];
-        // 排行榜数据写入
-        this.topList1 = res.data.blocks[3];
-        // 横板推荐列表数据写入
+
         this.songList1 = res.data.blocks[2];
+        this.Block3 = res.data.blocks[3];
+
+        this.Block4 = res.data.blocks[4];
         this.songList2 = res.data.blocks[5];
       });
     },
@@ -216,7 +228,6 @@
   }
   .find-main {
     padding-top: 56.5px;
-    height: 130vh;
     &.light {
       background: linear-gradient(#f8ecee, #00000000 30%);
     }

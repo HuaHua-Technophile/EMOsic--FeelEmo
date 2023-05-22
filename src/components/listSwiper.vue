@@ -3,7 +3,7 @@
     <!-- title信息栏 -->
     <swiper-card-title :data="data.uiElement"></swiper-card-title>
     <!-- 横板轮播图 -->
-    <swiper-container slides-per-view="auto" class="ps-3">
+    <swiper-container slides-per-view="auto" class="ps-3 pt-3">
       <swiper-slide v-for="(i, index) in data.creatives" :key="index">
         <div
           v-for="(j, indexs) in i.resources"
