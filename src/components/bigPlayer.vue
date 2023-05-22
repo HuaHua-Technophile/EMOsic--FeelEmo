@@ -326,8 +326,5 @@
         0 fill / 5 15.5 5 0 / 0 0 0 70vw; /*绘制元素外矩形*/
       transition: all 0.5s;
     }
-    &::-webkit-slider-thumb:active {
-      transform: scale(1.3);
-    }
   }
 </style>

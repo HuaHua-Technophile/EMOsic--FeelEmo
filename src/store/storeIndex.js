@@ -12,6 +12,8 @@ export default new Vuex.Store({
     songList: [],
     playIndex: -1,
     songLoop: 0,
+    // 用户登录信息存储
+    isLogged: false,
   },
   // 计算属性
   getters: {

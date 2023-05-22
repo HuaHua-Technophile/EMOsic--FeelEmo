@@ -83,7 +83,7 @@
       <list-swiper
         v-if="songList2"
         :data="songList2"
-        class="pt-3"></list-swiper>
+        class="pt-3 pb-3"></list-swiper>
     </div>
   </div>
 </template>
@@ -197,7 +197,7 @@
     -webkit-overflow-scrolling: touch;
   }
   .find-search {
-    width: calc(100% - 0.6px);
+    width: calc(100% - 0.7px);
     > div:nth-child(1) {
       flex-grow: 1;
     }
@@ -222,9 +222,6 @@
     }
     &.dark {
       background: linear-gradient(#291d25, #00000000 20%);
-    }
-    > *:last-child {
-      padding-bottom: var(--b-nav-h) !important;
     }
   }
   .changeColor {

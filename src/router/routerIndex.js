@@ -38,6 +38,11 @@ const routes = [
     name: "playListDetail",
     component: () => import("../views/PlayListDetail.vue"),
   },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/LoginRegistration.vue"),
+  },
 ];
 const router = new VueRouter({
   routes,

@@ -134,81 +134,90 @@
         v-show="miniListStatus"
         @click="miniListHidden($event)"
         class="miniList w-100 vh-100 position-fixed top-0">
+        <!-- 列表主体 -->
         <div
-          class="position-absolute start-50 translate-middle-x pt-3 ps-3 pe-3 bg-body rounded-5 overflow-hidden">
-          <!-- 当前播放大字(列表歌曲数) -->
-          <div class="mb-2">
-            <span class="fs-5">当前播放</span>
-            <span class="fs-7 opacity-50">({{ songList.length }})</span>
-          </div>
-          <!-- 头部左侧:循环控制,头部右侧:下载\收藏\清除播放列表 -->
-          <div
-            class="d-flex justify-content-between align-items-center pb-2 border-bottom">
-            <!-- 循环控制\全部下载\歌单收藏\清除播放列表 -->
-            <div @click="setSongLoop()">
-              <div v-show="songLoop == 0">
-                <i class="iconfont icon-24gl-repeat2 me-2"></i
-                ><span>列表循环</span>
-              </div>
-              <div v-show="songLoop == 1">
-                <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
-                ><span>单曲循环</span>
-              </div>
-              <div v-show="songLoop == 2">
-                <i class="iconfont icon-24gl-shuffle me-2"></i
-                ><span>随机播放</span>
-              </div>
+          class="position-absolute start-50 translate-middle-x bg-body rounded-5 overflow-hidden">
+          <!-- 头部,加毛玻璃效果 -->
+          <div class="miniListHeader position-relative z-3 pt-3 ps-3 pe-3 blur">
+            <!-- 当前播放大字(列表歌曲数) -->
+            <div class="mb-2">
+              <span class="fs-5">当前播放</span>
+              <span class="fs-7 opacity-50">({{ songList.length }})</span>
             </div>
-            <!-- 右侧 下载全部,收藏全部,清除歌单 -->
-            <div class="d-flex fs-5">
-              <i class="bi bi-download me-3"></i>
-              <i class="bi bi-collection-play me-3"></i>
-              <i class="bi bi-trash" @click="clearSongList()"></i>
-            </div>
-          </div>
-          <!-- 歌单列表主体 ,懒加载-->
-          <van-list
-            v-model="miniListLoading"
-            :finished="miniListFinished"
-            @load="miniListLoad()"
-            class="pt-3 overflow-y-scroll">
+            <!-- 头部左侧:循环控制,头部右侧:下载\收藏\清除播放列表 -->
             <div
-              v-for="(item, index) in miniList"
-              :key="index"
-              class="d-flex justify-content-between mb-3">
-              <!-- 列表左侧 -->
-              <div
-                @click="setPlayIndex(index)"
-                class="d-flex align-items-end flex-grow-1 overflow-hidden transition-5"
-                :class="{ 'text-danger': index == playIndex }">
-                <span
-                  v-if="item.fee == 1 || item.fee == 4"
-                  class="InfoTag text-danger border border-danger d-flex align-items-center">
-                  VIP
-                </span>
-                <!-- 歌曲名称 -->
-                <span
-                  class="text-nowrap transition-5"
-                  :class="[{ 'text-danger': item.id == playSongId }]"
-                  >{{ item.name }}</span
-                >
-                <!-- 歌手信息 -->
-                <div class="ms-1 fs-8 opacity-50 text-nowrap">
-                  ·
-                  <span v-for="(j, indexs) in item.ar" :key="indexs"
-                    ><span>{{ j.name }}</span
-                    ><span v-if="indexs != item.ar.length - 1">/</span></span
-                  >
+              class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+              <!-- 循环控制\全部下载\歌单收藏\清除播放列表 -->
+              <div @click="setSongLoop()">
+                <div v-show="songLoop == 0">
+                  <i class="iconfont icon-24gl-repeat2 me-2"></i
+                  ><span>列表循环</span>
+                </div>
+                <div v-show="songLoop == 1">
+                  <i class="iconfont icon-24gl-repeatOnce2 me-2"></i
+                  ><span>单曲循环</span>
+                </div>
+                <div v-show="songLoop == 2">
+                  <i class="iconfont icon-24gl-shuffle me-2"></i
+                  ><span>随机播放</span>
                 </div>
               </div>
-              <!-- 列表右侧close按钮 -->
-              <div
-                class="ms-2 flex-shrink-0"
-                @click="deleteThisSong(item.id, index)">
-                <i class="bi bi-x-lg"></i>
+              <!-- 右侧 下载全部,收藏全部,清除歌单 -->
+              <div class="d-flex fs-5">
+                <i class="bi bi-download me-3"></i>
+                <i class="bi bi-collection-play me-3"></i>
+                <i class="bi bi-trash" @click="clearSongList()"></i>
               </div>
             </div>
-          </van-list>
+          </div>
+          <!-- 歌曲item主体,懒加载-->
+          <div ref="miniListWrapper" class="miniListWrapper ps-3 pe-3 bg-body">
+            <div class="miniListContent">
+              <div
+                v-for="(item, index) in miniList"
+                :key="index"
+                class="d-flex justify-content-between mb-3">
+                <!-- item左侧 -->
+                <div
+                  @click="setPlayIndex(index)"
+                  class="d-flex align-items-end flex-grow-1 overflow-hidden transition-5"
+                  :class="{ 'text-danger': index == playIndex }">
+                  <span
+                    v-if="item.fee == 1 || item.fee == 4"
+                    class="InfoTag text-danger border border-danger d-flex align-items-center">
+                    VIP
+                  </span>
+                  <!-- 歌曲名称 -->
+                  <span
+                    class="text-nowrap transition-5"
+                    :class="[{ 'text-danger': item.id == playSongId }]"
+                    >{{ item.name }}</span
+                  >
+                  <!-- 歌手信息 -->
+                  <div class="ms-1 fs-8 opacity-50 text-nowrap">
+                    ·
+                    <span v-for="(j, indexs) in item.ar" :key="indexs"
+                      ><span>{{ j.name }}</span
+                      ><span v-if="indexs != item.ar.length - 1">/</span></span
+                    >
+                  </div>
+                </div>
+                <!-- item右侧close按钮,将当前歌曲从播放列表移除 -->
+                <div
+                  class="ms-2 flex-shrink-0"
+                  @click="deleteThisSong(item.id, index)">
+                  <i class="bi bi-x-lg"></i>
+                </div>
+              </div>
+              <div v-if="miniListFinished" class="text-center fs-8">
+                没有更多啦...
+              </div>
+              <div v-else class="text-center">
+                <div v-show="miniListLoading">加载中...</div>
+                <div v-show="!miniListLoading">松手加载</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </transition>
@@ -234,9 +243,12 @@
   </div>
 </template>
 <script>
+  import BScroll from "@better-scroll/core"; //导入Better scroll核心
+  import Pullup from "@better-scroll/pull-up"; //导入Better scroll上拉加载插件
+  BScroll.use(Pullup); //注册插件
   import { mapState, mapGetters, mapMutations } from "vuex";
   import { getSongUrl, getSongDetail } from "./api/getData.js";
-  import throttle from "lodash/throttle";
+  import throttle from "lodash/throttle"; //lodash节流
   export default {
     data() {
       return {
@@ -246,6 +258,7 @@
         isPlaying: false,
         miniPLayer: [],
         miniList: [],
+        miniListBS: null,
         miniListStatus: false,
         miniLoop: false,
         miniListLoading: false,
@@ -354,16 +367,19 @@
       async miniListLoad() {
         if (this.songList.length == this.miniList.length) {
           this.miniListFinished = true;
+          this.miniListBS.closePullUp();
         } else {
+          this.miniListLoading = true;
           let param = this.songList.slice(
             this.miniList.length, //当前长度
             this.miniList.length + 20 //再懒加载20首
           );
-          await getSongDetail(param).then((res) => {
-            this.miniList.push(...res.songs);
-          });
+          let res = await getSongDetail(param);
+          if (res.songs) this.miniList.push(...res.songs);
+          this.miniListBS.finishPullUp();
           this.miniListLoading = false;
         }
+        this.miniListBS.refresh();
       },
       //点击迷你播放列表中的删除按钮，删除本地歌单中的对应歌曲
       deleteThisSong(id, index) {
@@ -414,6 +430,13 @@
       this.$refs.miniPlayer.addEventListener("slidenexttransitionend", () => {
         this.nextSong();
       });
+      // 初始化Better Scroll
+      this.miniListBS = new BScroll(this.$refs.miniListWrapper, {
+        click: true, //允许点击事件
+        pullUpLoad: true,
+      });
+      // 上滑触底后执行懒加载
+      this.miniListBS.on("pullingUp", this.miniListLoad);
     },
     // 监听器
     watch: {
@@ -458,6 +481,12 @@
       bottom: 1rem;
       width: calc(100% - 2rem);
     }
+  }
+  .miniListHeader {
+    width: calc(100% - 0.7px);
+  }
+  .miniListWrapper {
+    height: 50vh !important;
   }
   .miniPlayerBtn {
     box-shadow: 0 1px 5px black;
