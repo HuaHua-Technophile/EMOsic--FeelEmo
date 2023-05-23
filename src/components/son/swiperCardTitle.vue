@@ -7,6 +7,7 @@
       ><span class="me-1">{{ data.subTitle.title }}</span
       ><button
         v-if="data.button.text === '播放'"
+        @click="$emit('playThisResource')"
         class="btn btn-sm rounded-pill d-inline-flex align-items-center"
         :class="Theme">
         <i class="bi bi-play-fill fs-6"></i>{{ data.button.text }}</button

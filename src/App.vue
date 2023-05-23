@@ -44,7 +44,6 @@
               space-between="15"
               @click="
                 bigPlayerShow = true;
-                navBarHidden();
                 miniPlayerHidden();
               ">
               <swiper-slide
@@ -97,34 +96,6 @@
               class="bi bi-music-note-list fs-4 ms-3"></i>
           </div>
         </div>
-      </transition>
-      <!-- 底部导航栏(5大金刚键) -->
-      <transition name="sideUp">
-        <nav
-          v-if="navBarStatus"
-          class="nav pt-1 justify-content-around bg-body">
-          <router-link class="nav-link" to="/find">
-            <span
-              class="iconfont icon-netease-cloud-music-line transition-8"></span>
-            <span class="transition-8">发现</span>
-          </router-link>
-          <router-link class="nav-link" to="/podcast">
-            <i class="bi bi-broadcast transition-8"></i
-            ><span class="transition-8">播客</span>
-          </router-link>
-          <router-link class="nav-link" to="/mine">
-            <i class="bi bi-music-note-beamed transition-8"></i
-            ><span class="transition-8">我的</span>
-          </router-link>
-          <router-link class="nav-link" to="/follow">
-            <span class="iconfont icon-guanzhu transition-8"></span
-            ><span class="transition-8">关注</span>
-          </router-link>
-          <router-link class="nav-link" to="/cloudVillage">
-            <span class="iconfont icon-taolunqu transition-8"></span
-            ><span class="transition-8">云村</span>
-          </router-link>
-        </nav>
       </transition>
     </div>
     <!-- 迷你播放列表,在任意页面通用 -->
@@ -271,13 +242,7 @@
     },
     // 计算属性
     computed: {
-      ...mapState([
-        "navBarStatus",
-        "miniPlayerStatus",
-        "songList",
-        "playIndex",
-        "songLoop",
-      ]),
+      ...mapState(["miniPlayerStatus", "songList", "playIndex", "songLoop"]),
       ...mapGetters(["playSongId"]),
     },
     //方法
@@ -289,8 +254,6 @@
         "nextSong",
         "preSong",
         "setSongLoop",
-        "navBarHidden",
-        "navBarShow",
         "miniPlayerHidden",
       ]),
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
@@ -445,7 +408,6 @@
         if (newV == -1) {
           this.$refs.playCore.src = "";
           this.bigPlayerShow = false;
-          this.navBarShow();
           this.isPlaying = false;
         } else {
           await getSongUrl(newV).then((res) => {

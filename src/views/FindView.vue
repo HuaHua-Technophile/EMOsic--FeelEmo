@@ -1,13 +1,13 @@
 <template>
   <div
-    class="find-view w-100 noScrollBar"
-    :class="miniPlayerStatus ? 'h-miniPlayer' : 'h-navBar'">
+    class="find-view w-100 h-100 noScrollBar"
+    :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
     <!-- 顶部搜索框 -->
     <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
       <div
         class="d-flex justify-content-center align-items-center"
-        @click="changeTheme()">
-        <font-awesome-icon :icon="['fas', 'bars']" size="xl" />
+        @click="toMineView()">
+        <i class="bi bi-person fs-2"></i>
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
@@ -18,9 +18,6 @@
           ><span class="placeHolder text-secondary"
             >大家在搜:{{ searchHot.first }}</span
           >
-        </div>
-        <div>
-          <i class="bi bi-qr-code-scan"></i>
         </div>
       </div>
       <div class="text-center">
@@ -126,6 +123,9 @@
     //方法
     methods: {
       ...mapMutations(["changeTheme"]),
+      toMineView() {
+        this.$router.push({ name: "mine" });
+      },
     },
     //生命周期函数获取数据
     async created() {
@@ -155,7 +155,6 @@
       });
       //获取发现页数据,包含:轮播图,推荐歌单
       await getFind().then((res) => {
-        console.log(res);
         //轮播图数据写入,轮播图组件初始化前注入自定义样式,然后初始化轮播图
         this.bannerSwiperList = res.data.blocks[0].extInfo.banners;
         // bannerSwiper element注入自定义样式
@@ -173,11 +172,11 @@
         this.$refs.bannerSwiper.initialize();
         //方形轮播图1数据写入
         this.playList1 = res.data.blocks[1];
-
         this.songList1 = res.data.blocks[2];
-        this.Block3 = res.data.blocks[3];
 
+        this.Block3 = res.data.blocks[3];
         this.Block4 = res.data.blocks[4];
+
         this.songList2 = res.data.blocks[5];
       });
     },

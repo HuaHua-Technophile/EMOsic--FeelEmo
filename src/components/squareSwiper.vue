@@ -11,7 +11,7 @@
       <swiper-slide
         v-for="(item, index) in data.creatives"
         :key="index"
-        @click="toPlayListDetail(item.creativeId, $event)"
+        @click="toPlayListDetail(item, $event)"
         class="pt-3">
         <!-- 单个不切换的slide -->
         <div v-if="item.resources.length === 1" class="position-relative">
@@ -38,7 +38,10 @@
           }}</span>
         </div>
         <!-- 三个切换的slide -->
-        <slide v-if="item.resources.length === 3" :item="item"></slide>
+        <slide
+          v-if="item.resources.length === 3"
+          :item="item"
+          @setFirstIndex="setFirstIndex"></slide>
       </swiper-slide>
     </swiper-container>
   </div>
@@ -49,16 +52,26 @@
   import { getPlayListDetail } from "../api/getData.js";
   export default {
     props: ["data"],
+    data() {
+      return {
+        firstIndex: 0,
+      };
+    },
     computed: {
       ...mapState(["Theme"]),
     },
     methods: {
       ...mapMutations(["setPlayIndex", "setSongList"]),
-      toPlayListDetail(id, e) {
+      // 点击跳转歌单详情路由
+      toPlayListDetail(item, e) {
+        let id = null;
+        if (item.resources.length == 1) id = item.creativeId;
+        else id = item.resources[this.firstIndex].resourceId;
         if (e.target.nodeName == "IMG") {
           this.$router.push({ name: "playListDetail", query: { id } });
         }
       },
+      // 播放当前歌单
       async playThisList(index) {
         await getPlayListDetail(this.data.creatives[index].creativeId).then(
           (res) => {
@@ -66,6 +79,10 @@
           }
         );
         this.setPlayIndex(0);
+      },
+      // 首个轮播slide切换时,点击的歌单也需同步更改
+      setFirstIndex(index) {
+        this.firstIndex = index;
       },
     },
     // 组件

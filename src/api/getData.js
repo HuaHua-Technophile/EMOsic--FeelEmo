@@ -92,3 +92,25 @@ export function getLoginQrCheck(data) {
     data,
   });
 }
+// 账号信息
+export function getUserAccount() {
+  return request({
+    url: "/user/account",
+    method: "get",
+  });
+}
+// 获取VIP信息
+export function getVipInfo() {
+  return request({
+    url: "/vip/info",
+    method: "get",
+  });
+}
+// 获取用户粉丝
+export function getUserFolloweds(data) {
+  return request({
+    url: "/user/followeds",
+    method: "get",
+    data,
+  });
+}

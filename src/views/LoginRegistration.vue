@@ -17,8 +17,14 @@
     <div class="flex-grow-1 d-flex flex-column justify-content-between">
       <!-- 信息栏 -->
       <div class="mt-5 ps-4 text-light">
-        <p class="fs-1 fw-bold">手机验证登录</p>
-        <p class="fs-7 text-light-tertiary">未注册手机验证后即自动完成注册</p>
+        <p v-if="loginMode == 1" class="fs-1 fw-bold">手机验证登录</p>
+        <p v-if="loginMode == 2" class="fs-1 fw-bold">网易云扫码登录</p>
+        <p v-if="loginMode == 1" class="fs-7 text-light-tertiary">
+          未注册手机验证后即自动完成注册
+        </p>
+        <p v-if="loginMode == 2" class="fs-7 text-light-tertiary">
+          依眸音乐数据互通网易云平台
+        </p>
       </div>
       <!-- 底部登录部分 -->
       <div>
@@ -39,9 +45,14 @@
         <!-- 二维码登录框 -->
         <div
           v-if="loginMode == 2"
-          ref="QRcodeFather"
-          class="d-flex align-items-center justify-content-center">
-          <img ref="QRcode" src="" />
+          class="QRcode"
+          style=""
+          :style="[
+            {
+              'background-image': `url(${QRcode}), linear-gradient(rgb(106 0 142), rgb(174 0 0))`,
+            },
+          ]">
+          <img ref="QRcode" class="rounded-3 object-fit-none" />
         </div>
         <!-- 协议同意框 -->
         <div
@@ -94,8 +105,9 @@
   export default {
     data() {
       return {
-        loginMode: 2,
+        loginMode: 1,
         timeIdList: [],
+        QRcode: null,
       };
     },
     // 计算属性
@@ -104,11 +116,10 @@
     },
     // 方法
     methods: {
-      ...mapMutations(["miniPlayerShow", "navBarShow"]),
+      ...mapMutations(["miniPlayerShow"]),
       // 返回
       goBack() {
         this.$router.go(-1);
-        this.navBarShow();
         if (this.playIndex != -1) this.miniPlayerShow();
       },
       // 点击使用二维码登录,获取二维码
@@ -120,8 +131,8 @@
           qrimg: "base64",
           time: new Date().getTime(),
         });
-        console.log(QRcode);
-        this.$refs.QRcode.src = QRcode.data.qrimg;
+        // this.$refs.QRcode.src = QRcode.data.qrimg;
+        this.QRcode = QRcode.data.qrimg;
         this.timeIdList.push(
           setInterval(async () => {
             let res = await getLoginQrCheck({
@@ -171,5 +182,14 @@
     &:not(:last-child) {
       margin-right: 5vw;
     }
+  }
+  .QRcode {
+    width: 148px;
+    height: 148px;
+    border-radius: 10px;
+    margin: 50px auto;
+    background-blend-mode: lighten;
+    background-size: 110%;
+    background-position: center;
   }
 </style>

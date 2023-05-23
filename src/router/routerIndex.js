@@ -14,24 +14,9 @@ const routes = [
     component: () => import("../views/FindView.vue"),
   },
   {
-    path: "/podcast",
-    name: "podcast",
-    component: () => import("../views/PodcastView.vue"),
-  },
-  {
     path: "/mine",
     name: "mine",
     component: () => import("../views/MineView.vue"),
-  },
-  {
-    path: "/follow",
-    name: "follow",
-    component: () => import("../views/FollowView.vue"),
-  },
-  {
-    path: "/cloudVillage",
-    name: "cloudVillage",
-    component: () => import("../views/CloudVillageView.vue"),
   },
   {
     path: "/playListDetail",

@@ -21,8 +21,9 @@
   export default {
     props: ["listLength"],
     methods: {
-      playAll() {
-        this.$emit("playAll");
+      // 返回
+      goBack() {
+        this.$router.go(-1);
       },
     },
   };

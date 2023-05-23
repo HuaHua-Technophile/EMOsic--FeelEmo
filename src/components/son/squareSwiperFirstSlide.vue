@@ -38,6 +38,7 @@
       this.timeid = setInterval(() => {
         this.index++;
         this.index >= this.item.resources.length && (this.index = 0);
+        this.$emit("setFirstIndex", this.index);
       }, 5000);
     },
   };

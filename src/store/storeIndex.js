@@ -6,19 +6,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     Theme: "dark",
-    navBarStatus: true,
     miniPlayerStatus: false,
     // 播放核心----------------------
     songList: [],
     playIndex: -1,
     songLoop: 0,
     // 用户登录信息存储
-    isLogged: false,
+    userInfo: {},
   },
   // 计算属性
   getters: {
     playSongId(S) {
       return S.songList[S.playIndex] ? S.songList[S.playIndex] : -1;
+    },
+    isLogged(S) {
+      return S.userInfo.profile ? true : false;
     },
   },
   // 暴露的属性修改方法
@@ -32,14 +34,6 @@ export default new Vuex.Store({
         S.Theme = "dark";
         document.documentElement.dataset.bsTheme = "dark";
       }
-    },
-    // 隐藏底部导航栏（五大金刚键）
-    navBarHidden(S) {
-      S.navBarStatus = false;
-    },
-    // 显示底部导航栏（五大金刚键）
-    navBarShow(S) {
-      S.navBarStatus = true;
     },
     // 隐藏底部迷你播放器
     miniPlayerHidden(S) {
@@ -96,6 +90,10 @@ export default new Vuex.Store({
         S.songList = S.songList.sort(() => Math.random() - 0.5);
         S.playIndex = S.songList.indexOf(id);
       }
+    },
+    // 修改本地用户存储状态
+    setUserInfo(S, userInfo) {
+      S.userInfo = userInfo;
     },
   },
   actions: {},

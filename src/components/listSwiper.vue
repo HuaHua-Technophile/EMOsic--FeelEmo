@@ -1,7 +1,9 @@
 <template>
   <div class="cardHr" :class="Theme">
     <!-- title信息栏 -->
-    <swiper-card-title :data="data.uiElement"></swiper-card-title>
+    <swiper-card-title
+      :data="data.uiElement"
+      @playThisResource="playThisResource"></swiper-card-title>
     <!-- 横板轮播图 -->
     <swiper-container slides-per-view="auto" class="ps-3 pt-3">
       <swiper-slide v-for="(i, index) in data.creatives" :key="index">
@@ -35,11 +37,21 @@
   </div>
 </template>
 <script>
-  import { mapState } from "vuex";
+  import { mapMutations, mapState } from "vuex";
   export default {
     props: ["data"],
+    // 计算属性
     computed: {
       ...mapState(["Theme"]),
+    },
+    // 方法
+    methods: {
+      ...mapMutations(["setSongList", "setPlayIndex"]),
+      // 点击播放
+      playThisResource() {
+        this.setSongList(this.data.resourceIdList);
+        this.setPlayIndex(0);
+      },
     },
   };
 </script>

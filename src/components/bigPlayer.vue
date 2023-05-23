@@ -19,7 +19,6 @@
               class="bi bi-chevron-down fs-1"
               @click="
                 $emit('bigPlayerHidden');
-                navBarShow();
                 miniPlayerShow();
               "></i>
           </div>
@@ -186,13 +185,7 @@
     },
     // 方法
     methods: {
-      ...mapMutations([
-        "navBarShow",
-        "miniPlayerShow",
-        "setSongLoop",
-        "nextSong",
-        "preSong",
-      ]),
+      ...mapMutations(["miniPlayerShow", "setSongLoop", "nextSong", "preSong"]),
       //歌词点击跳转进度
       lrcSetTime(time) {
         this.$emit("setCurrentTime", time / 1000);

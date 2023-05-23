@@ -39,13 +39,9 @@ Vue.component("big-player", bigPlayer);
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
 Vue.component("font-awesome-icon", FontAwesomeIcon); //注册全局font框架组件
-import {
-  faBars,
-  faAngleRight,
-  faShare,
-} from "@fortawesome/free-solid-svg-icons"; //默认样式:填充
+import { faAngleRight, faShare } from "@fortawesome/free-solid-svg-icons"; //默认样式:填充
 import {} from "@fortawesome/free-regular-svg-icons"; //免费样式:非填充
-library.add(faBars, faAngleRight, faShare); //核心按需使用图标(分字重)
+library.add(faAngleRight, faShare); //核心按需使用图标(分字重)
 register(); // 注册Swiper自定义元素
 //----自定义图标库-------------------
 import "./assets/font_navbar/iconfont.css";

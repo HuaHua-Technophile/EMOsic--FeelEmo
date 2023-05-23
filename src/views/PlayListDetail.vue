@@ -1,9 +1,9 @@
 <template>
   <div
     ref="playListDetailWrapper"
-    :style="`--bs-body-bg-rgb:${themeColor}`"
-    class="playListDetailWrapper w-100 bg-body"
-    :class="miniPlayerStatus ? 'h-miniPlayer' : 'h-navBar'">
+    class="playListDetailWrapper w-100 h-100 bg-body"
+    :style="`--bs-body-bg-rgb:${LightenDarkenColor(themeColor, -35)}`"
+    :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
     <!-- 滚动核心 -->
     <div class="playListDetailContent position-relative z-2 blur">
       <!-- 头部信息栏，展示歌单信息、专辑信息 -->
