@@ -101,7 +101,7 @@
   import { getPlayListDetail, getPlayListTrackAll } from "../api/getData.js";
   import { mapGetters, mapMutations, mapState } from "vuex";
   import ColorThief from "colorthief"; //自动计算颜色组件
-  import playAllTitle from "../components/son/playAllTitle.vue"; //
+  import playAllTitle from "../components/son/playAllTitle.vue"; //头部组件
   export default {
     // 属性
     data() {
@@ -193,5 +193,9 @@
 <style lang="scss">
   .songItemIndex {
     width: 36px;
+  }
+  .van-share-sheet__title,
+  .van-share-sheet__name {
+    color: inherit !important;
   }
 </style>

@@ -71,6 +71,7 @@
     <!-- 歌单数据:转发,评论,收藏 -->
     <div class="playListData d-flex justify-content-between align-items-center">
       <div
+        @click="shareThisList()"
         class="d-flex align-items-center justify-content-center bg-light rounded-pill">
         <font-awesome-icon icon="fa-solid fa-share" />
         <span class="ms-1 fw-bold">{{ data.shareCount }}</span>
@@ -89,8 +90,18 @@
   </div>
 </template>
 <script>
+  import { mapMutations } from "vuex";
   export default {
     props: ["data"],
+    // 方法
+    methods: {
+      ...mapMutations(["setShareInfo"]),
+      shareThisList() {
+        this.setShareInfo(
+          `https://y.music.163.com/m/playlist?id=${this.data.id}`
+        );
+      },
+    },
   };
 </script>
 <style lang="scss">

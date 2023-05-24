@@ -28,7 +28,7 @@
     props: ["title", "themeColor"],
     methods: {
       goBack() {
-        window.history.back(-1);
+        this.$router.go(-1);
       },
     },
   };

@@ -38,6 +38,7 @@
         <swiper-slide
           v-for="(item, index) in bannerSwiperList"
           :key="index"
+          @click="toBanner(item)"
           class="p-3 pb-1">
           <div>
             <img
@@ -122,9 +123,23 @@
     },
     //方法
     methods: {
-      ...mapMutations(["changeTheme"]),
+      ...mapMutations(["changeTheme", "songListAdd", "setPlaySongId"]),
+      // 左上角跳转至"我的/设置"页面
       toMineView() {
         this.$router.push({ name: "mine" });
+      },
+      // 首页轮播图点击跳转
+      toBanner(item) {
+        if (item.url) {
+          window.location.href = item.url;
+        }
+        if (item.song) {
+          this.songListAdd(item.song.id);
+          this.setPlaySongId(item.song.id);
+        } else {
+          let id = item.encodeId;
+          this.$router.push({ name: "playListDetail", query: { id } });
+        }
       },
     },
     //生命周期函数获取数据

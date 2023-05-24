@@ -211,9 +211,19 @@
         @setCurrentRate="setCurrentRate"
         @miniListLoad="miniListLoad"></big-player>
     </transition>
+    <!-- 分享面板 -->
+    <van-share-sheet
+      v-model="shareStatus"
+      title="依眸,分享你的忧伤"
+      cancel-text=""
+      :options="options"
+      @select="shareEMO"
+      class="bg-body text-light" />
   </div>
 </template>
 <script>
+  import ClipboardJS from "../node_modules/clipboard/dist/clipboard.js";
+  import { Toast } from "vant"; //导入vant的悬浮提示框
   import BScroll from "@better-scroll/core"; //导入Better scroll核心
   import Pullup from "@better-scroll/pull-up"; //导入Better scroll上拉加载插件
   BScroll.use(Pullup); //注册插件
@@ -238,11 +248,27 @@
         thisSongImg: "",
         thisSongName: "",
         thisSongAr: [],
+        shareStatus: false,
+        options: [
+          //分享面板配置选项
+          // { name: "微信", icon: "wechat" },
+          // { name: "微博", icon: "weibo" },
+          { name: "复制链接", icon: "link" },
+          // { name: "分享海报", icon: "poster" },
+          { name: "二维码", icon: "qrcode" },
+        ],
+        cli: null,
       };
     },
     // 计算属性
     computed: {
-      ...mapState(["miniPlayerStatus", "songList", "playIndex", "songLoop"]),
+      ...mapState([
+        "miniPlayerStatus",
+        "songList",
+        "playIndex",
+        "songLoop",
+        "shareInfo",
+      ]),
       ...mapGetters(["playSongId"]),
     },
     //方法
@@ -255,7 +281,18 @@
         "preSong",
         "setSongLoop",
         "miniPlayerHidden",
+        "miniPlayerShow",
       ]),
+      // 分享面板
+      async shareEMO(option) {
+        if (option.name == "复制链接") {
+          this.cli = new ClipboardJS(".van-share-sheet__option", {
+            text: () => this.shareInfo,
+          });
+        }
+        this.shareStatus = false;
+        Toast(`复制成功`);
+      },
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
       miniListHidden(e) {
         if (e.target == this.$refs.miniListBg) this.miniListStatus = false;
@@ -372,7 +409,44 @@
         this.$refs.playCore.currentTime = (this.duration * rate) / 1000;
       },
     },
-    // 挂载后生命周期
+    // 监听器
+    watch: {
+      async playSongId(newV) {
+        // 如果歌曲id设定为-1,则取消播放,本地播放状态设为暂停
+        if (newV == -1) {
+          this.$refs.playCore.src = "";
+          this.bigPlayerShow = false;
+          this.isPlaying = false;
+          this.miniPlayerHidden(); //隐藏迷你播放器
+        } else {
+          await getSongUrl(newV).then((res) => {
+            // durationchange是时长改变时触发.
+            this.$refs.playCore.oncanplay = () => {
+              this.$refs.playCore.play();
+              this.duration = this.$refs.playCore.duration;
+            };
+            this.$refs.playCore.src = res.data[0].url;
+            this.miniPlayerChange();
+            this.miniPlayerShow(); //隐藏迷你播放器
+          });
+        }
+      },
+      // 当歌单变化，就修改为未加载完成
+      songList() {
+        this.miniListFinished = false;
+      },
+      // 当循环变为随机循环，则清空小列表，使其重新加载
+      songLoop(newV) {
+        if (newV == 2) {
+          this.miniList = [];
+          this.miniListLoad();
+        }
+      },
+      // 当分享信息变化时,修改本身的分享面板展示状态
+      shareInfo(newV) {
+        if (newV != "") this.shareStatus = true;
+      },
+    }, // 挂载后生命周期
     mounted() {
       //dom音频添加监听事件,用于反向修改vue中存储的播放状态
       this.$refs.playCore.onplay = () => {
@@ -401,37 +475,9 @@
       // 上滑触底后执行懒加载
       this.miniListBS.on("pullingUp", this.miniListLoad);
     },
-    // 监听器
-    watch: {
-      async playSongId(newV) {
-        // 如果歌曲id设定为-1,则取消播放,本地播放状态设为暂停
-        if (newV == -1) {
-          this.$refs.playCore.src = "";
-          this.bigPlayerShow = false;
-          this.isPlaying = false;
-        } else {
-          await getSongUrl(newV).then((res) => {
-            // durationchange是时长改变时触发.
-            this.$refs.playCore.oncanplay = () => {
-              this.$refs.playCore.play();
-              this.duration = this.$refs.playCore.duration;
-            };
-            this.$refs.playCore.src = res.data[0].url;
-            this.miniPlayerChange();
-          });
-        }
-      },
-      // 当歌单变化，就修改为未加载完成
-      songList() {
-        this.miniListFinished = false;
-      },
-      // 当循环变为随机循环，则清空小列表，使其重新加载
-      songLoop(newV) {
-        if (newV == 2) {
-          this.miniList = [];
-          this.miniListLoad();
-        }
-      },
+    // 销毁前生命周期
+    destroyed() {
+      this.cli.destroy(); //销毁剪切板对象
     },
   };
 </script>

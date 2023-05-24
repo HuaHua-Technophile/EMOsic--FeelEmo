@@ -13,6 +13,8 @@ export default new Vuex.Store({
     songLoop: 0,
     // 用户登录信息存储
     userInfo: {},
+    shareStatus: false, //分享面板状态
+    shareInfo: "", // 待分享信息
   },
   // 计算属性
   getters: {
@@ -61,6 +63,10 @@ export default new Vuex.Store({
     songListAdd(S, songId) {
       S.songList.push(songId);
     },
+    // 设置具体播放哪一首歌
+    setPlaySongId(S, songId) {
+      S.playIndex = S.songList.indexOf(songId);
+    },
     //设置具体的播放第几首歌
     setPlayIndex(S, Index) {
       S.playIndex = Index;
@@ -94,6 +100,10 @@ export default new Vuex.Store({
     // 修改本地用户存储状态
     setUserInfo(S, userInfo) {
       S.userInfo = userInfo;
+    },
+    // 修改分享面板显示/隐藏
+    setShareInfo(S, info) {
+      S.shareInfo = info;
     },
   },
   actions: {},

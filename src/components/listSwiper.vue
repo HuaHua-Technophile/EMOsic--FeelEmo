@@ -10,6 +10,7 @@
         <div
           v-for="(j, indexs) in i.resources"
           :key="indexs"
+          @click="playThisSong(j.resourceId)"
           class="d-flex align-items-center"
           :class="{ 'mb-3': indexs != 2 }">
           <img
@@ -46,11 +47,16 @@
     },
     // 方法
     methods: {
-      ...mapMutations(["setSongList", "setPlayIndex"]),
-      // 点击播放
+      ...mapMutations(["setSongList", "setPlayIndex", "setPlaySongId"]),
+      // 点击播放整个歌单
       playThisResource() {
         this.setSongList(this.data.resourceIdList);
         this.setPlayIndex(0);
+      },
+      // 点击某个歌曲播放
+      playThisSong(id) {
+        this.setSongList(this.data.resourceIdList);
+        this.setPlaySongId(id);
       },
     },
   };
