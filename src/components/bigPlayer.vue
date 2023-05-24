@@ -1,7 +1,7 @@
 <template>
   <div
     class="w-100 vh-100 position-fixed top-0 text-light"
-    style="z-index: 8"
+    style="z-index: 6"
     :style="[
       { background: `url(${bigBG}?param=x90y210) center/cover` },
       // 理论上,如果用黑胶唱片中图片同样的请求参数.因为唱片机一次请求3张,因此有缓存,切换背景图不需要二次请求
@@ -35,7 +35,7 @@
             </div>
           </div>
           <!-- 分享按钮 -->
-          <div class="flex-shrink-0">
+          <div class="flex-shrink-0" @click="shareThisSong()">
             <i class="bi bi-share-fill fs-3"></i>
           </div>
         </div>
@@ -85,11 +85,11 @@
             </div>
           </transition>
         </div>
-        <!-- 底栏1:收藏\下载\歌词显示\评论\更多 -->
+        <!-- 底栏1:收藏\下载\歌词显示\评论 -->
         <div
           class="ps-3 pe-3 mb-3 w-100 d-flex justify-content-around align-items-center fs-2 t-shadow-5">
           <i class="bi bi-heart"></i>
-          <i class="bi bi-download"></i>
+          <i class="bi bi-download" @click="downloadThisSong(songUrl)"></i>
           <span
             class="fs-7 border border-light rounded"
             style="padding: 2px 5px"
@@ -97,7 +97,6 @@
             >词</span
           >
           <i class="bi bi-chat-text"></i>
-          <i class="bi bi-three-dots-vertical"></i>
         </div>
         <!-- 底栏2:进度条 -->
         <div class="ps-3 pe-3 d-flex align-items-center t-shadow-8">
@@ -155,6 +154,7 @@
   import { mapGetters, mapMutations, mapState } from "vuex";
   export default {
     props: [
+      "songUrl",
       "currentTime",
       "duration",
       "bigBG",
@@ -185,7 +185,14 @@
     },
     // 方法
     methods: {
-      ...mapMutations(["miniPlayerShow", "setSongLoop", "nextSong", "preSong"]),
+      ...mapMutations([
+        "miniPlayerShow",
+        "setSongLoop",
+        "nextSong",
+        "preSong",
+        "setShareInfo",
+        "shareShow",
+      ]),
       //歌词点击跳转进度
       lrcSetTime(time) {
         this.$emit("setCurrentTime", time / 1000);
@@ -207,6 +214,34 @@
             this.nextSong();
           }, 300)
         );
+      },
+      // 点击分享当前歌曲
+      shareThisSong() {
+        this.setShareInfo(`https://music.163.com/#/song?id=${this.playSongId}`);
+        this.shareShow();
+      },
+      // 点击下载当前歌曲
+      downloadThisSong(url, fileName = "未知文件") {
+        const el = document.createElement("a");
+        el.style.display = "none";
+        el.setAttribute("target", "_blank");
+        /*优点：
+可以下载txt、png、pdf等类型文件
+download的属性是HTML5新增的属性
+href属性的地址必须是非跨域的地址，如果引用的是第三方的网站或者说是前后端分离的项目(调用后台的接口)，这时download就会不起作用。 此时，如果是下载浏览器无法解析的文件，例如.exe,.xlsx..那么浏览器会自动下载，但是如果使用浏览器可以解析的文件，比如.txt,.png,.pdf....浏览器就会采取预览模式；所以，对于.txt,.png,.pdf等的预览功能我们就可以直接不设置download属性(前提是后端响应头的Content-Type: application/octet-stream，如果为application/pdf浏览器则会判断文件为 pdf ，自动执行预览的策略)
+
+缺点：
+a标签只能做get请求，所有url有长度限制
+无法获取下载进度
+无法在header中携带token做鉴权操作
+跨域限制
+无法判断接口是否返回成功
+IE兼容问题*/
+        fileName && el.setAttribute("download", fileName);
+        el.href = url;
+        document.body.appendChild(el);
+        el.click();
+        document.body.removeChild(el);
       },
     }, // 过滤器
     filters: {
@@ -234,6 +269,7 @@
         }
       },
     },
+    // 组件
     components: { lyricRendering },
     // 挂载后生命周期
     mounted() {

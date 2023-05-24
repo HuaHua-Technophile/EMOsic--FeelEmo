@@ -2,10 +2,11 @@
   <div
     ref="playListDetailWrapper"
     class="playListDetailWrapper w-100 h-100 bg-body"
-    :style="`--bs-body-bg-rgb:${LightenDarkenColor(themeColor, -35)}`"
-    :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
+    :style="`--bs-body-bg-rgb:${LightenDarkenColor(themeColor, -35)}`">
     <!-- 滚动核心 -->
-    <div class="playListDetailContent position-relative z-2 blur">
+    <div
+      class="playListDetailContent position-relative z-2 blur"
+      :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
       <!-- 头部信息栏，展示歌单信息、专辑信息 -->
       <play-list-header :data="playList"></play-list-header>
       <!-- 列表头部。适用于歌单列表,专辑列表，推荐雷达列表，声音列表 -->
@@ -14,7 +15,9 @@
         :listLength="playList.trackCount"
         class="text-light t-shadow-3"></play-all-title>
       <!-- 列表主体 -->
-      <div class="t-shadow-3 bg-body">
+      <div
+        class="t-shadow-3 bg-body pt-3 transition-2"
+        :style="[{ '--bs-bg-opacity': listOpacity }]">
         <div
           v-for="(item, index) in detailList"
           :key="index"
@@ -72,7 +75,7 @@
           <div class="flex-shrink-0 opacity-50">
             <div class="d-flex align-items-center">
               <i v-if="item.mv != 0" class="bi bi-play-btn fs-5 me-4"></i>
-              <i class="bi bi-three-dots-vertical fs-4"></i>
+              <i class="bi bi-three-dots-vertical fs-4 me-3"></i>
             </div>
           </div>
         </div>
@@ -87,7 +90,10 @@
     <list-search
       v-if="themeColor != []"
       :themeColor="LightenDarkenColor(themeColor, 30)"
-      :title="'歌单'"></list-search>
+      :title="titleText"
+      :opacity="opacity"
+      :collectStatus="collectStatus"
+      class="t-shadow-3"></list-search>
     <!-- 背景图 -->
     <div class="w-100 h-100 position-absolute top-0 z-1">
       <img :src="`${coverImgUrl}?param=x450y1050`" class="w-100" />
@@ -102,17 +108,22 @@
   import { mapGetters, mapMutations, mapState } from "vuex";
   import ColorThief from "colorthief"; //自动计算颜色组件
   import playAllTitle from "../components/son/playAllTitle.vue"; //头部组件
+  import throttle from "lodash/throttle"; //lodash节流
   export default {
     // 属性
     data() {
       return {
-        coverImgUrl: "",
-        playList: {},
-        detailList: [],
-        themeColor: [],
-        bs: null,
-        isPullUpLoad: false,
-        loadFinish: false,
+        titleText: "歌单", //搜索框文本依据滚动距离自动替换
+        opacity: 0, //搜索框透明度
+        collectStatus: false, //顶部收藏按钮的状态
+        coverImgUrl: "", //背景图地址
+        playList: {}, //歌单信息
+        detailList: [], //歌曲当前渲染出的歌曲item
+        themeColor: [], //主题色
+        listOpacity: 1, // 歌曲列表主体透明度
+        bs: null, //初始化Better scroll滚动盒子
+        isPullUpLoad: false, //懒加载中
+        loadFinish: false, //懒加载完毕
       };
     },
     // 计算属性
@@ -132,7 +143,7 @@
         this.setSongList(this.playList.trackIds.map((i) => i.id));
         this.setPlayIndex(index);
       },
-      // 播放全部按钮
+      // 子元素的播放全部按钮,传出的方法
       playAll() {
         this.setSongList(this.playList.trackIds.map((i) => i.id));
         this.setPlayIndex(0);
@@ -158,6 +169,20 @@
         }
         this.bs.refresh();
       },
+      // 监测滚动坐标,修改页面样式
+      styleChange: throttle(function (e) {
+        if (-e.y > 293.96) {
+          this.titleText = this.playList.name;
+          this.collectStatus = true;
+        } else {
+          this.titleText = "歌单";
+          this.collectStatus = false;
+          this.opacity = -e.y / 293.96;
+        }
+        if (e.y > 0) {
+          this.listOpacity = 1 - e.y / 280;
+        }
+      }, 200),
     },
     // 创建后生命周期
     async created() {
@@ -183,6 +208,7 @@
       });
       // 上滑触底后执行懒加载
       this.bs.on("pullingUp", this.detailListLoad);
+      this.bs.on("scroll", this.styleChange);
     },
     // 组件
     components: {
@@ -197,5 +223,8 @@
   .van-share-sheet__title,
   .van-share-sheet__name {
     color: inherit !important;
+  }
+  .playListDetailContent {
+    width: calc(100% - 0.6px);
   }
 </style>

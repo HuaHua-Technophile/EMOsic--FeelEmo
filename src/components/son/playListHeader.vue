@@ -21,9 +21,7 @@
           <span class="flex-grow-1 van-ellipsis">{{ data.name }}</span>
           <div
             class="flex-shrink-0 bg-light rounded-pill d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; --bs-bg-opacity: 0.1">
-            <i class="bi bi-chevron-down fs-9"></i>
-          </div>
+            style="width: 20px; height: 20px; --bs-bg-opacity: 0.1"></div>
         </div>
         <!-- 作者\作者头像\关注 -->
         <div v-if="data.creator" class="d-flex align-items-center mb-2">

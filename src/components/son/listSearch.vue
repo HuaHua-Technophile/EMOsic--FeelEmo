@@ -1,31 +1,33 @@
 <template>
   <div
-    class="listTitle position-fixed z-3 top-0 w-100 overflow-hidden d-flex align-items-center ps-3 pe-2 bg-body text-light"
-    :style="[{ '--bs-body-bg-rgb': themeColor }, { '--bs-bg-opacity': 0.5 }]">
+    class="listTitle position-fixed z-3 top-0 w-100 overflow-hidden d-flex align-items-center ps-3 pe-3 bg-body text-light transition-2"
+    :style="[
+      { '--bs-body-bg-rgb': themeColor },
+      { '--bs-bg-opacity': opacity },
+    ]">
     <div class="h-100 d-flex align-items-center overflow-hidden flex-grow-1">
-      <i class="bi bi-arrow-left fs-2 me-3 flex-shrink-0" @click="goBack()"></i>
-      <span class="fs-4 overflow-hidden text-nowrap flex-grow-1 me-3">{{
-        title
-      }}</span>
-      <span
-        class="collectBtn d-flex align-items-center flex-shrink-0 me-3 rounded-pill fs-8 bg-light"
-        style="--bs-bg-opacity: 0.1">
-        <i class="bi bi-collection-play me-1"></i><span>收藏</span>
-      </span>
+      <i class="bi bi-arrow-left fs-2 flex-shrink-0" @click="goBack()"></i>
+      <van-notice-bar
+        :text="title"
+        color="#e8e8e8"
+        background="#00000000"
+        class="fs-4 flex-grow-1" />
+      <!-- 收藏按钮,只在滚动较少的情况下出现 -->
+      <transition name="bounceOut">
+        <span
+          v-if="collectStatus"
+          class="collectBtn d-flex align-items-center flex-shrink-0 me-3 rounded-pill fs-8 bg-light"
+          style="--bs-bg-opacity: 0.1">
+          <i class="bi bi-collection-play me-1"></i><span>收藏</span>
+        </span>
+      </transition>
     </div>
-    <div class="h-100 d-flex align-items-center flex-shrink-0">
-      <i
-        class="bi bi-search me-2 fs-4 me-3 text-light"
-        style="--bs-text-opacity: 0.8"></i>
-      <i
-        class="bi bi-three-dots-vertical fs-1 text-light"
-        style="--bs-text-opacity: 0.8"></i>
-    </div>
+    <i class="bi bi-search fs-4 text-light" style="--bs-text-opacity: 0.8"></i>
   </div>
 </template>
 <script>
   export default {
-    props: ["title", "themeColor"],
+    props: ["title", "themeColor", "opacity", "collectStatus"],
     methods: {
       goBack() {
         this.$router.go(-1);

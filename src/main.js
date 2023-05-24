@@ -50,8 +50,8 @@ import "./assets/font_Baidu_Wechat/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
 import "vant/lib/index.css";
-import { Circle, ShareSheet, Overlay } from "vant"; //按需导入
-Vue.use(Circle).use(ShareSheet).use(Overlay);
+import { Circle, ShareSheet, Overlay, NoticeBar } from "vant"; //按需导入
+Vue.use(Circle).use(ShareSheet).use(Overlay).use(NoticeBar);
 
 /* //----Lodash引入-------------------
 import lodash from "lodash";

@@ -6,11 +6,11 @@
     <!-- 播放核心 -->
     <audio
       ref="playCore"
-      src=""
+      :src="songUrl"
       :loop="songLoop == 1"
       @timeupdate="setSchedule($event)"></audio>
     <!-- 底栏(迷你播放器\5大金刚键) -->
-    <div class="position-fixed w-100" style="bottom: -1px; z-index: 7">
+    <div class="position-fixed w-100" style="bottom: -1px; z-index: 6">
       <!-- 底部迷你播放器(左右横滑切歌) -->
       <transition name="sideUp">
         <div
@@ -135,7 +135,6 @@
               </div>
               <!-- 右侧 下载全部,收藏全部,清除歌单 -->
               <div class="d-flex fs-5">
-                <i class="bi bi-download me-3"></i>
                 <i class="bi bi-collection-play me-3"></i>
                 <i class="bi bi-trash" @click="clearSongList()"></i>
               </div>
@@ -196,6 +195,7 @@
     <transition name="sideUp">
       <big-player
         v-show="bigPlayerShow"
+        :songUrl="songUrl"
         :currentTime="currentTime"
         :duration="duration"
         :bigBG="thisSongImg"
@@ -220,7 +220,25 @@
       @select="shareEMO"
       class="bg-body text-light" />
     <!-- vant2遮罩层 -->
-    <van-overlay :show="overlayStatus" @click="overlayStatus = false" />
+    <van-overlay
+      :show="overlayStatus"
+      @click="overlayStatus = false"
+      ref="overlay"
+      class="justify-content-center align-items-center">
+      <transition name="bounceOut">
+        <vue-qr
+          v-if="overlayStatus"
+          :size="250"
+          :margin="10"
+          :auto-color="true"
+          :dot-scale="1"
+          :text="shareInfo"
+          colorDark="#1a1a23"
+          colorLight="#e8e8e8"
+          whiteMargin="false"
+          class="rounded-4" />
+      </transition>
+    </van-overlay>
   </div>
 </template>
 <script>
@@ -232,9 +250,11 @@
   import { mapState, mapGetters, mapMutations } from "vuex";
   import { getSongUrl, getSongDetail } from "./api/getData.js";
   import throttle from "lodash/throttle"; //lodash节流
+  import VueQr from "vue-qr";
   export default {
     data() {
       return {
+        songUrl: "", //播放文件地址,方便传入大播放器进行点击下载
         currentRate: 0, //播放核心的当前进度
         currentTime: 0, //播放核心的当前时间
         duration: 0, //播放核心的总时长
@@ -298,12 +318,13 @@
           this.cli = new ClipboardJS(".van-share-sheet__option", {
             text: () => this.shareInfo,
           });
+          Toast(`复制成功`);
         }
         if (option.name == "二维码") {
           this.overlayStatus = true;
+          Toast(`创建二维码成功`);
         }
         this.shareHidden();
-        Toast(`复制成功`);
       },
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
       miniListHidden(e) {
@@ -431,15 +452,16 @@
           this.isPlaying = false;
           this.miniPlayerHidden(); //隐藏迷你播放器
         } else {
-          await getSongUrl(newV).then((res) => {
-            // durationchange是时长改变时触发.
+          let res = await getSongUrl(newV);
+          this.songUrl = res.data[0].url;
+          this.miniPlayerChange();
+          this.miniPlayerShow(); //展示迷你播放器
+          // durationchange是时长改变时触发.
+          this.$nextTick(() => {
             this.$refs.playCore.oncanplay = () => {
               this.$refs.playCore.play();
               this.duration = this.$refs.playCore.duration;
             };
-            this.$refs.playCore.src = res.data[0].url;
-            this.miniPlayerChange();
-            this.miniPlayerShow(); //隐藏迷你播放器
           });
         }
       },
@@ -454,7 +476,12 @@
           this.miniListLoad();
         }
       },
-    }, // 挂载后生命周期
+    },
+    // 模板
+    components: {
+      VueQr,
+    },
+    // 挂载后生命周期
     mounted() {
       //dom音频添加监听事件,用于反向修改vue中存储的播放状态
       this.$refs.playCore.onplay = () => {
@@ -485,13 +512,13 @@
     },
     // 销毁前生命周期
     destroyed() {
-      this.cli.destroy(); //销毁剪切板对象
+      if (this.cli) this.cli.destroy(); //销毁剪切板对象
     },
   };
 </script>
 <style lang="scss">
   .miniList {
-    z-index: 10;
+    z-index: 7;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 30%);
     > div {
       bottom: 1rem;
@@ -514,6 +541,10 @@
         opacity: 0.5;
       }
     }
+  }
+  .van-overlay {
+    z-index: 7 !important;
+    display: flex;
   }
 </style>
 <style lang="scss" scoped>

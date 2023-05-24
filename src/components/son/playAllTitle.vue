@@ -2,7 +2,7 @@
   <div
     class="playAllTitle position-sticky z-1 d-flex justify-content-between align-items-center ps-3 pe-3">
     <!-- 左侧播放 -->
-    <div @click="playAll()" class="d-flex align-items-center">
+    <div @click="$emit('playAll')" class="d-flex align-items-center">
       <div class="playAllBtnIcon position-relative rounded-pill bg-danger me-2">
         <i
           class="bi bi-play-fill position-absolute top-50 start-50 translate-middle"></i>

@@ -44,7 +44,7 @@ body {
 .cardHr.dark {
   border-bottom: 1px solid #24242c;
 }
-@for $i from 3 through 15 {
+@for $i from 2 through 15 {
   .transition-#{$i} {
     transition: all unquote("#{$i/10}s");
   }
@@ -85,6 +85,16 @@ body {
 .sideUp-enter,
 .sideUp-leave-to {
   transform: translateY(100%);
+  opacity: 0;
+}
+
+.bounceOut-enter-active,
+.bounceOut-leave-active {
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.bounceOut-enter,
+.bounceOut-leave-to {
+  transform: scale(0);
   opacity: 0;
 }
 .h-miniPlayer {
