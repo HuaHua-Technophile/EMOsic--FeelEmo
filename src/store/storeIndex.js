@@ -101,9 +101,17 @@ export default new Vuex.Store({
     setUserInfo(S, userInfo) {
       S.userInfo = userInfo;
     },
-    // 修改分享面板显示/隐藏
+    // 修改分享信息
     setShareInfo(S, info) {
       S.shareInfo = info;
+    },
+    // 分享面板显示
+    shareShow(S) {
+      S.shareStatus = true;
+    },
+    // 分享面板隐藏
+    shareHidden(S) {
+      S.shareStatus = false;
     },
   },
   actions: {},

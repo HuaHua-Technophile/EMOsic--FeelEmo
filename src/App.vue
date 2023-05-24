@@ -211,7 +211,7 @@
         @setCurrentRate="setCurrentRate"
         @miniListLoad="miniListLoad"></big-player>
     </transition>
-    <!-- 分享面板 -->
+    <!-- vant2分享面板 -->
     <van-share-sheet
       v-model="shareStatus"
       title="依眸,分享你的忧伤"
@@ -219,6 +219,8 @@
       :options="options"
       @select="shareEMO"
       class="bg-body text-light" />
+    <!-- vant2遮罩层 -->
+    <van-overlay :show="overlayStatus" @click="overlayStatus = false" />
   </div>
 </template>
 <script>
@@ -233,31 +235,28 @@
   export default {
     data() {
       return {
-        currentRate: 0,
-        currentTime: 0,
-        duration: 0,
-        isPlaying: false,
-        miniPLayer: [],
-        miniList: [],
-        miniListBS: null,
-        miniListStatus: false,
-        miniLoop: false,
-        miniListLoading: false,
-        miniListFinished: false,
-        bigPlayerShow: false,
-        thisSongImg: "",
-        thisSongName: "",
-        thisSongAr: [],
-        shareStatus: false,
+        currentRate: 0, //播放核心的当前进度
+        currentTime: 0, //播放核心的当前时间
+        duration: 0, //播放核心的总时长
+        isPlaying: false, //播放核心的当前播放状态
+        miniPLayer: [], //迷你播放器的3个歌曲信息存放数组
+        miniLoop: false, //迷你播放器的轮播图是否loop
+        miniList: [], //迷你播放列表的已加载信息
+        miniListStatus: false, //迷你播放列表的显示/隐藏状态
+        miniListBS: null, //迷你播放列表的Better scroll实例化对象
+        miniListLoading: false, //迷你播放列表加载中,用于辅助提示文本
+        miniListFinished: false, //迷你播放列表是否加载完毕
+        bigPlayerShow: false, //大播放器显示/隐藏状态
+        thisSongImg: "", //当前歌曲专辑图
+        thisSongName: "", //当前歌曲名称
+        thisSongAr: [], //当前播放歌曲的歌手列表
         options: [
-          //分享面板配置选项
-          // { name: "微信", icon: "wechat" },
-          // { name: "微博", icon: "weibo" },
+          //{name:"微信",icon:"wechat"},{name:"微博",icon:"weibo"},{name:"分享海报",icon:"poster"},
           { name: "复制链接", icon: "link" },
-          // { name: "分享海报", icon: "poster" },
           { name: "二维码", icon: "qrcode" },
-        ],
-        cli: null,
+        ], //分享面板配置选项
+        cli: null, //全局剪切板对象
+        overlayStatus: false, //全局遮罩层状态
       };
     },
     // 计算属性
@@ -270,6 +269,15 @@
         "shareInfo",
       ]),
       ...mapGetters(["playSongId"]),
+      // 分享面板的显示与隐藏
+      shareStatus: {
+        get() {
+          return this.$store.state.shareStatus;
+        },
+        set() {
+          this.shareHidden();
+        },
+      },
     },
     //方法
     methods: {
@@ -282,6 +290,7 @@
         "setSongLoop",
         "miniPlayerHidden",
         "miniPlayerShow",
+        "shareHidden",
       ]),
       // 分享面板
       async shareEMO(option) {
@@ -290,7 +299,7 @@
             text: () => this.shareInfo,
           });
         }
-        this.shareStatus = false;
+        this.shareHidden();
         Toast(`复制成功`);
       },
       //如果点击的事件对象不是列表本体,而是背景阴影时,隐藏迷你播放列表
@@ -441,10 +450,6 @@
           this.miniList = [];
           this.miniListLoad();
         }
-      },
-      // 当分享信息变化时,修改本身的分享面板展示状态
-      shareInfo(newV) {
-        if (newV != "") this.shareStatus = true;
       },
     }, // 挂载后生命周期
     mounted() {

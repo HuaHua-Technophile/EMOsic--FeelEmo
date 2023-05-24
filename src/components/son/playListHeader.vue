@@ -95,11 +95,12 @@
     props: ["data"],
     // 方法
     methods: {
-      ...mapMutations(["setShareInfo"]),
+      ...mapMutations(["setShareInfo", "shareShow"]),
       shareThisList() {
         this.setShareInfo(
           `https://y.music.163.com/m/playlist?id=${this.data.id}`
         );
+        this.shareShow();
       },
     },
   };
