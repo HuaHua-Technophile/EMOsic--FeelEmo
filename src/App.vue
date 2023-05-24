@@ -256,7 +256,7 @@
           { name: "二维码", icon: "qrcode" },
         ], //分享面板配置选项
         cli: null, //全局剪切板对象
-        overlayStatus: false, //全局遮罩层状态
+        overlayStatus: false, //全局遮罩层显示/隐藏状态
       };
     },
     // 计算属性
@@ -298,6 +298,9 @@
           this.cli = new ClipboardJS(".van-share-sheet__option", {
             text: () => this.shareInfo,
           });
+        }
+        if (option.name == "二维码") {
+          this.overlayStatus = true;
         }
         this.shareHidden();
         Toast(`复制成功`);

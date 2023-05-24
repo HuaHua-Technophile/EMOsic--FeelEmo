@@ -1,7 +1,7 @@
 <template>
   <div class="playListHeader w-100 ps-3 pe-3 pb-3 blur text-light t-shadow-6">
     <!-- 歌单封面图片\歌单名称\作者\作者头像\歌单标签 -->
-    <div class="d-flex w-100 mb-3">
+    <div class="d-flex mb-3">
       <!--歌单封面图片 -->
       <square-card :size="'25vw'" class="me-3 flex-shrink-0">
         <template #img>
@@ -15,7 +15,7 @@
         </template>
       </square-card>
       <!-- 歌单名称\作者\作者头像\歌单标签 -->
-      <div class="flex-grow-1 flex-shrink-1">
+      <div class="flex-grow-1 overflow-hidden">
         <!-- 歌单名称 -->
         <div class="d-flex align-items-center mb-2">
           <span class="flex-grow-1 van-ellipsis">{{ data.name }}</span>
@@ -74,17 +74,17 @@
         @click="shareThisList()"
         class="d-flex align-items-center justify-content-center bg-light rounded-pill">
         <font-awesome-icon icon="fa-solid fa-share" />
-        <span class="ms-1 fw-bold">{{ data.shareCount }}</span>
+        <span class="ms-1 fw-bold">{{ data.shareCount | ConUnit }}</span>
       </div>
       <div
         class="d-flex align-items-center justify-content-center bg-light rounded-pill">
         <i class="bi bi-chat-dots-fill"></i>
-        <span class="ms-1 fw-bold">{{ data.commentCount }}</span>
+        <span class="ms-1 fw-bold">{{ data.commentCount | ConUnit }}</span>
       </div>
       <div
         class="d-flex align-items-center justify-content-center bg-danger rounded-pill">
         <i class="bi bi-collection-play me-1"></i>
-        <span class="ms-1 fw-bold">{{ data.subscribedCount }}</span>
+        <span class="ms-1 fw-bold">{{ data.subscribedCount | ConUnit }}</span>
       </div>
     </div>
   </div>
