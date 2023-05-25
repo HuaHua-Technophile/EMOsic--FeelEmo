@@ -92,10 +92,17 @@ export function getLoginQrCheck(data) {
     data,
   });
 }
-// 账号信息
-export function getUserAccount() {
+// 获取登陆状态
+export function getLoginStatus() {
   return request({
-    url: "/user/account",
+    url: "/login/status",
+    method: "get",
+  });
+}
+// 获取其他用户详情
+export function getUserDetail(uid) {
+  return request({
+    url: `/user/detail?uid=${uid}`,
     method: "get",
   });
 }
@@ -112,5 +119,12 @@ export function getUserFolloweds(data) {
     url: "/user/followeds",
     method: "get",
     data,
+  });
+}
+// 获取某用户喜欢的音乐
+export function getLikelist(uid) {
+  return request({
+    url: `/likelist?uid=${uid}`,
+    method: "get",
   });
 }

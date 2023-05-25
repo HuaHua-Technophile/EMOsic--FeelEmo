@@ -14,9 +14,9 @@ const routes = [
     component: () => import("../views/FindView.vue"),
   },
   {
-    path: "/mine",
-    name: "mine",
-    component: () => import("../views/MineView.vue"),
+    path: "/userHome",
+    name: "userHome",
+    component: () => import("../views/userHome.vue"),
   },
   {
     path: "/playListDetail",

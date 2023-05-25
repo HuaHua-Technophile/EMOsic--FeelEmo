@@ -284,6 +284,7 @@
       ...mapState([
         "miniPlayerStatus",
         "songList",
+        "songListBackup",
         "playIndex",
         "songLoop",
         "shareInfo",
@@ -469,9 +470,9 @@
       songList() {
         this.miniListFinished = false;
       },
-      // 当循环变为随机循环，则清空小列表，使其重新加载
-      songLoop(newV) {
-        if (newV == 2) {
+      // 当循环变为随机循环,或从随机播放切换出来，则清空小列表，使其重新加载
+      songLoop(newV, oldV) {
+        if (newV === 2 || oldV === 2) {
           this.miniList = [];
           this.miniListLoad();
         }
@@ -526,7 +527,7 @@
     }
   }
   .miniListHeader {
-    width: calc(100% - 0.7px);
+    width: calc(100% - 0.5px);
   }
   .miniListWrapper {
     height: 50vh !important;

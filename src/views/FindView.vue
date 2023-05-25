@@ -1,17 +1,18 @@
 <template>
   <div
-    class="find-view w-100 h-100 noScrollBar"
+    class="find-view w-100 h-100 noScrollBar overflow-y-scroll overflow-x-hidden"
     :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
     <!-- 顶部搜索框 -->
-    <div class="find-search blur position-fixed top-0 d-flex pt-4 z-3">
+    <div
+      class="find-search blur position-fixed top-0 d-flex pt-4 ps-3 pe-3 z-3">
       <div
-        class="d-flex justify-content-center align-items-center"
-        @click="toMineView()">
+        class="d-flex justify-content-center align-items-center me-3"
+        @click="touserHome()">
         <i class="bi bi-person fs-2"></i>
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
-        class="col-9 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
+        class="flex-grow-1 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
         :class="Theme">
         <div>
           <i class="bi bi-search me-2"></i
@@ -19,9 +20,6 @@
             >大家在搜:{{ searchHot.first }}</span
           >
         </div>
-      </div>
-      <div class="text-center">
-        <i class="bi bi-mic fs-4"></i>
       </div>
     </div>
     <div class="find-main" :class="Theme">
@@ -125,8 +123,8 @@
     methods: {
       ...mapMutations(["changeTheme", "songListAdd", "setPlaySongId"]),
       // 左上角跳转至"我的/设置"页面
-      toMineView() {
-        this.$router.push({ name: "mine" });
+      touserHome() {
+        this.$router.push({ name: "userHome" });
       },
       // 首页轮播图点击跳转
       toBanner(item) {
@@ -217,24 +215,13 @@
   };
 </script>
 <style lang="scss">
-  .find-view {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
   .find-search {
-    width: calc(100% - 0.7px);
-    > div:nth-child(1) {
-      flex-grow: 1;
-    }
+    width: calc(100% - 0.5px);
     > div:nth-child(2).light {
       background: rgba(0, 0, 0, 0.15);
     }
     > div:nth-child(2).dark {
       background: rgba(255, 255, 255, 0.15);
-    }
-    > div:nth-child(3) {
-      flex-grow: 1;
     }
     .placeHolder {
       font-size: 15px;

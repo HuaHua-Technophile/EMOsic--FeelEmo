@@ -17,22 +17,19 @@
       <!-- 歌单名称\作者\作者头像\歌单标签 -->
       <div class="flex-grow-1 overflow-hidden">
         <!-- 歌单名称 -->
-        <div class="d-flex align-items-center mb-2">
-          <span class="flex-grow-1 van-ellipsis">{{ data.name }}</span>
-          <div
-            class="flex-shrink-0 bg-light rounded-pill d-flex align-items-center justify-content-center"
-            style="width: 20px; height: 20px; --bs-bg-opacity: 0.1"></div>
-        </div>
+        <div class="mb-2 van-ellipsis">{{ data.name }}</div>
         <!-- 作者\作者头像\关注 -->
         <div v-if="data.creator" class="d-flex align-items-center mb-2">
-          <img
-            :src="`${data.creator.avatarUrl}?param=x26y26`"
-            class="rounded-pill me-1" />
-          <span
-            class="me-1 flex-grow-1 overflow-hidden"
-            style="--bs-text-opacity: 0.5">
-            {{ data.creator.nickname }}
-          </span>
+          <div @click="toUserHome()">
+            <img
+              :src="`${data.creator.avatarUrl}?param=x26y26`"
+              class="rounded-pill me-1" />
+            <span
+              class="me-1 flex-grow-1 overflow-hidden"
+              style="--bs-text-opacity: 0.5">
+              {{ data.creator.nickname }}
+            </span>
+          </div>
           <!-- 已关注\关注按钮 -->
           <span
             v-if="data.creator.followed"
@@ -94,11 +91,19 @@
     // 方法
     methods: {
       ...mapMutations(["setShareInfo", "shareShow"]),
+      // 点击分享歌单
       shareThisList() {
         this.setShareInfo(
           `https://y.music.163.com/m/playlist?id=${this.data.id}`
         );
         this.shareShow();
+      },
+      // 点击跳转歌单创建者主页
+      toUserHome() {
+        this.$router.push({
+          name: "userHome",
+          query: { id: this.data.creator.userId },
+        });
       },
     },
   };

@@ -225,6 +225,6 @@
     color: inherit !important;
   }
   .playListDetailContent {
-    width: calc(100% - 0.6px);
+    width: calc(100% - 0.5px);
   }
 </style>

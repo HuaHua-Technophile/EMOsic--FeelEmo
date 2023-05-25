@@ -3,16 +3,15 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+import { cloneDeep } from "lodash";
 export default new Vuex.Store({
   state: {
-    Theme: "dark",
-    miniPlayerStatus: false,
-    // 播放核心----------------------
-    songList: [],
-    playIndex: -1,
-    songLoop: 0,
-    // 用户登录信息存储
-    userInfo: {},
+    Theme: "dark", //全局主题
+    miniPlayerStatus: false, //迷你播放器的显示/隐藏状态
+    songList: [], //本地播放列表
+    songListBackup: [], //本地播放列表在随机乱序前的备份
+    playIndex: -1, //当前歌曲的下标
+    songLoop: 0, //播放循环模式
     shareStatus: false, //分享面板状态
     shareInfo: "", // 待分享信息
   },
@@ -20,9 +19,6 @@ export default new Vuex.Store({
   getters: {
     playSongId(S) {
       return S.songList[S.playIndex] ? S.songList[S.playIndex] : -1;
-    },
-    isLogged(S) {
-      return S.userInfo.profile ? true : false;
     },
   },
   // 暴露的属性修改方法
@@ -47,7 +43,8 @@ export default new Vuex.Store({
     },
     //修改整个本地播放列表
     setSongList(S, idList) {
-      S.songList = idList;
+      S.songListBackup = cloneDeep(idList);
+      S.songList = cloneDeep(idList);
       S.songList.length == 0
         ? ((S.playIndex = -1), (S.miniPlayerStatus = false))
         : (S.miniPlayerStatus = true);
@@ -55,6 +52,7 @@ export default new Vuex.Store({
     // 播放列表删除指定歌曲
     songListReduce(S, songId) {
       S.songList.splice(S.songList.indexOf(songId), 1);
+      S.songListBackup.splice(S.songListBackup.indexOf(songId), 1);
       S.songList.length == 0
         ? ((S.playIndex = -1), (S.miniPlayerStatus = false))
         : (S.miniPlayerStatus = true);
@@ -62,6 +60,7 @@ export default new Vuex.Store({
     // 播放列表末尾添加歌曲
     songListAdd(S, songId) {
       S.songList.push(songId);
+      S.songListBackup.push(songId);
     },
     // 设置具体播放哪一首歌
     setPlaySongId(S, songId) {
@@ -95,11 +94,9 @@ export default new Vuex.Store({
         let id = S.songList[S.playIndex];
         S.songList = S.songList.sort(() => Math.random() - 0.5);
         S.playIndex = S.songList.indexOf(id);
+      } else {
+        S.songList = cloneDeep(S.songListBackup);
       }
-    },
-    // 修改本地用户存储状态
-    setUserInfo(S, userInfo) {
-      S.userInfo = userInfo;
     },
     // 修改分享信息
     setShareInfo(S, info) {
