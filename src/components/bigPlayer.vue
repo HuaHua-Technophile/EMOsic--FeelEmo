@@ -3,7 +3,7 @@
     class="w-100 vh-100 position-fixed top-0 text-light"
     style="z-index: 6"
     :style="[
-      { background: `url(${bigBG}?param=x90y210) center/cover` },
+      { background: `url(${bigBG}?param=90y210) center/cover` },
       // 理论上,如果用黑胶唱片中图片同样的请求参数.因为唱片机一次请求3张,因此有缓存,切换背景图不需要二次请求
     ]">
     <!-- 背景暗色遮罩 -->
@@ -78,7 +78,7 @@
                     <img
                       class="albumCover rounded-pill object-fit-cover rotate"
                       :class="[{ rotatePaused: !isPlaying }]"
-                      :src="`${items.al.picUrl}?param=x600y600`" />
+                      :src="`${items.al.picUrl}?param=600y600`" />
                   </div>
                 </swiper-slide>
               </swiper-container>

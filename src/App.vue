@@ -29,7 +29,7 @@
               <img
                 v-for="(item, index) in miniPLayer"
                 :key="index"
-                :src="`${item.al.picUrl}?param=x100y100`"
+                :src="`${item.al.picUrl}?param=100y100`"
                 class="h-100 position-absolute rounded"
                 :class="[{ 'z-3': index == 1 }]"
                 style="width: 50px" />

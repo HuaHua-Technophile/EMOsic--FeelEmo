@@ -14,7 +14,7 @@
           class="d-flex align-items-center"
           :class="{ 'mb-3': indexs != 2 }">
           <img
-            :src="`${j.uiElement.image.imageUrl}?param=x74y74`"
+            :src="`${j.uiElement.image.imageUrl}?param=74y74`"
             class="img rounded-3 me-3" />
           <div>
             <div class="mainTitle fw-bold">
@@ -22,10 +22,8 @@
                 j.uiElement.mainTitle.title
               }}</span>
             </div>
-            <div class="">
-              <span
-                v-if="j.uiElement.subTitle"
-                class="subTitle fs-8 text-danger rounded-3 me-1">
+            <div v-if="j.uiElement.subTitle">
+              <span class="subTitle fs-8 text-danger rounded-3 me-1">
                 {{ j.uiElement.subTitle.title }} </span
               ><span class="fs-7 text-body-secondary">{{
                 j.resourceExtInfo.artists[0].name

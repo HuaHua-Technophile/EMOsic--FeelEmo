@@ -21,7 +21,7 @@
           class="ps-3 pe-3 mb-3 d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center">
             <img
-              :src="`${j.uiElement.image.imageUrl}?param=x60y60`"
+              :src="`${j.uiElement.image.imageUrl}?param=60y60`"
               class="topImg rounded" />
             <span class="Rank ms-2 me-2 fw-bolder">{{ indexs + 1 }}</span>
             <div>

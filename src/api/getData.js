@@ -99,32 +99,45 @@ export function getLoginStatus() {
     method: "get",
   });
 }
-// 获取其他用户详情
+// 获取用户详情
 export function getUserDetail(uid) {
   return request({
     url: `/user/detail?uid=${uid}`,
     method: "get",
   });
 }
-// 获取VIP信息
+// 获取已登录后自己的VIP信息
 export function getVipInfo() {
   return request({
     url: "/vip/info",
     method: "get",
   });
 }
-// 获取用户粉丝
-export function getUserFolloweds(data) {
-  return request({
-    url: "/user/followeds",
-    method: "get",
-    data,
-  });
-}
 // 获取某用户喜欢的音乐
 export function getLikelist(uid) {
   return request({
     url: `/likelist?uid=${uid}`,
+    method: "get",
+  });
+}
+//关注用户
+export function Follow(id, t) {
+  return request({
+    url: `/follow?id=${id}&t=${t}`,
+    method: "get",
+  });
+}
+//获取用户歌单
+export function getUserPlaylist(uid) {
+  return request({
+    url: `/user/playlist?uid=${uid}`,
+    method: "get",
+  });
+}
+// 修改歌单的订阅状态
+export function setPlaylistSubscribe(t, id) {
+  return request({
+    url: `/playlist/subscribe?t=${t}&id=${id}`,
     method: "get",
   });
 }

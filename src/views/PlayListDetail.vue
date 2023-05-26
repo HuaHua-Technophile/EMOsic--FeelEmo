@@ -8,7 +8,10 @@
       class="playListDetailContent position-relative z-2 blur"
       :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
       <!-- 头部信息栏，展示歌单信息、专辑信息 -->
-      <play-list-header :data="playList"></play-list-header>
+      <play-list-header
+        :playlist="playList"
+        :subscribed="subscribed"
+        @changeSubscribe="changeSubscribe"></play-list-header>
       <!-- 列表头部。适用于歌单列表,专辑列表，推荐雷达列表，声音列表 -->
       <play-all-title
         @playAll="playAll"
@@ -93,10 +96,12 @@
       :title="titleText"
       :opacity="opacity"
       :collectStatus="collectStatus"
+      :subscribed="subscribed"
+      @changeSubscribe="changeSubscribe"
       class="t-shadow-3"></list-search>
     <!-- 背景图 -->
     <div class="w-100 h-100 position-absolute top-0 z-1">
-      <img :src="`${coverImgUrl}?param=x450y1050`" class="w-100" />
+      <img :src="`${coverImgUrl}?param=450y1050`" class="w-100" />
     </div>
   </div>
 </template>
@@ -104,7 +109,11 @@
   import BScroll from "@better-scroll/core"; //导入Better scroll核心
   import Pullup from "@better-scroll/pull-up"; //导入Better scroll上拉加载插件
   BScroll.use(Pullup); //注册插件
-  import { getPlayListDetail, getPlayListTrackAll } from "../api/getData.js";
+  import {
+    getPlayListDetail,
+    getPlayListTrackAll,
+    setPlaylistSubscribe,
+  } from "../api/getData.js";
   import { mapGetters, mapMutations, mapState } from "vuex";
   import ColorThief from "colorthief"; //自动计算颜色组件
   import playAllTitle from "../components/son/playAllTitle.vue"; //头部组件
@@ -124,6 +133,7 @@
         bs: null, //初始化Better scroll滚动盒子
         isPullUpLoad: false, //懒加载中
         loadFinish: false, //懒加载完毕
+        subscribed: null, //歌单是否已经收藏
       };
     },
     // 计算属性
@@ -183,6 +193,10 @@
           this.listOpacity = 1 - e.y / 280;
         }
       }, 200),
+      // 点击修改歌单收藏状态,将在组件销毁前一次性发送请求
+      changeSubscribe() {
+        this.subscribed = !this.subscribed;
+      },
     },
     // 创建后生命周期
     async created() {
@@ -198,6 +212,7 @@
       img.onload = () => {
         this.themeColor = colorThief.getColor(img);
       };
+      this.subscribed = res.playlist.subscribed; //将歌单是否收藏的状态初始化赋值
     },
     // 挂载后生命周期
     mounted() {
@@ -209,6 +224,14 @@
       // 上滑触底后执行懒加载
       this.bs.on("pullingUp", this.detailListLoad);
       this.bs.on("scroll", this.styleChange);
+    },
+    // 销毁前生命周期
+    beforeDestroy() {
+      if (this.subscribed != this.playList.subscribed) {
+        let t = this.subscribed ? 1 : 2;
+        setPlaylistSubscribe(t, this.playList.id);
+      }
+      this.bs.destroy();
     },
     // 组件
     components: {

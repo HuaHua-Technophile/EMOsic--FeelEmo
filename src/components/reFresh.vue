@@ -13,7 +13,7 @@
       :style="[{ height: `${height - 1}px` }]">
       <img
         ref="OccupyBgImg"
-        :src="`${OccupyBgImg}?param=x415y336`"
+        :src="`${OccupyBgImg}?param=415y336`"
         class="w-100" />
     </div>
     <div class="position-relative z-3 w-100">

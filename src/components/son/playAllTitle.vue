@@ -10,11 +10,8 @@
       <span class="fs-5 me-2">播放</span
       ><span class="fs-7 opacity-50">({{ listLength }})</span>
     </div>
-    <!-- 右侧下载，全选 -->
-    <div class="d-flex align-items-center">
-      <i class="bi bi-download fs-5 me-3"></i>
-      <i class="bi bi-list-check fs-2"></i>
-    </div>
+    <!-- 右侧全选 -->
+    <i class="bi bi-list-check fs-2"></i>
   </div>
 </template>
 <script>

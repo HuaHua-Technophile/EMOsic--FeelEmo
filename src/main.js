@@ -5,8 +5,8 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css"; //最先导入bootstrap icon字体图标
 //----Swiper9.3.1-------------------------
 import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
-//----lyric-parser歌词解析-----------------
-/* let lyric = new Lyric(lyricStr, handler);
+/*//----lyric-parser歌词解析-----------------
+let lyric = new Lyric(lyricStr, handler);
 function hanlder({ lineNum, txt }) {
   // this hanlder called when lineNum change
 } */
@@ -47,12 +47,13 @@ register(); // 注册Swiper自定义元素
 import "./assets/font_navbar/iconfont.css";
 import "./assets/font_songLoop/iconfont.css";
 import "./assets/font_Baidu_Wechat/iconfont.css";
+import "./assets/font_Weibo/iconfont.css";
+import "./assets/font_collection/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
 import "vant/lib/index.css";
 import { Circle, ShareSheet, Overlay, NoticeBar } from "vant"; //按需导入
 Vue.use(Circle).use(ShareSheet).use(Overlay).use(NoticeBar);
-
 /* //----Lodash引入-------------------
 import lodash from "lodash";
 Vue.prototype._ = lodash; */

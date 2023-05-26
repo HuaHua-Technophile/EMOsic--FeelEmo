@@ -13,7 +13,7 @@
         <img
           :src="`${
             item.resources[i - 1].uiElement.image.imageUrl
-          }?param=x138y138`"
+          }?param=138y138`"
           class="w-100" />
       </div>
     </transition-group>

@@ -24,7 +24,7 @@
               }}</span>
             </template>
             <template #img>
-              <img :src="`${item.uiElement.image.imageUrl}?param=x138y138`" />
+              <img :src="`${item.uiElement.image.imageUrl}?param=138y138`" />
             </template>
             <template #playIcon>
               <i

@@ -16,7 +16,7 @@ service.interceptors.request.use(
   },
   (error) => {
     console.log("axios中request报错", error);
-    Promise.reject(error);
+    // Promise.reject(error);
   }
 );
 // response 拦截器 后台发送前台拦截器
@@ -26,7 +26,7 @@ service.interceptors.response.use(
   },
   (error) => {
     console.log("axios中response报错", error);
-    Promise.reject(error);
+    // Promise.reject(error);
   }
 );
 export default service;

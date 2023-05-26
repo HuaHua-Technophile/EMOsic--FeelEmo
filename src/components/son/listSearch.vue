@@ -16,9 +16,13 @@
       <transition name="bounceOut">
         <span
           v-if="collectStatus"
+          @click="$emit('changeSubscribe')"
           class="collectBtn d-flex align-items-center flex-shrink-0 me-3 rounded-pill fs-8 bg-light"
           style="--bs-bg-opacity: 0.1">
-          <i class="bi bi-collection-play me-1"></i><span>收藏</span>
+          <span v-show="subscribed" class="iconfont icon-shoucang1"
+            >已收藏</span
+          >
+          <span v-show="!subscribed" class="iconfont icon-shoucang">收藏</span>
         </span>
       </transition>
     </div>
@@ -27,7 +31,7 @@
 </template>
 <script>
   export default {
-    props: ["title", "themeColor", "opacity", "collectStatus"],
+    props: ["title", "themeColor", "opacity", "collectStatus", "subscribed"],
     methods: {
       goBack() {
         this.$router.go(-1);

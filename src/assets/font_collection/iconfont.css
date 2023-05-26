@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url("iconfont.ttf?t=1685084134648") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shoucang:before {
+  content: "\e86d";
+}
+
+.icon-shoucang1:before {
+  content: "\e906";
+}
