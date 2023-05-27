@@ -63,7 +63,7 @@
       <!-- 返回图标 -->
       <i
         class="flex-shrink-0 bi bi-chevron-left fs-2 me-3"
-        @click="goBack()"></i>
+        @click="$router.go(-1)"></i>
       <!-- 真正的input框 -->
       <div class="flex-grow-1 d-flex align-items-center position-relative">
         <i class="bi bi-search position-absolute" style="left: 18px"></i>
@@ -99,19 +99,15 @@
     },
     // 方法
     methods: {
-      // 返回
-      goBack() {
-        this.$router.go(-1);
-      },
       // 搜索
       search() {
         if (this.seachWord != "") {
           this.searchHistory.splice(19, 1);
           this.searchHistory.unshift(this.seachWord);
-          /* this.$router.push({
-              name: "search",
-              params: { searchWord: this.seachWord },
-            }); */
+          this.$router.push({
+            name: "searchResult",
+            query: { keyword: this.seachWord },
+          });
         }
       },
       // 点击热搜榜或搜索历史后,进行搜索

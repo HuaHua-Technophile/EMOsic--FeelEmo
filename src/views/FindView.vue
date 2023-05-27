@@ -12,7 +12,7 @@
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
-        @click="toSeacherInput()"
+        @click="toSearchInput()"
         class="flex-grow-1 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
         :class="Theme">
         <div>
@@ -141,8 +141,8 @@
         }
       },
       // 点击跳转搜索页
-      toSeacherInput() {
-        this.$router.push({ name: "seacherInput" });
+      toSearchInput() {
+        this.$router.push({ name: "searchInput" });
       },
     },
     //生命周期函数获取数据

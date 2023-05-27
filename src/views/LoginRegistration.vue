@@ -9,7 +9,7 @@
       src="../assets/黑胶唱片(1920×1080-30fps).mp4"
       class="position-absolute w-100 h-100 z-n1 object-fit-cover"></video>
     <!-- 顶栏返回 -->
-    <div class="flex-shrink-0 ps-3 pt-4 fs-2" style="" @click="goBack()">
+    <div class="flex-shrink-0 ps-3 pt-4 fs-2" style="" @click="$router.go(-1)">
       <i
         class="bi bi-chevron-down bg-black ps-2 pe-2 rounded"
         style="--bs-bg-opacity: 0.2"></i>
@@ -117,11 +117,7 @@
     // 方法
     methods: {
       ...mapMutations(["miniPlayerShow"]),
-      // 返回
-      goBack() {
-        this.$router.go(-1);
-        if (this.playIndex != -1) this.miniPlayerShow();
-      },
+
       // 点击使用二维码登录,获取二维码
       async useQRcode() {
         this.loginMode = 2;

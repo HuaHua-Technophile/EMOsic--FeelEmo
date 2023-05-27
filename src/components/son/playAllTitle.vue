@@ -17,12 +17,6 @@
 <script>
   export default {
     props: ["listLength"],
-    methods: {
-      // 返回
-      goBack() {
-        this.$router.go(-1);
-      },
-    },
   };
 </script>
 <style>

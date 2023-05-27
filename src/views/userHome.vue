@@ -222,9 +222,11 @@
     <div
       class="w-100 position-absolute top-0 start-0 d-flex justify-content-between pt-4 ps-3 pe-3 z-3">
       <!-- 左侧返回 -->
-      <i class="bi bi-chevron-left fs-2" @click="goBack()"></i>
+      <i class="bi bi-chevron-left fs-2" @click="$router.go(-1)"></i>
       <!-- 右侧放大镜进入搜索 -->
-      <i class="bi bi-search fs-3"></i>
+      <i
+        class="bi bi-search fs-3"
+        @click="$router.push({ name: 'searchInput' })"></i>
     </div>
     <!-- 个人背景 -->
     <div class="position-absolute top-0 z-n1 w-100 overflow-hidden">
@@ -294,10 +296,6 @@
           name: "login",
         });
         this.miniPlayerHidden();
-      },
-      // 左上角返回
-      goBack() {
-        this.$router.go(-1);
       },
       // 星座判断
       getConstellation(month, day) {
