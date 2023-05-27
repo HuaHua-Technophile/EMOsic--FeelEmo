@@ -7,7 +7,7 @@
       class="find-search blur position-fixed top-0 d-flex pt-4 ps-3 pe-3 z-3">
       <div
         class="d-flex justify-content-center align-items-center me-3"
-        @click="touserHome()">
+        @click="$router.push({ name: 'userHome' })">
         <i class="bi bi-person fs-2"></i>
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
@@ -123,10 +123,6 @@
     //方法
     methods: {
       ...mapMutations(["songListAdd", "setPlaySongId"]),
-      // 左上角跳转至"我的/设置"页面
-      touserHome() {
-        this.$router.push({ name: "userHome" });
-      },
       // 首页轮播图点击跳转
       toBanner(item) {
         if (item.url) {
