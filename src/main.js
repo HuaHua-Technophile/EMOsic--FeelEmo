@@ -52,8 +52,8 @@ import "./assets/font_collection/iconfont.css";
 //----Vant2组件导入
 import "../node_modules/vant/lib/style/ellipsis.css"; //1，2，3行文本溢出隐藏
 import "vant/lib/index.css";
-import { Circle, ShareSheet, Overlay, NoticeBar } from "vant"; //按需导入
-Vue.use(Circle).use(ShareSheet).use(Overlay).use(NoticeBar);
+import { Circle, ShareSheet, Overlay, NoticeBar, Tab, Tabs } from "vant"; //按需导入
+Vue.use(Circle).use(ShareSheet).use(Overlay).use(NoticeBar).use(Tab).use(Tabs);
 /* //----Lodash引入-------------------
 import lodash from "lodash";
 Vue.prototype._ = lodash; */

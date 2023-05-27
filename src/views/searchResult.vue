@@ -1,8 +1,8 @@
 <template>
-  <div class="searchResult-View">
+  <div class="searchResult-View w-100 h-100">
     <!-- 顶部搜索框 -->
     <div
-      class="find-search blur position-fixed top-0 d-flex pt-4 ps-3 pe-3 z-3">
+      class="find-search blur position-fixed top-0 d-flex w-100 pt-4 ps-3 pe-3 z-3">
       <!-- 返回图标 -->
       <i
         class="flex-shrink-0 bi bi-chevron-left fs-2 me-3"
@@ -18,6 +18,12 @@
         </div>
       </div>
     </div>
+    <van-tabs v-model="active">
+      <van-tab title="标签 1">内容 1</van-tab>
+      <van-tab title="标签 2">内容 2</van-tab>
+      <van-tab title="标签 3">内容 3</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+    </van-tabs>
   </div>
 </template>
 <script>
@@ -33,3 +39,8 @@
     },
   };
 </script>
+<style lang="scss">
+  .searchResult-View {
+    padding-top: 70px;
+  }
+</style>
