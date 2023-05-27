@@ -1,10 +1,9 @@
 <template>
-  <div
-    ref="searchInputView"
-    class="searchInput-view w-100 h-100"
-    :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
+  <div ref="searchInputView" class="searchInput-view w-100 h-100">
     <!-- 滚动部分 -->
-    <div style="padding-top: 75px">
+    <div
+      style="padding-top: 75px"
+      :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
       <!-- 搜索建议 -->
       <div class="ms-3 me-3">
         <div
@@ -71,6 +70,7 @@
           @input="searchSuggest()"
           type="text"
           class="searchInput bg-body-secondary border-0 outline-0 w-100 m-0 rounded-pill"
+          style="--bs-bg-opacity: 0.6"
           placeholder="搜索属于你的依眸" />
       </div>
     </div>

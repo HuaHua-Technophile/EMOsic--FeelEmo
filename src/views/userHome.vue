@@ -1,10 +1,10 @@
 <template>
-  <div
-    ref="userHome"
-    class="userHomeView w-100 h-100 position-relative"
-    :class="[{ 'h-miniPlayer': miniPlayerStatus }]">
+  <div ref="userHome" class="userHomeView w-100 h-100 position-relative">
     <!-- 滚动内容 -->
-    <div class="mine-content overflow-hidden position-relative z-1">
+    <div
+      class="mine-content overflow-hidden position-relative z-1"
+      :class="[{ 'h-miniPlayer': miniPlayerStatus }]"
+      style="min-height: 101vh">
       <!-- 个人信息栏/头像 -->
       <div
         class="mine-info pt-5 pb-3 mb-4 ms-3 me-3 rounded-3 position-relative">
@@ -135,7 +135,7 @@
         </div>
       </div>
       <!-- 未登陆时,提示登录欣赏更多歌曲 -->
-      <div
+      <!-- <div
         v-if="!user"
         class="ms-3 me-3 mb-4 p-3 rounded-3 bg-body-secondary d-flex align-items-center">
         <div
@@ -144,7 +144,7 @@
           EMO
         </div>
         登陆后查看您的依眸歌单
-      </div>
+      </div> -->
       <!-- 用户收藏的歌单 -->
       <div
         v-if="collectionList.length > 0"

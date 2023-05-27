@@ -13,7 +13,8 @@
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
         @click="toSearchInput()"
-        class="flex-grow-1 d-flex justify-content-between align-items-center bg-body-secondary rounded-pill ps-3 pe-3">
+        class="flex-grow-1 d-flex justify-content-between align-items-center bg-body-secondary rounded-pill ps-3 pe-3"
+        style="--bs-bg-opacity: 0.6">
         <div>
           <i class="bi bi-search me-2"></i
           ><span class="placeHolder text-secondary"

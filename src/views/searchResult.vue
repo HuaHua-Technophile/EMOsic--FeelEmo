@@ -75,7 +75,7 @@
                 <div>歌单:<span v-html="heightLight(i.name)"></span></div>
                 <!-- 歌单数据:歌曲数/播放量 -->
                 <div class="fs-8 text-secondary">
-                  <span>歌曲:{{ i.trackCount | ConUnit }}</span>
+                  <span class="me-2">歌曲:{{ i.trackCount | ConUnit }}</span>
                   <span>播放:{{ i.playCount | ConUnit }}</span>
                 </div>
               </div>
