@@ -10,8 +10,8 @@
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
         @click="$router.push({ name: 'searchInput' })"
-        class="flex-grow-1 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
-        :class="Theme">
+        class="flex-grow-1 d-flex justify-content-between align-items-center bg-secondary rounded-pill ps-3 pe-3"
+        style="--bs-bg-opacity: 0.2">
         <div>
           <i class="bi bi-search me-2"></i
           ><span class="placeHolder text-secondary">{{ kw }}</span>

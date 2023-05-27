@@ -13,8 +13,8 @@
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
         @click="toSearchInput()"
-        class="flex-grow-1 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
-        :class="Theme">
+        class="flex-grow-1 d-flex justify-content-between align-items-center bg-secondary rounded-pill ps-3 pe-3"
+        style="--bs-bg-opacity: 0.2">
         <div>
           <i class="bi bi-search me-2"></i
           ><span class="placeHolder text-secondary"
@@ -218,12 +218,6 @@
 <style lang="scss">
   .find-search {
     width: calc(100% - 0.5px);
-    > div:nth-child(2).light {
-      background: rgba(0, 0, 0, 0.15);
-    }
-    > div:nth-child(2).dark {
-      background: rgba(255, 255, 255, 0.15);
-    }
     .placeHolder {
       font-size: 15px;
     }

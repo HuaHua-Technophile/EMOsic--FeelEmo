@@ -72,7 +72,7 @@
           @keyup.enter="search()"
           @input="searchSuggest()"
           type="text"
-          class="searchInput"
+          class="searchInput bg-secondary border-0 outline-0 w-100 m-0 rounded-pill"
           placeholder="搜索属于你的依眸" />
       </div>
     </div>
@@ -166,14 +166,9 @@
 </script>
 <style lang="scss">
   .searchInput {
-    background: var(--bs-secondary-bg);
-    border: none;
-    outline: none;
-    width: 100%;
     height: 37.4px;
     padding: 0 0 0 50px;
-    margin: 0;
-    border-radius: 9999999px;
+    --bs-bg-opacity: 0.2;
   }
   .searchHistory {
     padding: 5px 10px;
