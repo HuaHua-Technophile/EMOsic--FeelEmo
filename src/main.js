@@ -35,6 +35,8 @@ import reFresh from "./components/reFresh.vue";
 Vue.component("re-fresh", reFresh);
 import bigPlayer from "./components/bigPlayer.vue";
 Vue.component("big-player", bigPlayer);
+import songList from "./components/songList.vue";
+Vue.component("song-list", songList);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件
