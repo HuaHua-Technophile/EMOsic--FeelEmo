@@ -16,8 +16,7 @@
       <button
         v-if="data.button && data.button.text === '播放'"
         @click="$emit('playThisResource')"
-        class="btn btn-sm rounded-pill d-inline-flex align-items-center bg-secondary"
-        style="--bs-bg-opacity: 0.2">
+        class="btn btn-sm rounded-pill d-inline-flex align-items-center bg-body-secondary">
         <i class="bi bi-play-fill fs-6"></i>{{ data.button.text }}
       </button>
       <!-- 播放按钮和右侧icon二选一 -->
@@ -33,15 +32,8 @@
   </div>
 </template>
 <script>
-  import { mapState } from "vuex";
   export default {
     props: ["data"],
-    computed: {
-      ...mapState(["Theme"]),
-    },
-    created() {
-      console.log(this.data);
-    },
   };
 </script>
 <style lang="scss" scoped>

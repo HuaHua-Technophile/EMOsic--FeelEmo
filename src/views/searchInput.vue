@@ -28,15 +28,13 @@
             v-for="(i, index) in searchHistory"
             :key="index"
             @click="searchThis(i)"
-            class="searchHistory me-2 mb-3 rounded-pill bg-secondary"
+            class="searchHistory me-2 mb-3 rounded-pill bg-body-secondary"
             >{{ i }}</span
           >
         </transition-group>
       </div>
       <!-- 热搜榜 -->
-      <div
-        class="searchHot ms-3 me-3 ps-3 pe-3 rounded-3 bg-secondary"
-        style="--bs-bg-opacity: 0.2">
+      <div class="searchHot ms-3 me-3 ps-3 pe-3 rounded-3 bg-body-secondary">
         <div class="fs-5 pt-2 pb-2 mb-2 border-bottom">热搜榜</div>
         <div
           v-for="(i, index) in searchHot"
@@ -72,7 +70,7 @@
           @keyup.enter="search()"
           @input="searchSuggest()"
           type="text"
-          class="searchInput bg-secondary border-0 outline-0 w-100 m-0 rounded-pill"
+          class="searchInput bg-body-secondary border-0 outline-0 w-100 m-0 rounded-pill"
           placeholder="搜索属于你的依眸" />
       </div>
     </div>
@@ -168,10 +166,8 @@
   .searchInput {
     height: 37.4px;
     padding: 0 0 0 50px;
-    --bs-bg-opacity: 0.2;
   }
   .searchHistory {
     padding: 5px 10px;
-    --bs-bg-opacity: 0.2;
   }
 </style>

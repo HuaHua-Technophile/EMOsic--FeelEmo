@@ -135,8 +135,15 @@
         </div>
       </div>
       <!-- 未登陆时,提示登录欣赏更多歌曲 -->
-      <div v-if="!user" class="rounded-3 bg-body-secondary">
-        请登录畅享更多依眸音乐
+      <div
+        v-if="!user"
+        class="ms-3 me-3 mb-4 p-3 rounded-3 bg-body-secondary d-flex align-items-center">
+        <div
+          class="rounded bg-dark-subtle d-flex align-items-center justify-content-center me-3"
+          style="width: 80px; height: 80px">
+          EMO
+        </div>
+        登陆后查看您的依眸歌单
       </div>
       <!-- 用户收藏的歌单 -->
       <div
@@ -213,7 +220,10 @@
             <i class="bi bi-arrow-repeat fs-3 me-4"></i>检查更新
           </div>
         </div>
-        <div @click="logOut()" class="p-2 rounded-pill bg-danger text-center">
+        <div
+          v-if="user"
+          @click="logOut()"
+          class="p-2 rounded-pill bg-danger text-center">
           退出登录
         </div>
       </div>
@@ -235,6 +245,14 @@
         :src="`${user.profile.backgroundUrl}?param=300y300`"
         class="w-100" />
     </div>
+    <!-- 未登录情况下的设置页背景 -->
+    <video
+      v-if="!user"
+      ref="bgVideo"
+      autoplay
+      loop
+      src="../assets/下载.mp4"
+      class="position-absolute top-0 w-100 h-100 z-n1 object-fit-cover"></video>
     <!-- 退出登录确认框 -->
     <logout-confirm></logout-confirm>
   </div>
@@ -394,10 +412,11 @@
         this.userId = this.user.userPoint.userId;
       } else {
         let res = await getLoginStatus();
-        this.userId = res.data.account.id;
-        this.user = await getUserDetail(this.userId);
+        if (res.profile) {
+          this.userId = res.data.account.id;
+          this.user = await getUserDetail(this.userId);
+        }
       }
-      console.log(this.user);
       if (this.user) {
         let VipInfo = await getVipInfo();
         if (VipInfo.data)
@@ -447,7 +466,7 @@
     },
     // 销毁前生命周期
     beforeDestroy() {
-      if (this.followStatus != this.user.profile.followed) {
+      if (this.user && this.followStatus != this.user.profile.followed) {
         let t = this.followStatus ? 1 : 2;
         Follow(this.userId, t);
       }
