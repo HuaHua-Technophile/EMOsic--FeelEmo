@@ -25,9 +25,11 @@
             <div v-if="j.uiElement.subTitle">
               <span class="subTitle fs-8 text-danger rounded-3 me-1">
                 {{ j.uiElement.subTitle.title }} </span
-              ><span class="fs-7 text-body-secondary">{{
-                j.resourceExtInfo.artists[0].name
-              }}</span>
+              ><span
+                v-if="j.resourceExtInfo"
+                class="fs-7 text-body-secondary"
+                >{{ j.resourceExtInfo.artists[0].name }}</span
+              >
             </div>
           </div>
         </div>

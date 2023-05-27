@@ -14,7 +14,7 @@
           @click="searchThis(i)"
           :class="{ 'border-bottom': index < suggestList.length - 1 }">
           <i class="bi bi-search me-3"></i>
-          <span v-html="keyWord(i)"></span>
+          <span v-html="heightLight(i)"></span>
         </div>
       </div>
       <!-- 搜索历史 -->
@@ -89,7 +89,7 @@
         bs: null, //Better scroll实例化对象
         searchHistory: [], //搜索历史
         searchHot: [], //热搜榜
-        seachWord: null, //搜索关键词
+        seachWord: "", //搜索关键词
         suggestList: [], //搜索建议列表
       };
     },
@@ -131,7 +131,7 @@
         });
       }, 500),
       // 搜索关键词高亮
-      keyWord(text) {
+      heightLight(text) {
         return text.replace(
           this.seachWord,
           `<span class='text-danger'>${this.seachWord}</span>`

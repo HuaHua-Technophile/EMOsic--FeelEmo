@@ -42,7 +42,6 @@
       async renderLrc() {
         let res = await getLyric(this.playSongId);
         this.lyric = new Lyric(res.lrc.lyric, this.handler);
-        console.log("歌词", this.lyric);
         // 切歌后,歌词重载,重新计算Better scroll
         this.$nextTick(() => {
           this.bs.refresh();

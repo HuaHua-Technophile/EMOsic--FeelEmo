@@ -155,3 +155,10 @@ export function getSearchSuggest(keywords) {
     method: "get",
   });
 }
+//获取搜索推荐
+export function getSearchMultimatch(keywords) {
+  return request({
+    url: `/search/multimatch?keywords=${keywords}`,
+    method: "get",
+  });
+}

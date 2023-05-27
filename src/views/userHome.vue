@@ -398,38 +398,43 @@
         this.user = await getUserDetail(this.userId);
       }
       console.log(this.user);
-      let VipInfo = await getVipInfo();
-      this.VIPdynamicIconUrl = VipInfo.data.associator.dynamicIconUrl;
-      cityList.forEach((i) => {
-        if (i.code == (this.user.profile.city + "").slice(0, 4))
-          this.ip = i.name;
-      });
-      this.birthday = new Date(this.user.profile.birthday); //用户年龄
-      this.birthdayYear =
-        (this.birthday.getFullYear() + "").slice(2, 3) + "0后"; //用户年龄段
-      this.constellation = this.getConstellation(
-        this.birthday.getMonth() + 1,
-        this.birthday.getDate()
-      ); //星座
-      this.followStatus = this.user.profile.followed; //关注状态初始化
-      this.createdTime = (this.user.createDays / 365).toFixed(1); //用户创建时间
-      this.bindings = this.user.bindings.filter((i) => i.url); // 用户绑定社交帐号初始化
-      let userPlaylist = await getUserPlaylist(this.userId); //获取用户所有歌单,包括喜欢\收藏的他人歌单\创建的歌单
-      if (
-        userPlaylist.playlist != [] ||
-        userPlaylist.playlist[0].name.search("喜欢的音乐") != -1
-      ) {
-        this.emoMusic = userPlaylist.playlist.shift();
-      } //用户"喜欢"的歌单初始化
-      this.collectionList = userPlaylist.playlist.filter(
-        (i) => i.userId != this.userId
-      ); // 用户收藏他人的歌单
-      this.createList = userPlaylist.playlist.filter(
-        (i) => i.userId === this.userId
-      ); //用户自己创建歌单
-      this.createList.forEach((i) => {
-        this.createListCollection += i.subscribedCount;
-      }); //用户自己创建歌单被收藏次数
+      if (this.user) {
+        let VipInfo = await getVipInfo();
+        if (VipInfo.data)
+          this.VIPdynamicIconUrl = VipInfo.data.associator.dynamicIconUrl;
+        cityList.forEach((i) => {
+          if (i.code == (this.user.profile.city + "").slice(0, 4))
+            this.ip = i.name;
+        });
+        this.birthday = new Date(this.user.profile.birthday); //用户年龄
+
+        this.birthdayYear =
+          (this.birthday.getFullYear() + "").slice(2, 3) + "0后"; //用户年龄段
+        this.constellation = this.getConstellation(
+          this.birthday.getMonth() + 1,
+          this.birthday.getDate()
+        ); //星座
+
+        this.followStatus = this.user.profile.followed; //关注状态初始化
+        this.createdTime = (this.user.createDays / 365).toFixed(1); //用户创建时间
+        this.bindings = this.user.bindings.filter((i) => i.url); // 用户绑定社交帐号初始化
+        let userPlaylist = await getUserPlaylist(this.userId); //获取用户所有歌单,包括喜欢\收藏的他人歌单\创建的歌单
+        if (
+          userPlaylist.playlist != [] ||
+          userPlaylist.playlist[0].name.search("喜欢的音乐") != -1
+        ) {
+          this.emoMusic = userPlaylist.playlist.shift();
+        } //用户"喜欢"的歌单初始化
+        this.collectionList = userPlaylist.playlist.filter(
+          (i) => i.userId != this.userId
+        ); // 用户收藏他人的歌单
+        this.createList = userPlaylist.playlist.filter(
+          (i) => i.userId === this.userId
+        ); //用户自己创建歌单
+        this.createList.forEach((i) => {
+          this.createListCollection += i.subscribedCount;
+        }); //用户自己创建歌单被收藏次数
+      }
       this.$nextTick(() => {
         this.bs.refresh(); // 最后重新计算Better scroll
       });
