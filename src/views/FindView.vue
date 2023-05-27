@@ -12,6 +12,7 @@
       </div>
       <!-- input框是假的,点击后跳转真的搜索页面 -->
       <div
+        @click="toSeacherInput()"
         class="flex-grow-1 d-flex justify-content-between align-items-center rounded-pill ps-3 pe-3"
         :class="Theme">
         <div>
@@ -121,7 +122,7 @@
     },
     //方法
     methods: {
-      ...mapMutations(["changeTheme", "songListAdd", "setPlaySongId"]),
+      ...mapMutations(["songListAdd", "setPlaySongId"]),
       // 左上角跳转至"我的/设置"页面
       touserHome() {
         this.$router.push({ name: "userHome" });
@@ -138,6 +139,10 @@
           let id = item.encodeId;
           this.$router.push({ name: "playListDetail", query: { id } });
         }
+      },
+      // 点击跳转搜索页
+      toSeacherInput() {
+        this.$router.push({ name: "seacherInput" });
       },
     },
     //生命周期函数获取数据

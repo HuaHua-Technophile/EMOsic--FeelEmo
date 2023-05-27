@@ -377,9 +377,13 @@
         })
           .then(() => {
             // on confirm
+            Toast(`退出成功
+2分钟后生效`);
+            localStorage.setItem("token", "");
           })
           .catch(() => {
             // on cancel
+            Toast("取消退出");
           });
       },
     },

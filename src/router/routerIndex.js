@@ -28,6 +28,11 @@ const routes = [
     name: "login",
     component: () => import("../views/LoginRegistration.vue"),
   },
+  {
+    path: "/seacherInput",
+    name: "seacherInput",
+    component: () => import("../views/seacherInput.vue"),
+  },
 ];
 const router = new VueRouter({
   routes,

@@ -141,3 +141,17 @@ export function setPlaylistSubscribe(t, id) {
     method: "get",
   });
 }
+// 获取热搜榜
+export function getSearchHotDetail() {
+  return request({
+    url: "/search/hot/detail",
+    method: "get",
+  });
+}
+// 移动端搜索建议
+export function getSearchSuggest(keywords) {
+  return request({
+    url: `/search/suggest?keywords=${keywords}&type=mobile`,
+    method: "get",
+  });
+}
