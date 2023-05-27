@@ -129,10 +129,10 @@
               (i) => i.keyword
             );
           } else this.suggestList = [`${this.seachWord}`];
-          this.$nextTick(() => {
-            this.bs.refresh();
-          });
-        }
+        } else this.suggestList = [];
+        this.$nextTick(() => {
+          this.bs.refresh();
+        });
       }, 500),
       // 搜索关键词高亮
       keyWord(text) {
