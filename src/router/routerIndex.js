@@ -24,6 +24,11 @@ const routes = [
     component: () => import("../views/PlayListDetail.vue"),
   },
   {
+    path: "/album",
+    name: "album",
+    component: () => import("../views/albumView.vue"),
+  },
+  {
     path: "/login",
     name: "login",
     component: () => import("../views/LoginRegistration.vue"),
@@ -33,7 +38,6 @@ const routes = [
     name: "searchInput",
     component: () => import("../views/searchInput.vue"),
   },
-
   {
     path: "/searchResult",
     name: "searchResult",

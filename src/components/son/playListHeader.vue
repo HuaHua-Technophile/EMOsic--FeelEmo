@@ -155,4 +155,8 @@
       --bs-bg-opacity: 0.1;
     }
   }
+  .van-share-sheet__title,
+  .van-share-sheet__name {
+    color: inherit !important;
+  }
 </style>

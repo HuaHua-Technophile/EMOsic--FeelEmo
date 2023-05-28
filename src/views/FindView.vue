@@ -126,6 +126,7 @@
       // 首页轮播图点击跳转
       toBanner(item) {
         if (item.url) {
+          console.log(item.url);
           window.location.href = item.url;
         }
         if (item.song) {

@@ -173,13 +173,6 @@
   };
 </script>
 <style lang="scss">
-  .songItemIndex {
-    width: 36px;
-  }
-  .van-share-sheet__title,
-  .van-share-sheet__name {
-    color: inherit !important;
-  }
   .playListDetailContent {
     width: calc(100% - 0.5px);
   }

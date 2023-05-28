@@ -89,3 +89,8 @@
     },
   };
 </script>
+<style>
+  .songItemIndex {
+    width: 36px;
+  }
+</style>

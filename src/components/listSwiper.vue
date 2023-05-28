@@ -10,7 +10,7 @@
         <div
           v-for="(j, indexs) in i.resources"
           :key="indexs"
-          @click="playThisSong(j.resourceId)"
+          @click="clickThis(j)"
           class="d-flex align-items-center"
           :class="{ 'mb-3': indexs != 2 }">
           <img
@@ -41,6 +41,11 @@
   import { mapMutations, mapState } from "vuex";
   export default {
     props: ["data"],
+    data() {
+      return {
+        songList: [],
+      };
+    },
     // 计算属性
     computed: {
       ...mapState(["Theme"]),
@@ -53,11 +58,40 @@
         this.setSongList(this.data.resourceIdList);
         this.setPlayIndex(0);
       },
-      // 点击某个歌曲播放
-      playThisSong(id) {
-        this.setSongList(this.data.resourceIdList);
-        this.setPlaySongId(id);
+      // 未登陆时展示"为您定制精选歌曲""新歌新碟",已登录后展示"为您推荐",点击item播放某个歌曲,或跳转某个歌单/专辑
+      clickThis(obj) {
+        // 如果点击的item是歌曲,则播放歌曲
+        if (obj.resourceType == "song") {
+          // 如果有现成的歌单列表,说明点击的是"为您精选歌曲",直接传入即可,否则的话需要遍历
+          this.setSongList(
+            this.data.resourceIdList ? this.data.resourceIdList : this.songList
+          );
+          this.setPlaySongId(obj.resourceId);
+        }
+        // 如果点击的item是专辑,则跳转专辑
+        if (obj.resourceType == "album") {
+          this.$router.push({
+            name: "album",
+            id: obj.resourceId,
+          });
+        }
+        // 如果点击的item是数字专辑,则打开数字专辑url
+        if (obj.resourceType == "digitalAlbum") {
+          // window.location.href = obj.action;
+          window.location.href = `https://y.music.163.com/digitalbum/detail/${obj.resourceId}?referLog=HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG_one&nm_style=sbt`;
+        }
       },
+    },
+    // 创建时生命周期
+    created() {
+      // 如果在list轮播图中,拿到的数据不包含'resourceIdList',则表明是"新歌新碟"部分,需要自行遍历24个item中哪些是歌曲
+      if (!this.data.resourceIdList) {
+        this.data.creatives.forEach((i) => {
+          i.resources.forEach((j) => {
+            if (j.resourceType == "song") this.songList.push(j.resourceId);
+          });
+        });
+      }
     },
   };
 </script>
