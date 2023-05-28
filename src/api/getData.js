@@ -169,3 +169,17 @@ export function like(id, like) {
     method: "get",
   });
 }
+// 获取专辑
+export function getAlbum(id) {
+  return request({
+    url: `/album?id=${id}`,
+    method: "get",
+  });
+}
+// 设置专辑的收藏状态
+export function setAlbumSub(t, id) {
+  return request({
+    url: `/album/sub?t=${t}&id=${id}`,
+    method: "get",
+  });
+}

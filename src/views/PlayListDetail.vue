@@ -62,7 +62,7 @@
         collectStatus: false, //顶部收藏按钮的状态
         coverImgUrl: "", //背景图地址
         playList: {}, //歌单信息
-        detailList: [], //歌曲当前渲染出的歌曲item
+        detailList: [], //当前渲染出的歌曲item
         themeColor: [], //主题色
         listOpacity: 1, // 歌曲列表主体透明度
         bs: null, //初始化Better scroll滚动盒子

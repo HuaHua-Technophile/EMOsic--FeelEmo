@@ -72,7 +72,7 @@
         if (obj.resourceType == "album") {
           this.$router.push({
             name: "album",
-            id: obj.resourceId,
+            query: { id: obj.resourceId },
           });
         }
         // 如果点击的item是数字专辑,则打开数字专辑url

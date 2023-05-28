@@ -6,28 +6,32 @@
       <square-card :size="'25vw'" class="me-3 flex-shrink-0">
         <template #img>
           <img
-            v-if="playlist.coverImgUrl"
-            :src="`${playlist.coverImgUrl}?param=105y105`" />
-        </template>
-        <template #playCount>
-          <i class="bi bi-play-fill fs-7"></i
-          ><span class="fs-8">{{ playlist.playCount | ConUnit }}</span>
+            v-if="(album && album.picUrl) || (playlist && playlist.coverImgUrl)"
+            :src="`${
+              album ? album.picUrl : playlist.coverImgUrl
+            }?param=105y105`" />
         </template>
       </square-card>
       <!-- 歌单名称\作者\作者头像\歌单标签 -->
       <div class="flex-grow-1 overflow-hidden">
         <!-- 歌单名称 -->
-        <div class="mb-2 van-ellipsis">{{ playlist.name }}</div>
+        <div class="mb-2 van-ellipsis">
+          {{ album ? album.name : playlist.name }}
+        </div>
         <!-- 作者\作者头像\关注 -->
-        <div v-if="playlist.creator" class="d-flex align-items-center mb-2">
+        <div
+          v-if="(album && album.artist) || (playlist && playlist.creator)"
+          class="d-flex align-items-center mb-2">
           <div @click="toUserHome()">
             <img
-              :src="`${playlist.creator.avatarUrl}?param=26y26`"
+              :src="`${
+                album ? album.artist.img1v1Url : playlist.creator.avatarUrl
+              }?param=26y26`"
               class="rounded-pill me-1" />
             <span
               class="me-1 flex-grow-1 overflow-hidden"
               style="--bs-text-opacity: 0.5">
-              {{ playlist.creator.nickname }}
+              {{ album ? album.artist.name : playlist.creator.nickname }}
             </span>
           </div>
           <!-- 已关注\关注按钮 -->
@@ -40,7 +44,7 @@
           </div>
         </div>
         <!-- 歌单标签 -->
-        <div>
+        <div v-if="playlist">
           <span
             v-for="(i, j) in playlist.tags"
             :key="j"
@@ -55,7 +59,7 @@
       <span
         class="d-inline-block van-ellipsis position-relative fs-7"
         style="--bs-text-opacity: 0.5"
-        >{{ playlist.description }}</span
+        >{{ album ? album.description : playlist.description }}</span
       ><i class="bi bi-chevron-right ms-2"></i>
     </div>
     <!-- 歌单数据:转发,评论,收藏 -->
@@ -64,12 +68,16 @@
         @click="shareThisList()"
         class="d-flex align-items-center justify-content-center bg-light rounded-pill">
         <font-awesome-icon icon="fa-solid fa-share" />
-        <span class="ms-1 fw-bold">{{ playlist.shareCount | ConUnit }}</span>
+        <span v-if="(album && album.info) || playlist" class="ms-1 fw-bold">{{
+          album ? album.info.shareCount : playlist.shareCount | ConUnit
+        }}</span>
       </div>
       <div
         class="d-flex align-items-center justify-content-center bg-light rounded-pill">
         <i class="bi bi-chat-dots-fill"></i>
-        <span class="ms-1 fw-bold">{{ playlist.commentCount | ConUnit }}</span>
+        <span v-if="(album && album.info) || playlist" class="ms-1 fw-bold">{{
+          album ? album.info.commentCount : playlist.commentCount | ConUnit
+        }}</span>
       </div>
       <div
         class="d-flex align-items-center justify-content-center rounded-pill transition-5"
@@ -78,10 +86,14 @@
         @click="$emit('changeSubscribe')">
         <span v-show="subscribed" class="iconfont icon-shoucang1"></span>
         <span v-show="!subscribed" class="iconfont icon-shoucang"></span>
-        <span class="ms-1 fw-bold">{{
-          subscribed
+        <span v-if="(album && album.info) || playlist" class="ms-1 fw-bold">{{
+          subscribed && playlist
             ? playlist.subscribedCount + 1
-            : playlist.subscribedCount | ConUnit
+            : subscribed && album
+            ? album.info.likedCount + 1
+            : playlist
+            ? playlist.subscribedCount
+            : album.info.likedCount | ConUnit
         }}</span>
       </div>
     </div>
@@ -91,7 +103,7 @@
   import { mapMutations } from "vuex";
   import { Follow } from "../../api/getData.js";
   export default {
-    props: ["playlist", "subscribed"],
+    props: ["playlist", "album", "subscribed"],
     data() {
       return {
         creatorFollowed: null, //歌单创建者的关注状态
@@ -102,16 +114,25 @@
       ...mapMutations(["setShareInfo", "shareShow"]),
       // 点击分享歌单
       shareThisList() {
-        this.setShareInfo(
-          `https://y.music.163.com/m/playlist?id=${this.playlist.id}`
-        );
+        if (this.album)
+          this.setShareInfo(
+            `https://music.163.com/#/album?id=${this.album.id}`
+          );
+        else
+          this.setShareInfo(
+            `https://y.music.163.com/m/playlist?id=${this.playlist.id}`
+          );
         this.shareShow();
       },
       // 点击跳转歌单创建者主页
       toUserHome() {
         this.$router.push({
           name: "userHome",
-          query: { id: this.playlist.creator.userId },
+          query: {
+            id: this.album
+              ? this.album.artist.id
+              : this.playlist.creator.userId,
+          },
         });
       },
       // 点击修改歌单创建者的关注状态
@@ -119,20 +140,18 @@
         this.creatorFollowed = !this.creatorFollowed;
       },
     },
-    // 监听器
-    watch: {
-      playlist: {
-        handler(newV) {
-          this.creatorFollowed = newV.creator.followed;
-        },
-        deep: true,
-      },
-    },
     // 销毁前生命周期
     beforeDestroy() {
-      if (this.creatorFollowed != this.playlist.creator.followed) {
-        let t = this.creatorFollowed ? 1 : 2;
-        Follow(this.playlist.creator.userId, t);
+      if (this.album) {
+        if (this.creatorFollowed != this.album.artist.followed) {
+          let t = this.creatorFollowed ? 1 : 2;
+          Follow(this.album.artist.id, t);
+        }
+      } else {
+        if (this.creatorFollowed != this.playlist.creator.followed) {
+          let t = this.creatorFollowed ? 1 : 2;
+          Follow(this.playlist.creator.userId, t);
+        }
       }
     },
   };
