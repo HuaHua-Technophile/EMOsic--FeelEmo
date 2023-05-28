@@ -412,7 +412,8 @@
         this.userId = this.user.userPoint.userId;
       } else {
         let res = await getLoginStatus();
-        if (res.profile) {
+        console.log(res);
+        if (res.data.profile) {
           this.userId = res.data.account.id;
           this.user = await getUserDetail(this.userId);
         }
