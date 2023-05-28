@@ -88,7 +88,10 @@
         <!-- 底栏1:收藏\下载\歌词显示\评论 -->
         <div
           class="ps-3 pe-3 mb-3 w-100 d-flex justify-content-around align-items-center fs-2 t-shadow-5">
-          <i class="bi bi-heart"></i>
+          <i
+            class="bi"
+            :class="songlike ? 'bi-heart-fill text-danger' : 'bi-heart'"
+            @click="changeSongLike()"></i>
           <i class="bi bi-download" @click="downloadThisSong(songUrl)"></i>
           <span
             class="fs-7 border border-light rounded"
@@ -152,6 +155,8 @@
 <script>
   import lyricRendering from "../components/son/lyricRendering.vue";
   import { mapGetters, mapMutations, mapState } from "vuex";
+  import { like } from "@/api/getData.js";
+  import { Toast } from "vant";
   export default {
     props: [
       "songUrl",
@@ -166,8 +171,9 @@
     ],
     data() {
       return {
-        lrcStatus: false,
-        timeIdList: [],
+        lrcStatus: false, //歌词页面的显示/隐藏
+        timeIdList: [], //定时器列表
+        songlike: false, //歌曲收藏状态，但因为登陆后请求数据中不包含是否已喜欢该歌曲，因此只能做本地伪数据。
       };
     },
     // 计算属性
@@ -226,22 +232,30 @@
         el.style.display = "none";
         el.setAttribute("target", "_blank");
         /*优点：
-可以下载txt、png、pdf等类型文件
-download的属性是HTML5新增的属性
-href属性的地址必须是非跨域的地址，如果引用的是第三方的网站或者说是前后端分离的项目(调用后台的接口)，这时download就会不起作用。 此时，如果是下载浏览器无法解析的文件，例如.exe,.xlsx..那么浏览器会自动下载，但是如果使用浏览器可以解析的文件，比如.txt,.png,.pdf....浏览器就会采取预览模式；所以，对于.txt,.png,.pdf等的预览功能我们就可以直接不设置download属性(前提是后端响应头的Content-Type: application/octet-stream，如果为application/pdf浏览器则会判断文件为 pdf ，自动执行预览的策略)
+  可以下载txt、png、pdf等类型文件
+  download的属性是HTML5新增的属性
+  href属性的地址必须是非跨域的地址，如果引用的是第三方的网站或者说是前后端分离的项目(调用后台的接口)，这时download就会不起作用。 此时，如果是下载浏览器无法解析的文件，例如.exe,.xlsx..那么浏览器会自动下载，但是如果使用浏览器可以解析的文件，比如.txt,.png,.pdf....浏览器就会采取预览模式；所以，对于.txt,.png,.pdf等的预览功能我们就可以直接不设置download属性(前提是后端响应头的Content-Type: application/octet-stream，如果为application/pdf浏览器则会判断文件为 pdf ，自动执行预览的策略)
 
-缺点：
-a标签只能做get请求，所有url有长度限制
-无法获取下载进度
-无法在header中携带token做鉴权操作
-跨域限制
-无法判断接口是否返回成功
-IE兼容问题*/
+  缺点：
+  a标签只能做get请求，所有url有长度限制
+  无法获取下载进度
+  无法在header中携带token做鉴权操作
+  跨域限制
+  无法判断接口是否返回成功
+  IE兼容问题*/
         fileName && el.setAttribute("download", fileName);
         el.href = url;
         document.body.appendChild(el);
         el.click();
         document.body.removeChild(el);
+      },
+      // 点击喜欢该歌曲后，修改本地的伪数据，并尝试发起真正的请求
+      async changeSongLike() {
+        this.songlike = !this.songlike;
+        let res = await like(this.playSongId, this.songlike);
+        res.code === 200 && this.songlike
+          ? Toast("喜欢成功")
+          : Toast("取消喜欢成功");
       },
     }, // 过滤器
     filters: {
@@ -267,6 +281,10 @@ IE兼容问题*/
             this.$refs.recordPlayer.swiper.slideTo(1, 0, false);
           });
         }
+      },
+      // 换新歌之后,迫于无奈,请求的歌曲数据中不包含是否已经喜欢过该歌曲,只能将本地伪数据修改为未喜欢
+      playSongId() {
+        this.songlike = false;
       },
     },
     // 组件

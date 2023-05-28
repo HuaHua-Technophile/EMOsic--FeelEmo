@@ -162,3 +162,10 @@ export function getSearchMultimatch(keywords) {
     method: "get",
   });
 }
+// 用户登陆后,喜欢/不喜欢某首歌曲.返回code为200即成功
+export function like(id, like) {
+  return request({
+    url: `/like?id=${id}&like=${like}`,
+    method: "get",
+  });
+}
