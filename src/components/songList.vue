@@ -1,7 +1,7 @@
 <template>
   <!-- 列表主体 -->
   <div
-    class="t-shadow-3 bg-body pt-3 transition-2"
+    class="t-shadow-3 pt-3 transition-2"
     :style="[{ '--bs-bg-opacity': listOpacity }]">
     <div
       v-for="(item, index) in detailList"
@@ -22,8 +22,11 @@
           <div
             class="transition-8"
             :class="[{ 'text-danger': item.id == playSongId }]">
-            {{ item.name }}
-            <span v-if="item.tns" class="opacity-50">{{ item.tns }}</span>
+            <span v-html="heightLight(item.name, kw)"></span>
+            <span
+              v-if="item.tns"
+              class="opacity-50"
+              v-html="heightLight(item.tns, kw)"></span>
           </div>
           <!-- 作者及音频码率标签 -->
           <div class="d-flex align-items-center">
@@ -45,13 +48,14 @@
             <!-- 歌手信息 -->
             <div class="fs-8 opacity-50 text-nowrap">
               <span v-for="(j, indexs) in item.ar" :key="indexs"
-                ><span>{{ j.name }}</span
+                ><span v-html="heightLight(j.name, kw)"></span
                 ><span v-if="indexs != item.ar.length - 1">/</span></span
               >
             </div>
             <!-- 专辑信息 -->
             <div v-if="item.al" class="fs-8 opacity-50 text-nowrap">
-              <span class="ms-1 me-1">-</span>{{ item.al.name }}
+              <span class="ms-1 me-1">-</span
+              ><span v-html="heightLight(item.al.name, kw)"></span>
             </div>
           </div>
         </div>
@@ -64,21 +68,32 @@
         </div>
       </div>
     </div>
-    <div v-if="loadFinish" class="text-center fs-8">没有更多啦...</div>
-    <div v-else class="text-center">
-      <div v-show="isPullUpLoad">加载中...</div>
-      <div v-show="!isPullUpLoad">松手加载</div>
+    <div v-if="showLazyLoad">
+      <div v-if="loadFinish" class="text-center fs-8">没有更多啦...</div>
+      <div v-else class="text-center">
+        <div v-show="isPullUpLoad">加载中...</div>
+        <div v-show="!isPullUpLoad">松手加载</div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import { mapMutations, mapGetters } from "vuex";
+  import { mapMutations, mapGetters, mapState } from "vuex";
+  import heightLight from "@/tool/heightLight";
   export default {
-    props: ["detailList", "loadFinish", "isPullUpLoad", "listOpacity"],
+    props: [
+      "detailList",
+      "loadFinish",
+      "isPullUpLoad",
+      "listOpacity",
+      "showLazyLoad",
+    ],
     // 计算属性
     computed: {
+      ...mapState(["kw"]),
       ...mapGetters(["playSongId"]),
     },
+    // 方法
     methods: {
       ...mapMutations(["setSongList", "setPlayIndex"]),
       // 歌单列表点击播放选定歌曲
@@ -86,6 +101,8 @@
         this.$emit("songList");
         this.setPlayIndex(index);
       },
+      // 高亮
+      heightLight,
     },
   };
 </script>

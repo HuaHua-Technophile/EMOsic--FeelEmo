@@ -103,7 +103,7 @@
         </div>
         <!-- 底栏2:进度条 -->
         <div class="ps-3 pe-3 d-flex align-items-center t-shadow-8">
-          <span>{{ currentTime | TimeFormat }}</span>
+          <span>{{ timeFormat(currentTime) }}</span>
           <div
             class="w-100 h-100 ms-2 me-2 rounded-5 overflow-hidden position-relative">
             <input
@@ -114,7 +114,7 @@
               step="1"
               v-model="currentRate" />
           </div>
-          <span>{{ duration | TimeFormat }}</span>
+          <span>{{ timeFormat(duration) }}</span>
         </div>
         <!-- 底栏3:循环控制\上一首\播放暂停\上一首\迷你播放列表 -->
         <div
@@ -157,6 +157,7 @@
   import { mapGetters, mapMutations, mapState } from "vuex";
   import { like } from "@/api/getData.js";
   import { Toast } from "vant";
+  import timeFormat from "../tool/timeFormat";
   export default {
     props: [
       "songUrl",
@@ -257,13 +258,8 @@
           ? Toast("喜欢成功")
           : Toast("取消喜欢成功");
       },
-    }, // 过滤器
-    filters: {
-      TimeFormat(data) {
-        let m = parseInt(data / 60); //分钟
-        let s = parseInt(data % 60); //秒
-        return `${`${m}`.padStart(2, "0")}:${`${s}`.padStart(2, "0")}`;
-      },
+      // 时间格式化
+      timeFormat,
     },
     // 监听器
     watch: {

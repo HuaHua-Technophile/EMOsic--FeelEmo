@@ -14,6 +14,7 @@ export default new Vuex.Store({
     songLoop: 0, //播放循环模式
     shareStatus: false, //分享面板状态
     shareInfo: "", // 待分享信息
+    kw: "", //搜索关键词,在许多路由中使用到,因此存储在vuex中
   },
   // 计算属性
   getters: {
@@ -109,6 +110,10 @@ export default new Vuex.Store({
     // 分享面板隐藏
     shareHidden(S) {
       S.shareStatus = false;
+    },
+    // 设置搜索关键词
+    setKw(S, kw) {
+      S.kw = kw;
     },
   },
   actions: {},

@@ -22,7 +22,8 @@
         :loadFinish="loadFinish"
         :isPullUpLoad="isPullUpLoad"
         :listOpacity="listOpacity"
-        @songList="songList"></song-list>
+        @songList="songList"
+        class="bg-body"></song-list>
     </div>
     <!-- 顶部搜索框，fixed定位。适用于官方雷达歌单、推荐歌单、专辑页 -->
     <list-search

@@ -13,7 +13,7 @@
           @click="searchThis(i)"
           :class="{ 'border-bottom': index < suggestList.length - 1 }">
           <i class="bi bi-search me-3"></i>
-          <span v-html="heightLight(i)"></span>
+          <span v-html="heightLight(i, seachWord)"></span>
         </div>
       </div>
       <!-- 搜索历史 -->
@@ -78,9 +78,10 @@
 </template>
 <script>
   import BScroll from "@better-scroll/core";
-  import { mapState } from "vuex";
+  import { mapMutations, mapState } from "vuex";
   import { getSearchHotDetail, getSearchSuggest } from "@/api/getData.js";
   import debounce from "lodash/debounce.js"; //lodash防抖
+  import heightLight from "../tool/heightLight.js";
   export default {
     data() {
       return {
@@ -97,14 +98,15 @@
     },
     // 方法
     methods: {
+      ...mapMutations(["setKw"]),
       // 搜索
       search() {
         if (this.seachWord != "") {
           this.searchHistory.splice(19, 1);
           this.searchHistory.unshift(this.seachWord);
+          this.setKw(this.seachWord);
           this.$router.push({
             name: "searchResult",
-            query: { keyword: this.seachWord },
           });
         }
       },
@@ -128,13 +130,7 @@
           this.bs.refresh();
         });
       }, 500),
-      // 搜索关键词高亮
-      heightLight(text) {
-        return text.replace(
-          this.seachWord,
-          `<span class='text-danger'>${this.seachWord}</span>`
-        );
-      },
+      heightLight,
     },
     // 创建时生命周期
     async created() {
