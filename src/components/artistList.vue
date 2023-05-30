@@ -1,10 +1,11 @@
 <template>
   <div class="pt-3">
+    <!-- 歌手item -->
     <div
       v-for="(i, index) in detailList"
       :key="index"
       class="mb-3 d-flex align-items-center">
-      <img :src="`${i.picUrl}?param=55y55`" class="rounded-pill me-2" />
+      <img :src="`${i.picUrl}?param=55y55`" class="rounded-pill me-3" />
       <!-- 歌手信息 -->
       <div class="flex-grow-1">
         <!-- 名称 -->
@@ -31,6 +32,14 @@
         </div>
       </div>
     </div>
+    <!-- 懒加载提示 -->
+    <div v-if="!hiddenLazyLoad">
+      <div v-if="loadFinish" class="text-center fs-8">没有更多啦...</div>
+      <div v-else class="text-center">
+        <div v-show="isPullUpLoad">加载中...</div>
+        <div v-show="!isPullUpLoad">松手加载</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -39,7 +48,7 @@
   import { setArtistSub } from "../api/getData.js";
   import { Toast } from "vant";
   export default {
-    props: ["detailList"],
+    props: ["detailList", "loadFinish", "isPullUpLoad", "hiddenLazyLoad"],
     data() {
       return {
         followedList: [], //关注列表

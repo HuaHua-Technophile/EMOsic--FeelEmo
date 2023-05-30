@@ -32,8 +32,6 @@ import listSwiper from "./components/listSwiper.vue";
 Vue.component("list-swiper", listSwiper);
 import topSwiper from "./components/topSwiper.vue";
 Vue.component("top-swiper", topSwiper);
-import reFresh from "./components/reFresh.vue";
-Vue.component("re-fresh", reFresh);
 import bigPlayer from "./components/bigPlayer.vue";
 Vue.component("big-player", bigPlayer);
 import songList from "./components/songList.vue";

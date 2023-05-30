@@ -5,8 +5,10 @@
       :key="index"
       @click="$router.push({ name: 'userHome', query: { id: i.userId } })"
       class="mb-3 d-flex align-items-center">
-      <div class="position-relative">
-        <img :src="`${i.avatarUrl}?param=55y55`" class="rounded-pill me-2" />
+      <div class="position-relative me-3" style="width: 55px; height: 55px">
+        <img
+          :src="`${i.avatarUrl}?param=55y55`"
+          class="rounded-pill w-100 h-100" />
         <div
           class="position-absolute end-0 bottom-0 translate-middle"
           style="width: 15px; height: 15px">
@@ -34,7 +36,7 @@
         <div class="fs-8 opacity-50">{{ i.signature }}</div>
       </div>
       <!-- 关注按钮,响应式数据失效 -->
-      <div @click="followThis(index)">
+      <div class="flex-shrink-0 ms-2" @click="followThis(index)">
         <div v-if="followedList[index]" class="fs-9">
           <i class="bi bi-check"></i>已关注
         </div>

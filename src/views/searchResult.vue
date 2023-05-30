@@ -168,7 +168,8 @@
             <div class="pb-3 border-bottom fs-5">歌单</div>
             <!-- 歌单部分主体 -->
             <playlist-list
-              :detailList="playlistList.slice(0, 6)"></playlist-list>
+              :detailList="playlistList.slice(0, 6)"
+              :hiddenLazyLoad="true"></playlist-list>
             <!-- 查看更多按钮 -->
             <div class="text-center border-top fs-7 p-2" @click="active = 2">
               <span class="opacity-50"
@@ -181,7 +182,9 @@
             class="p-3 pb-0 mb-3 bg-body-secondary rounded-3 overflow-hidden">
             <div class="pb-3 border-bottom fs-5">艺人</div>
             <!-- 歌手部分主体 -->
-            <artist-list :detailList="artistList"></artist-list>
+            <artist-list
+              :detailList="artistList"
+              :hiddenLazyLoad="true"></artist-list>
             <div class="text-center border-top fs-7 p-2" @click="active = 3">
               <span class="opacity-50"
                 >查看全部{{ artistCount }}位依眸入驻艺人</span
@@ -193,7 +196,9 @@
             class="p-3 pb-0 mb-3 bg-body-secondary rounded-3 overflow-hidden">
             <div class="pb-3 border-bottom fs-5">专辑</div>
             <!-- 专辑部分主体 -->
-            <album-list :detailList="albumList.slice(0, 6)"></album-list>
+            <album-list
+              :detailList="albumList.slice(0, 6)"
+              :hiddenLazyLoad="true"></album-list>
             <div class="text-center border-top fs-7 p-2" @click="active = 4">
               <span class="opacity-50">查看全部{{ albumCount }}个依眸专辑</span>
             </div>
@@ -222,10 +227,38 @@
             @songList="songListChange()"></song-list>
         </div>
       </van-tab>
-      <van-tab title="歌单">歌单</van-tab>
-      <van-tab title="歌手">歌手</van-tab>
-      <van-tab title="专辑">专辑</van-tab>
-      <van-tab title="用户">用户</van-tab>
+      <van-tab title="歌单">
+        <div :class="[{ 'h-miniPlayer': miniPlayerStatus }]" class="ps-3 pe-3">
+          <playlist-list
+            :detailList="playlistList"
+            :loadFinish="playlistLoadFinish"
+            :isPullUpLoad="playlistIsPullUpLoad"></playlist-list>
+        </div>
+      </van-tab>
+      <van-tab title="歌手">
+        <div :class="[{ 'h-miniPlayer': miniPlayerStatus }]" class="ps-3 pe-3">
+          <artist-list
+            :detailList="artistList"
+            :loadFinish="artistLoadFinish"
+            :isPullUpLoad="artistIsPullUpLoad"></artist-list>
+        </div>
+      </van-tab>
+      <van-tab title="专辑">
+        <div :class="[{ 'h-miniPlayer': miniPlayerStatus }]" class="ps-3 pe-3">
+          <album-list
+            :detailList="albumList"
+            :loadFinish="albumLoadFinish"
+            :isPullUpLoad="albumIsPullUpLoad"></album-list>
+        </div>
+      </van-tab>
+      <van-tab title="用户">
+        <div :class="[{ 'h-miniPlayer': miniPlayerStatus }]" class="ps-3 pe-3">
+          <user-list
+            :detailList="userList"
+            :loadFinish="userLoadFinish"
+            :isPullUpLoad="userIsPullUpLoad"></user-list>
+        </div>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -248,12 +281,20 @@
         songLoadFinish: false, //单曲是否加载完成
         playlistList: [], //歌单列表
         playlistCount: 0, //歌单数量
+        playlistIsPullUpLoad: false, //歌单是否上拉加载中
+        playlistLoadFinish: false, //歌单是否加载完成
         artistList: [], //艺人(歌手)列表
         artistCount: 0, //艺人(歌手)数量
+        artistIsPullUpLoad: false, //艺人(歌手)是否上拉加载中
+        artistLoadFinish: false, //艺人(歌手)是否加载完成
         albumList: [], //专辑列表
         albumCount: 0, //专辑数量
+        albumIsPullUpLoad: false, //专辑是否上拉加载中
+        albumLoadFinish: false, //专辑是否加载完成
         userList: [], //用户列表
         userCount: 0, //用户数量
+        userIsPullUpLoad: false, //专辑是否上拉加载中
+        userLoadFinish: false, //专辑是否加载完成
         bs: new Array(6), //better-scroll 实例化对象
         bsDOM: [], //Better scroll的挂载dom对象
         timeIdList: [], //定时器Id列表
@@ -261,7 +302,7 @@
     },
     // 计算属性
     computed: {
-      ...mapState(["kw"]),
+      ...mapState(["kw", "miniPlayerStatus"]),
     },
     // 方法
     methods: {
@@ -279,7 +320,6 @@
       },
       // 加载歌曲
       async songListLoad() {
-        console.log("触底了");
         // 如果加载完毕
         if (this.songList.length == this.songCount) {
           this.songLoadFinish = true;
@@ -302,19 +342,138 @@
           this.bs[1].refresh();
         });
       },
+      // 加载歌单
+      async playlistListLoad() {
+        // 如果加载完毕
+        if (this.playlistList.length == this.playlistCount) {
+          this.playlistLoadFinish = true;
+          this.bs[2].closePullUp();
+        }
+        // 如果没加载完
+        else {
+          this.playlistIsPullUpLoad = true;
+          let res = await cloudsearch({
+            keywords: this.kw, //搜索关键词
+            limit: 15, //请求回15个
+            offset: this.playlistList.length, //从第n个开始请求.默认为0
+            type: 1000, //歌单
+          });
+          this.playlistList.push(...res.result.playlists);
+          this.bs[2].finishPullUp();
+          this.playlistIsPullUpLoad = false;
+        }
+        this.$nextTick(() => {
+          this.bs[2].refresh();
+        });
+      },
+      // 加载歌手
+      async artistListLoad() {
+        // 如果加载完毕
+        if (this.artistList.length == this.artistCount) {
+          this.artistLoadFinish = true;
+          this.bs[3].closePullUp();
+        }
+        // 如果没加载完
+        else {
+          this.artistIsPullUpLoad = true;
+          let res = await cloudsearch({
+            keywords: this.kw, //搜索关键词
+            limit: 15, //请求回15个
+            offset: this.artistList.length, //从第n个开始请求.默认为0
+            type: 100, //歌手
+          });
+          this.artistList.push(...res.result.artists);
+          this.bs[3].finishPullUp();
+          this.artistIsPullUpLoad = false;
+        }
+        this.$nextTick(() => {
+          this.bs[3].refresh();
+        });
+      },
+      // 加载专辑
+      async albumListLoad() {
+        // 如果加载完毕
+        if (this.albumList.length == this.albumCount) {
+          this.albumLoadFinish = true;
+          this.bs[4].closePullUp();
+        }
+        // 如果没加载完
+        else {
+          this.albumIsPullUpLoad = true;
+          let res = await cloudsearch({
+            keywords: this.kw, //搜索关键词
+            limit: 15, //请求回15个
+            offset: this.albumList.length, //从第n个开始请求.默认为0
+            type: 10, //专辑
+          });
+          this.albumList.push(...res.result.albums);
+          this.bs[4].finishPullUp();
+          this.albumIsPullUpLoad = false;
+        }
+        this.$nextTick(() => {
+          this.bs[4].refresh();
+        });
+      },
+      // 加载用户
+      async userListLoad() {
+        // 如果加载完毕
+        if (this.userList.length == this.userCount) {
+          this.userLoadFinish = true;
+          this.bs[5].closePullUp();
+        }
+        // 如果没加载完
+        else {
+          this.userIsPullUpLoad = true;
+          let res = await cloudsearch({
+            keywords: this.kw, //搜索关键词
+            limit: 15, //请求回15个
+            offset: this.userList.length, //从第n个开始请求.默认为0
+            type: 1002, //用户
+          });
+          this.userList.push(...res.result.userprofiles);
+          this.bs[5].finishPullUp();
+          this.userIsPullUpLoad = false;
+        }
+        this.$nextTick(() => {
+          this.bs[5].refresh();
+        });
+      },
     },
     // 监听器
     watch: {
       active(newV) {
-        switch (newV) {
-          case 1: {
-            this.bs[1] = new BScroll(this.bsDOM[1], {
-              click: true, //允许点击事件
-              pullUpLoad: true,
-            });
-            this.songListLoad();
-            this.bs[1].on("pullingUp", this.songListLoad); // 上滑触底后执行懒加载
-          }
+        let list = [
+            [],
+            this.songList,
+            this.playlistList,
+            this.artistList,
+            this.albumList,
+            this.userList,
+          ],
+          /* countList = [
+            0,
+            this.songCount,
+            this.playlistCount,
+            this.artistCount,
+            this.albumCount,
+            this.userCount,
+          ], */
+          fnList = [
+            {},
+            this.songListLoad,
+            this.playlistListLoad,
+            this.artistListLoad,
+            this.albumListLoad,
+            this.userListLoad,
+          ];
+        if (newV > 0 && list[newV].length < 15) {
+          // 如果不是第一页,且已加载数量小于15,说明是第一次进入该标签页,需要进行Better scroll实例化操作
+          this.bs[newV] = new BScroll(this.bsDOM[newV], {
+            click: true, //允许点击事件
+            pullUpLoad: true,
+          });
+          fnList[newV]();
+          this.bs[newV].on("pullingUp", fnList[newV]); // 上滑触底后执行懒加载
         }
       },
     },
