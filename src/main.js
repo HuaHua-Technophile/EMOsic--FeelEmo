@@ -24,6 +24,7 @@ import listSearch from "./components/son/listSearch.vue";
 Vue.component("list-search", listSearch);
 import playListHeader from "./components/son/playListHeader.vue";
 Vue.component("play-list-header", playListHeader);
+Vue.component("list-search", listSearch);
 //----vue全局1级组件-------------------
 import squareSwiper from "./components/squareSwiper.vue";
 Vue.component("square-swiper", squareSwiper);
@@ -45,6 +46,9 @@ Vue.component("artist-list", artistList);
 Vue.component("song-list", songList);
 import albumList from "./components/albumList.vue";
 Vue.component("album-list", albumList);
+Vue.component("song-list", songList);
+import userList from "./components/userList.vue";
+Vue.component("user-list", userList);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件

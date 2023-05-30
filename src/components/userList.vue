@@ -3,21 +3,35 @@
     <div
       v-for="(i, index) in detailList"
       :key="index"
+      @click="$router.push({ name: 'userHome', query: { id: i.userId } })"
       class="mb-3 d-flex align-items-center">
-      <img :src="`${i.picUrl}?param=55y55`" class="rounded-pill me-2" />
-      <!-- 歌手信息 -->
+      <div class="position-relative">
+        <img :src="`${i.avatarUrl}?param=55y55`" class="rounded-pill me-2" />
+        <div
+          class="position-absolute end-0 bottom-0 translate-middle"
+          style="width: 15px; height: 15px">
+          <img
+            v-if="i.avatarDetail"
+            :src="`${i.avatarDetail.identityIconUrl}?param=15y15`"
+            class="w-100 h-100" />
+        </div>
+      </div>
+      <!-- 用户信息 -->
       <div class="flex-grow-1">
         <!-- 名称 -->
         <div>
-          <span v-html="heightLight(i.name, kw)"></span>
-          <span v-if="i.alias.length > 0" class="opacity-50"
-            >(<span v-html="heightLight(i.alias[0], kw)"></span>)</span
-          >
+          <span v-html="heightLight(i.nickname, kw)"></span>
+          <i
+            v-if="i.gender == 1"
+            class="ms-2 bi bi-gender-male"
+            style="color: #d63384"></i>
+          <i
+            v-if="i.gender == 2"
+            class="ms-2 bi bi-gender-female"
+            style="color: #0d6efd"></i>
         </div>
-        <!-- 数据 -->
-        <div class="opacity-50 fs-8">
-          {{ i.albumSize }}张专辑,{{ i.mvSize }}个视频
-        </div>
+        <!-- 个性签名 -->
+        <div class="fs-8 opacity-50">{{ i.signature }}</div>
       </div>
       <!-- 关注按钮,响应式数据失效 -->
       <div @click="followThis(index)">
@@ -34,10 +48,10 @@
   </div>
 </template>
 <script>
+  import { Toast } from "vant";
   import heightLight from "../tool/heightLight.js";
   import { mapState } from "vuex";
-  import { setArtistSub } from "../api/getData.js";
-  import { Toast } from "vant";
+  import { Follow } from "../api/getData.js";
   export default {
     props: ["detailList"],
     data() {
@@ -74,7 +88,7 @@
     beforeDestroy() {
       this.detailList.forEach((item, index) => {
         if (item.followed != this.followedList[index]) {
-          setArtistSub(item.id, this.followedList[index] ? 1 : 2);
+          Follow(item.id, this.followedList[index] ? 1 : 2);
         }
       });
     },

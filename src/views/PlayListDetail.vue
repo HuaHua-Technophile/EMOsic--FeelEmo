@@ -107,7 +107,9 @@
           this.bs.finishPullUp();
           this.isPullUpLoad = false;
         }
-        this.bs.refresh();
+        this.$nextTick(() => {
+          this.bs.refresh();
+        });
       },
       // 监测滚动坐标,修改页面样式
       styleChange: throttle(function (e) {

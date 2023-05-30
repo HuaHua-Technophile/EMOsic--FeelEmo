@@ -17,7 +17,7 @@
         style="--bs-bg-opacity: 0.6">
         <div>
           <i class="bi bi-search me-2"></i
-          ><span class="placeHolder text-secondary"
+          ><span v-if="searchHot" class="placeHolder text-secondary"
             >大家在搜:{{ searchHot.first }}</span
           >
         </div>
@@ -213,7 +213,6 @@
     //组件销毁前清除定时器
     beforeDestroy() {
       this.timeIdList.forEach((id) => clearInterval(id));
-      this.bs.destroy();
     },
   };
 </script>

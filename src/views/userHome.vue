@@ -46,12 +46,15 @@
           <span>Lv.{{ user.level }}</span>
         </div>
         <!-- 已登录后的用户标签 -->
-        <div v-if="user" class="userTag text-center fs-8 mb-2" style="">
+        <div v-if="user" class="userTag text-center fs-8 mb-2">
           <span>IP属地: {{ ip }}</span>
           <!-- 性别\年龄\星座 -->
           <span>
-            <i v-if="user.profile.gender == 1" class="bi bi-gender-male"></i>
-            <i v-else class="bi bi-gender-female"></i>
+            <i
+              v-if="user.profile.gender == 1"
+              class="bi bi-gender-male"
+              style="color: #d63384"></i>
+            <i v-else class="bi bi-gender-female" style="color: #0d6efd"></i>
             <span class="ms-1">{{ birthdayYear }}</span>
             <span class="ms-1">{{ constellation }}</span>
           </span>
@@ -405,6 +408,7 @@
     },
     // 创建后生命周期
     async created() {
+      console.log(this.$route.query.id);
       // 若没有传参，则进入个人主页。若传参，则进入他人主页，对应两套不同的渲染逻辑
       if (this.$route.query.id) {
         this.isMe = false;
