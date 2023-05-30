@@ -37,6 +37,14 @@ import bigPlayer from "./components/bigPlayer.vue";
 Vue.component("big-player", bigPlayer);
 import songList from "./components/songList.vue";
 Vue.component("song-list", songList);
+import playlistList from "./components/playlistList.vue";
+Vue.component("playlist-list", playlistList);
+Vue.component("song-list", songList);
+import artistList from "./components/artistList.vue";
+Vue.component("artist-list", artistList);
+Vue.component("song-list", songList);
+import albumList from "./components/albumList.vue";
+Vue.component("album-list", albumList);
 //----FontAwesome字体图标库---------
 import { library } from "@fortawesome/fontawesome-svg-core"; /* 导入font核心 */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"; //注册全局font框架组件

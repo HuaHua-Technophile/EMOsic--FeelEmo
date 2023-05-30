@@ -213,6 +213,7 @@
     //组件销毁前清除定时器
     beforeDestroy() {
       this.timeIdList.forEach((id) => clearInterval(id));
+      this.bs.destroy();
     },
   };
 </script>

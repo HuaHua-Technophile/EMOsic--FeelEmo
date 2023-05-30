@@ -21,7 +21,8 @@
         :detailList="detailList"
         :loadFinish="loadFinish"
         :listOpacity="listOpacity"
-        @songList="songList"></song-list>
+        @songList="songList"
+        class="bg-body"></song-list>
     </div>
     <!-- 顶部搜索框，fixed定位。适用于官方雷达歌单、推荐歌单、专辑页 -->
     <list-search
@@ -61,6 +62,7 @@
         subscribed: null, //专辑是否已经收藏
         bs: null, //初始化Better scroll滚动盒子
         loadFinish: true, //加载完毕
+        timeIdList: [], //定时器ID,销毁前一次性清除
       };
     },
     // 计算属性
@@ -122,6 +124,15 @@
         this.themeColor = colorThief.getColor(img);
       };
       this.subscribed = res.album.info.liked; //将专辑是否收藏的状态初始化赋值
+      this.$nextTick(() => {
+        // 因为接口数据请求较慢,必须使用延时器进行补偿
+        this.timeIdList.push(
+          setTimeout(() => {
+            console.log("重新计算");
+            this.bs.refresh();
+          }, 500)
+        );
+      });
     },
     // 挂载后生命周期
     mounted() {
@@ -129,6 +140,7 @@
       this.bs = new BScroll(this.$refs.albumWrapper, {
         click: true, //允许点击事件
       });
+      this.bs.on("scroll", this.styleChange);
     },
     // 销毁前生命周期
     beforeDestroy() {
@@ -137,6 +149,7 @@
         setAlbumSub(t, this.album.id);
       }
       this.bs.destroy();
+      this.timeIdList.forEach((i) => clearTimeout(i));
     },
     // 组件
     components: {

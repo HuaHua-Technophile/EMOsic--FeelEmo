@@ -26,7 +26,7 @@
             <span
               v-if="item.tns"
               class="opacity-50"
-              v-html="heightLight(item.tns, kw)"></span>
+              v-html="heightLight(item.tns + '', kw)"></span>
           </div>
           <!-- 作者及音频码率标签 -->
           <div class="d-flex align-items-center">
@@ -68,7 +68,8 @@
         </div>
       </div>
     </div>
-    <div v-if="showLazyLoad">
+    <!-- 懒加载提示 -->
+    <div v-if="!hiddenLazyLoad">
       <div v-if="loadFinish" class="text-center fs-8">没有更多啦...</div>
       <div v-else class="text-center">
         <div v-show="isPullUpLoad">加载中...</div>
@@ -86,7 +87,7 @@
       "loadFinish",
       "isPullUpLoad",
       "listOpacity",
-      "showLazyLoad",
+      "hiddenLazyLoad",
     ],
     // 计算属性
     computed: {

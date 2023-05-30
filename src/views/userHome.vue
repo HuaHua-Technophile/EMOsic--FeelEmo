@@ -471,6 +471,7 @@
         let t = this.followStatus ? 1 : 2;
         Follow(this.userId, t);
       }
+      this.bs.destroy();
     },
     // 组件
     components: {
