@@ -41,12 +41,14 @@
           @click="searchThis(i.searchWord)"
           class="d-flex align-items-center mb-3">
           <span
-            class="d-flex justify-content-center me-2"
+            class="d-flex justify-content-center me-3"
             style="width: 20px"
             :class="{ 'text-danger fw-bold': index < 3 }"
             >{{ index + 1 }}</span
           >
-          <span>{{ i.content ? i.content : i.searchWord }}</span>
+          <span class="flex-grow-1">{{
+            i.content ? i.content : i.searchWord
+          }}</span>
           <img
             v-if="i.iconUrl"
             :src="`${i.iconUrl}?param=30y15`"

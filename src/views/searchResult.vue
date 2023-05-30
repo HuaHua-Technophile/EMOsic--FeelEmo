@@ -208,7 +208,7 @@
             <div class="pb-3 border-bottom fs-5">用户</div>
             <!-- 用户部分主体 -->
             <user-list :detailList="userList"></user-list>
-            <div class="text-center border-top fs-7 p-2" @click="6">
+            <div class="text-center border-top fs-7 p-2" @click="active = 5">
               <span class="opacity-50">共{{ userCount }}用户曾在此EMO</span>
             </div>
           </div>
