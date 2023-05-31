@@ -1,8 +1,7 @@
-// 安装axios $cnpm i axios -S
 import axios from "axios";
 // 创建axios 初始化
 const service = axios.create({
-  baseURL: "http://192.168.36.24:3000", //网易云API的本地链接
+  baseURL: "http://" + "192.168.36.24" + ":3000", //将记录的本地IP替换该IP地址
   timeout: 30000, //超时时间
   headers: {
     "Content-Type": "application/json;charset=utf-8",
