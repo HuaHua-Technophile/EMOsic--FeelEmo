@@ -394,7 +394,6 @@
             this.thisSongImg = item.al.picUrl;
             this.thisSongName = item.name;
             this.thisSongAr = item.ar;
-            console.log(this.miniPLayer);
           }
         });
       },

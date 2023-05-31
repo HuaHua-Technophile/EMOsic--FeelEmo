@@ -4,6 +4,7 @@
     <div
       v-for="(i, index) in detailList"
       :key="index"
+      @click="$router.push({ name: 'artistHome', query: { id: i.id } })"
       class="mb-3 d-flex align-items-center">
       <img :src="`${i.picUrl}?param=55y55`" class="rounded-pill me-3" />
       <!-- 歌手信息 -->

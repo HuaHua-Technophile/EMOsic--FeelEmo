@@ -39,6 +39,9 @@
               <div
                 v-for="(i, index) in searchMultimatch.artist"
                 :key="index"
+                @click="
+                  $router.push({ name: 'artistHome', query: { id: i.id } })
+                "
                 class="d-flex align-items-center mb-3">
                 <!-- 歌手头像 -->
                 <img

@@ -2,7 +2,7 @@
   <div ref="userHome" class="userHomeView w-100 h-100 position-relative">
     <!-- 滚动内容 -->
     <div
-      class="mine-content overflow-hidden position-relative z-1"
+      class="overflow-hidden position-relative z-1"
       :class="[{ 'h-miniPlayer': miniPlayerStatus }]"
       style="min-height: 101vh">
       <!-- 个人信息栏/头像 -->

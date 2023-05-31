@@ -69,6 +69,21 @@ export function getLyric(id) {
     method: "get",
   });
 }
+
+// 获取专辑信息
+export function getAlbum(id) {
+  return request({
+    url: `/album?id=${id}`,
+    method: "get",
+  });
+}
+// 设置专辑的收藏状态
+export function setAlbumSub(t, id) {
+  return request({
+    url: `/album/sub?t=${t}&id=${id}`,
+    method: "get",
+  });
+}
 //获取二维码key
 export function getLoginQrKey() {
   return request({
@@ -169,17 +184,38 @@ export function like(id, like) {
     method: "get",
   });
 }
-// 获取专辑
-export function getAlbum(id) {
+//获取歌手详情
+export function getArtistDetail(id) {
   return request({
-    url: `/album?id=${id}`,
+    url: `/artist/detail?id=${id}`,
     method: "get",
   });
 }
-// 设置专辑的收藏状态
-export function setAlbumSub(t, id) {
+//获取歌手描述
+export function getArtistDesc(id) {
   return request({
-    url: `/album/sub?t=${t}&id=${id}`,
+    url: `/artist/desc?id=${id}`,
+    method: "get",
+  });
+}
+// 获取歌手歌曲
+export function getArtistSongs(id, limit, offset) {
+  return request({
+    url: `/artist/songs?id=${id}&limit=${limit}&offset=${offset}`,
+    method: "get",
+  });
+}
+// 获取歌手专辑
+export function getArtistAlbum(id) {
+  return request({
+    url: `/artist/album?id=${id}`,
+    method: "get",
+  });
+}
+//收藏歌手
+export function setArtistSub(id, t) {
+  return request({
+    url: `/artist/sub?id=${id}&t=${t}`,
     method: "get",
   });
 }
@@ -191,13 +227,6 @@ export function cloudsearch({ keywords, limit = 15, offset = 0, type = 1 }) {
   );
   return request({
     url: `/cloudsearch?keywords=${keywords}&limit=${limit}&offset=${offset}&type=${type}`,
-    method: "get",
-  });
-}
-//收藏歌手
-export function setArtistSub(id, t) {
-  return request({
-    url: `/artist/sub?id=${id}&t=${t}`,
     method: "get",
   });
 }

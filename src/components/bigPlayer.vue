@@ -28,10 +28,17 @@
             <div class="ms-3 me-3 fs-5 van-ellipsis">{{ songName }}</div>
             <!-- 歌手 -->
             <div class="fs-7 opacity-50 van-ellipsis">
-              <span v-for="(j, indexs) in songAr" :key="indexs"
-                ><span>{{ j.name }}</span
-                ><span v-if="indexs != songAr.length - 1">/</span></span
-              >
+              <span
+                v-for="(j, indexs) in songAr"
+                :key="indexs"
+                @click="
+                  $emit('bigPlayerHidden');
+                  miniPlayerShow();
+                  $router.push({ name: 'artistHome', query: { id: j.id } });
+                ">
+                <span>{{ j.name }}</span>
+                <span v-if="indexs != songAr.length - 1">/</span>
+              </span>
             </div>
           </div>
           <!-- 分享按钮 -->
