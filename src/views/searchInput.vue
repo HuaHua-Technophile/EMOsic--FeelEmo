@@ -49,10 +49,7 @@
           <span class="flex-grow-1">{{
             i.content ? i.content : i.searchWord
           }}</span>
-          <img
-            v-if="i.iconUrl"
-            :src="`${i.iconUrl}?param=30y15`"
-            style="height: " />
+          <img v-if="i.iconUrl" :src="`${i.iconUrl}`" style="height: 15px" />
         </div>
       </div>
     </div>

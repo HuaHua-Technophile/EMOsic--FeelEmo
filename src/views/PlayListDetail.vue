@@ -78,7 +78,7 @@
     },
     // 方法
     methods: {
-      ...mapMutations(["setSongList"]),
+      ...mapMutations(["setSongList", "setPlayIndex"]),
       // 颜色混入
       LightenDarkenColor(RGB, v) {
         return RGB.map((i) => (i + v > 255 ? 255 : i + v < 0 ? 0 : i + v));

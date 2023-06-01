@@ -36,7 +36,10 @@
             class="identityIconUrl" />
         </div>
         <!-- 未登录时的用户名栏 -->
-        <div v-else class="text-center mb-2" @click="toLoginRegistration()">
+        <div
+          v-else
+          class="text-center mb-2 text-light"
+          @click="toLoginRegistration()">
           立即登录,畅享EMO时光~
         </div>
         <!-- 已登录后的关注/粉丝/等级 -->

@@ -41,7 +41,11 @@
 7. 在命令终端中执行`git submodule update`,因为只有一个子模块,因此直接更新子模块
 8. 在命令终端中执行`cd .\api`.然后执行`cnpm i`或`cnpm install`,使用淘宝镜像源安装子项目依赖
 9. 在命令终端中执行`node app`或`node app.js`,开启子模块的 api 数据接口
-10. 根据第 5 步中,启动完成后在命令行输出的文本提示,打开本地服务器网址[localhost:8080](http://localhost:8080/),
+10. 根据第 5 步中,启动完成后在命令行输出的文本提示,打开本地服务器网址[localhost:8080](http://localhost:8080/)。
+
+> 该项目基于移动端设计.请在浏览器中<kbd>右键</kbd>,选择最下方的"检查".然后按下<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>切换至移动端模式.并选择合适的"设备尺寸"(推荐 iPhone XR),然后在右侧'缩放比例'中选择'适合窗口大小'
+>
+> <div style="display:flex;align-items:center;"><img src="https://i.imgloc.com/2023/05/31/VWgTPv.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWg1W3.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWgu48.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWxZNZ.png"style="width:25%"/></div>
 
 # 技术栈
 
@@ -114,5 +118,41 @@ emo 一词可以追溯自 1980 年代，美国华盛顿特区开始流行一种�
 - 查看首页推荐专辑、搜索专辑
 - 查看歌手、搜索歌手
 - 查看用户主页、搜索用户
-
-<div style="width:100%"><img src="https://i.imgloc.com/2023/05/31/VWrZIC.png" alt="VWrZIC.png" border="0" style="width:100%"/></div>
+![VWLdVk.png](https://i.imgloc.com/2023/06/01/VWLdVk.png)
+![VWLFSx.png](https://i.imgloc.com/2023/06/01/VWLFSx.png)
+![VWL63a.png](https://i.imgloc.com/2023/06/01/VWL63a.png)
+![VWL7Xq.png](https://i.imgloc.com/2023/06/01/VWL7Xq.png)
+![VWLxCb.png](https://i.imgloc.com/2023/06/01/VWLxCb.png)
+![VWLpbN.png](https://i.imgloc.com/2023/06/01/VWLpbN.png)
+![VWLmio.png](https://i.imgloc.com/2023/06/01/VWLmio.png)
+![VWLRSA.png](https://i.imgloc.com/2023/06/01/VWLRSA.png)
+![VWL33c.png](https://i.imgloc.com/2023/06/01/VWL33c.png)
+![VWLj0P.png](https://i.imgloc.com/2023/06/01/VWLj0P.png)
+![VWLO1C.png](https://i.imgloc.com/2023/06/01/VWLO1C.png)
+![VWL2OQ.png](https://i.imgloc.com/2023/06/01/VWL2OQ.png)
+![VWLwiH.png](https://i.imgloc.com/2023/06/01/VWLwiH.png)
+![VWLC5F.png](https://i.imgloc.com/2023/06/01/VWLC5F.png)
+![VWL03Z.png](https://i.imgloc.com/2023/06/01/VWL03Z.png)
+![VWLkD8.png](https://i.imgloc.com/2023/06/01/VWLkD8.png)
+![VWLtJ5.png](https://i.imgloc.com/2023/06/01/VWLtJ5.png)
+![VWLZrx.png](https://i.imgloc.com/2023/06/01/VWLZrx.png)
+![VWKuAa.png](https://i.imgloc.com/2023/06/01/VWKuAa.png)
+![VWKYJw.png](https://i.imgloc.com/2023/06/01/VWKYJw.png)
+![VWK1kq.png](https://i.imgloc.com/2023/06/01/VWK1kq.png)
+![VWKTab.png](https://i.imgloc.com/2023/06/01/VWKTab.png)
+![VWKJho.png](https://i.imgloc.com/2023/06/01/VWKJho.png)
+![VWKo9J.png](https://i.imgloc.com/2023/06/01/VWKo9J.png)
+![VWK5kX.png](https://i.imgloc.com/2023/06/01/VWK5kX.png)
+![VWKdTP.png](https://i.imgloc.com/2023/06/01/VWKdTP.png)
+![VWKFHE.png](https://i.imgloc.com/2023/06/01/VWKFHE.png)
+![VWKzuQ.png](https://i.imgloc.com/2023/06/01/VWKzuQ.png)
+![VWKehH.png](https://i.imgloc.com/2023/06/01/VWKehH.png)
+![VWKENF.png](https://i.imgloc.com/2023/06/01/VWKENF.png)
+![VWK7AZ.png](https://i.imgloc.com/2023/06/01/VWK7AZ.png)
+![VWxZNZ.png](https://i.imgloc.com/2023/05/31/VWxZNZ.png)
+![VWgu48.png](https://i.imgloc.com/2023/05/31/VWgu48.png)
+![VWg1W3.png](https://i.imgloc.com/2023/05/31/VWg1W3.png)
+![VWgTPv.png](https://i.imgloc.com/2023/05/31/VWgTPv.png)
+![VWrZIC.png](https://i.imgloc.com/2023/05/31/VWrZIC.png)
+![VWNuyE.png](https://i.imgloc.com/2023/05/31/VWNuyE.png)
+<div style="width:100%"><img src="https://i.imgloc.com/2023/05/31/VWrZIC.png" style="width:100%"/></div>
