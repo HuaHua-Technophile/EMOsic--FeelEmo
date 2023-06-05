@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css"; //最先导入bootstrap icon字体图标
 //----Swiper9.3.1-------------------------
 import { register } from "swiper/element/bundle"; // 导入功能以注册Swiper自定义元素
+register(); // 注册Swiper自定义元素
 /*//----lyric-parser歌词解析-----------------
 let lyric = new Lyric(lyricStr, handler);
 function hanlder({ lineNum, txt }) {
@@ -54,7 +55,6 @@ Vue.component("font-awesome-icon", FontAwesomeIcon); //注册全局font框架组
 import { faShare } from "@fortawesome/free-solid-svg-icons"; //默认样式:填充
 import {} from "@fortawesome/free-regular-svg-icons"; //免费样式:非填充
 library.add(faShare); //核心按需使用图标(分字重)
-register(); // 注册Swiper自定义元素
 //----自定义图标库-------------------
 import "./assets/font_navbar/iconfont.css";
 import "./assets/font_songLoop/iconfont.css";
