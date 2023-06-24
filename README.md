@@ -1,8 +1,8 @@
 [![VWNuyE.png](https://i.imgloc.com/2023/05/31/VWNuyE.png)](https://github.com/HuaHua-Technophile/EMOsic--FeelEmo)
 
-<div align="center" style="color:pink;font-size:30px;font-weight:bold;">「 依眸音乐(EMOusic) 」</div>
+<h1 align="center" style="color:pink;font-size:30px;font-weight:bold;">「 依眸音乐(EMOusic) 」</h1>
 
-<h4 style="color:#ED93AD;text-align:center;">静心感受深夜里的忧伤</h4>
+<h4 align="center" style="color:#ED93AD;">静心感受深夜里的忧伤</h4>
 
 <br />
 <br />
