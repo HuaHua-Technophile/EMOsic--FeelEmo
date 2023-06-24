@@ -275,7 +275,7 @@
           { name: "复制链接", icon: "link" },
           { name: "二维码", icon: "qrcode" },
         ], //分享面板配置选项
-        cli: null, //全局剪切板对象
+        cli666: null, //全局剪切板对象
         overlayStatus: false, //全局遮罩层显示/隐藏状态
       };
     },
@@ -513,7 +513,7 @@
     },
     // 销毁前生命周期
     destroyed() {
-      if (this.cli) this.cli.destroy(); //销毁剪切板对象
+      if (this.cli666) this.cli666.destroy(); //销毁剪切板对象
     },
   };
 </script>
