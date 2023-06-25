@@ -1,6 +1,6 @@
 [![VWNuyE.png](https://i.imgloc.com/2023/05/31/VWNuyE.png)](https://github.com/HuaHua-Technophile/EMOsic--FeelEmo)
 
-<h1 align="center" style="color:pink;font-size:30px;font-weight:bold;">「 依眸音乐(EMOusic) 」</h1>
+<h1 align="center" style="color:pink;">「 依眸音乐(EMOusic) 」</h1>
 
 <h4 align="center" style="color:#ED93AD;">静心感受深夜里的忧伤</h4>
 
@@ -25,14 +25,14 @@
 2. 按下<kbd>win</kbd>+<kbd>R</kbd>按键。输入 `cmd`,打开命令终端
 3. 在终端中,执行`node -v`,查看 node 版本,若未提示版本号,或版本号提示`<16`,则需安装最新版.若`>16`,则请移步至第 6 步
 4. 若 node.js 版本过低,或未安装.则进入[https://nodejs.org/zh-cn](https://nodejs.org/zh-cn)官网,点击下载`长期维护版`.文件下载完毕后双击执行安装.安装过程中一直` next` `下一步 `即可.
-5. 安装完毕后,重复第 3 步,查看 node.js 版本号.若`>16`,即可下一步
-6. 在命令终端(第 2 步)中执行`Git --version`,若未提示版本号表示未安装.若已安装,则请移步至第 9 步
+5. 安装完毕后,重复第 3 步,查看 node.js 版本号.若`>16`,即可下一步.否则查阅更多`node`安装教程
+6. 在命令终端(第 2 步)中执行`Git --version`,若未提示版本号表示未安装.若已安装,则请移步至[📦 安装并运行](#安装并运行)
 7. 打开[https://git-scm.com/download/win](https://git-scm.com/download/win),点击安装'Standalone Installer'版本下的 64bit.文件下载完毕后双击执行安装.安装过程中一直` next` `下一步 `即可.
 8. 安装完毕后,重复第 6 步,查看 git 版本号.若已安装,即可下一步
 
 # 安装并运行
 
-1. 打开命令终端,执行`git clone https://github.com/HuaHua-Technophile/EMOsic--FeelEmo.git`.将项目克隆至本地
+1. 在要存放项目的文件夹中打开终端(资源管理器地址栏输入`cmd`即可),执行`git clone https://github.com/HuaHua-Technophile/EMOsic--FeelEmo.git`.将项目克隆至本地
 2. 若人在国内,推荐安装'淘宝镜像源'.在命令终端中执行`$ npm install -g cnpm --registry=https://registry.npmmirror.com`即可
 3. 在命令终端中执行`cd .\EMOsic--FeelEmo`,移至项目文件夹内(EMOsic--FeelEmo)
 4. 在命令终端中执行`cnpm i`或`cnpm install`,使用淘宝镜像源安装项目依赖
@@ -43,7 +43,7 @@
 9. 在命令终端中执行`node app`或`node app.js`,开启子模块的 api 数据接口
 10. 根据第 5 步中,启动完成后在命令行输出的文本提示,打开本地服务器网址[localhost:8080](http://localhost:8080/)。
 
-> 该项目基于移动端设计.请在浏览器中<kbd>右键</kbd>,选择最下方的"检查".然后按下<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>切换至移动端模式.并选择合适的"设备尺寸"(推荐 iPhone XR),然后在右侧'缩放比例'中选择'适合窗口大小'
+> 该项目基于移动端设计.请在浏览器中<kbd>右键</kbd>,选择最下方的`检查`.然后按下<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>切换至移动端模式.并选择合适的"设备尺寸"(推荐 iPhone XR),然后在右侧'缩放比例'中选择'适合窗口大小'
 >
 > <div style="display:flex;align-items:center;"><img src="https://i.imgloc.com/2023/05/31/VWgTPv.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWg1W3.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWgu48.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWxZNZ.png"style="width:25%"/></div>
 
