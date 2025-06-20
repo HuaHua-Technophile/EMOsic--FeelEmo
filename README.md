@@ -42,8 +42,6 @@
 10. 根据第 5 步中,启动完成后在命令行输出的文本提示,打开本地服务器网址[localhost:8080](http://localhost:8080/)。
 
 > 该项目基于移动端设计.请在浏览器中<kbd>右键</kbd>,选择最下方的`检查`.然后按下<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>切换至移动端模式.并选择合适的"设备尺寸"(推荐 iPhone XR),然后在右侧'缩放比例'中选择'适合窗口大小'
->
-> <div style="display:flex;align-items:center;"><img src="https://i.imgloc.com/2023/05/31/VWgTPv.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWg1W3.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWgu48.png"style="width:25%"/><img src="https://i.imgloc.com/2023/05/31/VWxZNZ.png"style="width:25%"/></div>
 
 # 技术栈
 
