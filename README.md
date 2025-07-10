@@ -3,17 +3,10 @@
 <h4 align="center">静心感受深夜里的忧伤 🌙</h4>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Vue.js-2.6-4FC08D?style=for-the-badge&logo=vue.js" alt="Vue.js">
-  <img src="https://img.shields.io/badge/Vue_Router-3.5-4FC08D?style=for-the-badge&logo=vue.js" alt="Vue Router">
-  <img src="https://img.shields.io/badge/Vuex-3.6-4FC08D?style=for-the-badge&logo=vue.js" alt="Vuex">
-  <img src="https://img.shields.io/badge/Vant-2.12-3295FA?style=for-the-badge&logo=vant" alt="Vant">
-  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap" alt="Bootstrap">
-  <img src="https://img.shields.io/badge/Swiper-9.3-6332F6?style=for-the-badge&logo=swiper" alt="Swiper">
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-%3E%3D16-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js version">
-  <img src="https://img.shields.io/github/stars/HuaHua-Technophile/EMOsic--FeelEmo?style=for-the-badge" alt="GitHub stars">
-  <img src="https://img.shields.io/github/forks/HuaHua-Technophile/EMOsic--FeelEmo?style=for-the-badge" alt="GitHub forks">
+  <img src="https://img.shields.io/badge/Platform-Vue.js-4FC08D?style=flat&logo=vue.js" alt="Platform">
+  <img src="https://img.shields.io/github/repo-size/HuaHua-Technophile/EMOsic--FeelEmo?style=flat" alt="Repo Size">
+  <img src="https://img.shields.io/github/stars/HuaHua-Technophile/EMOsic--FeelEmo?style=flat" alt="GitHub stars">
+  <img src="https://img.shields.io/github/forks/HuaHua-Technophile/EMOsic--FeelEmo?style=flat" alt="GitHub forks">
 </p>
 
 ## 📖 设计理念
@@ -43,39 +36,31 @@
 
 在开始之前，请确保您的电脑已安装 `Node.js` (版本 >= 16) 和 `Git`。
 
-> 推荐使用 [pnpm](https://pnpm.io/installation) 作为包管理器以获得更快的安装速度。
+1.  **克隆仓库并安装依赖**
 
-1.  **克隆仓库**
+    本项目使用 `pnpm` 进行依赖管理，以获得更好的性能和磁盘空间效率。
 
     ```bash
     git clone https://github.com/HuaHua-Technophile/EMOsic--FeelEmo.git
     cd EMOsic--FeelEmo
+    # 如果您尚未安装 pnpm，请先执行： npm install -g pnpm
+    pnpm install
     ```
 
-2.  **安装主项目依赖**
+2.  **启动前端服务**
 
     ```bash
-    # 使用 npm
-    npm install
-
-    # 或者使用 pnpm
-    # pnpm install
-    ```
-
-3.  **启动前端服务**
-
-    ```bash
-    npm run serve
+    pnpm serve
     ```
 
     启动成功后，请记下终端提示的 IP 地址 (例如: `192.168.xxx.xxx`)。
 
-4.  **更新后端 API 地址**
+3.  **更新后端 API 地址**
 
     - 用文本编辑器打开 `src/api/http.js`。
-    - 将第 3 步记录的 IP 替换掉默认的 IP。
+    - 将第 2 步记录的 IP 替换掉默认的 IP。
 
-5.  **安装并启动后端服务**
+4.  **安装并启动后端服务**
 
     ```bash
     # 更新并进入子模块
@@ -83,25 +68,36 @@
     cd api
 
     # 安装依赖
-    npm install
-
-    # 或者使用 pnpm
-    # pnpm install
+    pnpm install
 
     # 启动 API 服务
     node app.js
     ```
 
-6.  **访问项目**
-    - 根据第 3 步启动成功后的提示，在浏览器中打开本地访问地址 (通常是 `http://localhost:8080`)。
+5.  **访问项目**
+    - 根据第 2 步启动成功后的提示，在浏览器中打开本地访问地址 (通常是 `http://localhost:8080`)。
     - **注意**: 本项目为移动端设计，请在浏览器开发者工具中 (按 F12)，切换到移动设备模拟视图 (Ctrl+Shift+M) 以获得最佳体验。
 
 ## 🛠️ 技术栈
 
-- **核心**: `Vue 2`, `Vue Router`, `Vuex`, `Axios`
-- **UI 框架**: `Vant 2`, `Bootstrap 5`, `Swiper 9`, `Better Scroll 2`
-- **其他工具**: `Lodash`, `ColorThief`, `Lyric Parser`, `Vue QR`
-- **数据来源**: [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+<table>
+  <tr>
+    <td><strong>核心框架</strong></td>
+    <td><img src="https://img.shields.io/badge/Vue.js-%5E2.6.14-4FC08D?style=flat&logo=vue.js" alt="Vue.js"> <img src="https://img.shields.io/badge/Vue_Router-%5E3.5.1-4FC08D?style=flat&logo=vue.js" alt="Vue Router"> <img src="https://img.shields.io/badge/Vuex-%5E3.6.2-4FC08D?style=flat&logo=vue.js" alt="Vuex"></td>
+  </tr>
+  <tr>
+    <td><strong>UI 与组件库</strong></td>
+    <td><img src="https://img.shields.io/badge/Vant-latest--v2-3295FA?style=flat&logo=vant" alt="Vant"> <img src="https://img.shields.io/badge/Bootstrap-%5E5.3.0--alpha3-7952B3?style=flat&logo=bootstrap" alt="Bootstrap"> <img src="https://img.shields.io/badge/Swiper-%5E9.3.1-6332F6?style=flat&logo=swiper" alt="Swiper"> <img src="https://img.shields.io/badge/Better_Scroll-%5E2.5.1-42b983?style=flat" alt="Better Scroll"></td>
+  </tr>
+  <tr>
+    <td><strong>功能与工具库</strong></td>
+    <td><img src="https://img.shields.io/badge/Axios-%5E1.4.0-5A29E4?style=flat&logo=axios" alt="Axios"> <img src="https://img.shields.io/badge/Lodash-%5E4.17.21-3492ff?style=flat&logo=lodash" alt="Lodash"> <img src="https://img.shields.io/badge/ColorThief-%5E2.4.0-e67e22?style=flat" alt="ColorThief"> <img src="https://img.shields.io/badge/Lyric_Parser-%5E1.0.1-c299ff?style=flat" alt="Lyric Parser"> <img src="https://img.shields.io/badge/Vue_QR-%5E4.0.9-4FC08D?style=flat&logo=vue.js" alt="Vue QR"></td>
+  </tr>
+  <tr>
+    <td><strong>数据来源</strong></td>
+    <td><a href="https://github.com/Binaryify/NeteaseCloudMusicApi">NeteaseCloudMusicApi</a></td>
+  </tr>
+</table>
 
 ## 📁 项目结构
 
